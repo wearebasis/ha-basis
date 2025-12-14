@@ -1,0 +1,17 @@
+{
+  "config": {
+    "step": {
+      "reauth_confirm": {
+        "title": "Reauthenticate with Basis",
+        "description": "Your session has expired. Please reauthenticate to continue using the Basis Smart Panel integration."
+      }
+    },
+    "abort": {
+      "reauth_successful": "Reauthentication successful",
+      "already_configured": "This Basis account is already configured"
+    },
+    "create_entry": {
+      "default": "Successfully authenticated with Basis"
+    }
+  }
+}
