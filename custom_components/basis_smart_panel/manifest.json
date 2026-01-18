@@ -1,0 +1,12 @@
+{
+    "domain": "basis_smart_panel",
+    "name": "Basis Smart Panel",
+    "documentation": "https://github.com/wearebasis/ha-basis",
+    "issue_tracker": "https://github.com/wearebasis/ha-basis/issues",
+    "dependencies": ["device_automation", "application_credentials"],
+    "codeowners": ["@c0013r"],
+    "requirements": ["gql>=3.0.0", "aiohttp>=3.8.0"],
+    "config_flow": true,
+    "iot_class": "cloud_polling",
+    "version": "1.0.0"
+}
