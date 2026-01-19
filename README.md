@@ -1,6 +1,6 @@
 # Basis Smart Panel
 
-A Home Assistant integration for Basis Smart panels by [Basis Ltd](https://wearebasis.com/).
+A Home Assistant integration for Basis Smart panels by [Basis NZ Ltd](https://wearebasis.com/).
 
 ## Features
 
