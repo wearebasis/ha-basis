@@ -29,7 +29,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     auth = AsyncConfigEntryAuth(session)
 
     # Get integration version from manifest
-    integration = await hass.helpers.integration.async_get_integration(DOMAIN)
+    integration = hass.data["integrations"][DOMAIN]
     integration_version = integration.version
 
     # Initialize API
