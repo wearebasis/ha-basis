@@ -19,7 +19,7 @@ OAUTH2_AUDIENCE = "https://api.wearebasis.io"
 BOARDS_DISCOVERY_INTERVAL = timedelta(minutes=5)
 
 # Interval for polling switchboard data
-SWITCHBOARD_UPDATE_INTERVAL = timedelta(seconds=30)
+SWITCHBOARD_UPDATE_INTERVAL = timedelta(seconds=5)
 
 # Interval for polling energy statistics (less frequent)
 ENERGY_STATS_UPDATE_INTERVAL = timedelta(minutes=5)
