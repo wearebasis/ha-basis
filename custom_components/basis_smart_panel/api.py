@@ -14,16 +14,22 @@
 
 from __future__ import annotations
 
+import asyncio
 from typing import cast
 
+from aiohttp import ClientError
 from homeassistant.helpers import config_entry_oauth2_flow
 from gql import Client, gql
 from gql.transport.aiohttp import AIOHTTPTransport
+from gql.transport.exceptions import TransportError
 
 from .const import (
     LOGGER,
     API_BASE_URL
 )
+
+MAX_RETRIES = 3
+RETRY_DELAY_SECONDS = 2
 
 class AsyncConfigEntryAuth():
     """Provide Basis Smart Panel authentication tied to an OAuth2 based config entry."""
@@ -75,14 +81,28 @@ class BasisAPI:
         )
         return Client(transport=transport, fetch_schema_from_transport=False)
 
+    async def _execute_with_retry(self, document, variables=None) -> dict:
+        """Execute a GraphQL query with retry on transient failures."""
+        for attempt in range(1, MAX_RETRIES + 1):
+            try:
+                client = await self._create_client()
+                return await client.execute_async(document, variables)
+            except (asyncio.TimeoutError, ClientError, TransportError, OSError) as err:
+                if attempt == MAX_RETRIES:
+                    LOGGER.error("Query failed after %s attempts: %s", MAX_RETRIES, err)
+                    raise
+                LOGGER.warning(
+                    "Query attempt %s/%s failed (%s: %s), retrying in %ss",
+                    attempt, MAX_RETRIES, type(err).__name__, err, RETRY_DELAY_SECONDS,
+                )
+                await asyncio.sleep(RETRY_DELAY_SECONDS)
+
     async def get_available_switchboards(self) -> list[dict]:
         """Discover all switchboards available to the user.
 
         Returns:
             List of switchboard info dicts with serial and connected status.
         """
-        client = await self._create_client()
-
         query = gql("""
             query {
                 sites(input: { query: "" }) {
@@ -99,7 +119,7 @@ class BasisAPI:
             }
         """)
 
-        result = await client.execute_async(query)
+        result = await self._execute_with_retry(query)
 
         # Flatten switchboards from all sites
         switchboards = []
@@ -117,8 +137,6 @@ class BasisAPI:
 
     async def get_switchboard_data(self, serial: str):
         """Get switchboard data from the API."""
-        client = await self._create_client()
-
         query = gql("""
             query GetSwitchboardData($serial: String!) {
                 switchboard(serial: $serial) {
@@ -163,7 +181,7 @@ class BasisAPI:
             "serial": serial
         }
 
-        return await client.execute_async(query, variables)
+        return await self._execute_with_retry(query, variables)
 
     async def get_switchboard_energy_usage(self, serial: str, start_time: str):
         """Get energy usage for the switchboard.
@@ -175,8 +193,6 @@ class BasisAPI:
         Returns:
             Energy usage data with import/export kWh
         """
-        client = await self._create_client()
-
         query = gql("""
             query GetSwitchboardEnergyUsage($serial: String!, $startTime: Time!) {
                 switchboard(serial: $serial) {
@@ -193,7 +209,7 @@ class BasisAPI:
             "startTime": start_time,
         }
 
-        return await client.execute_async(query, variables)
+        return await self._execute_with_retry(query, variables)
 
     async def set_subcircuit_standby(
         self, switchboard_serial: str, subcircuit_serial: str, standby_state: bool

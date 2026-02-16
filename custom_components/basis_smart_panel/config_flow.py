@@ -55,6 +55,41 @@ class BasisOAuth2Implementation(LocalOAuth2ImplementationWithPkce):
         data.update(super().extra_token_resolve_data)
         return data
 
+    async def async_resolve_external_data(self, external_data: Any) -> dict:
+        """Resolve the authorization code to tokens."""
+        LOGGER.debug("async_resolve_external_data called with keys: %s", list(external_data.keys()) if isinstance(external_data, dict) else type(external_data))
+        LOGGER.debug("extra_authorize_data: %s", self.extra_authorize_data)
+        LOGGER.debug("extra_token_resolve_data: %s", self.extra_token_resolve_data)
+        return await super().async_resolve_external_data(external_data)
+
+    async def _token_request(self, data: dict) -> dict:
+        """Make a token request with logging."""
+        from homeassistant.helpers.aiohttp_client import async_get_clientsession
+
+        # Log what we're about to send
+        log_data = {k: (v[:20] + "..." if isinstance(v, str) and len(v) > 20 else v) for k, v in data.items()}
+        LOGGER.debug("Token request to %s with data: %s", self.token_url, log_data)
+
+        session = async_get_clientsession(self.hass)
+
+        data["client_id"] = self.client_id
+        if self.client_secret:
+            data["client_secret"] = self.client_secret
+
+        LOGGER.debug("Final token request params: %s", list(data.keys()))
+
+        resp = await session.post(self.token_url, data=data)
+        resp_body = await resp.text()
+
+        LOGGER.debug("Token response status: %s", resp.status)
+        LOGGER.debug("Token response body: %s", resp_body[:500] if len(resp_body) > 500 else resp_body)
+
+        if resp.status >= 400:
+            LOGGER.error("Token request failed: status=%s body=%s", resp.status, resp_body)
+            resp.raise_for_status()
+
+        return await resp.json(content_type=None)
+
 class BasisSmartPanelConfigFlowHandler(
     config_entry_oauth2_flow.AbstractOAuth2FlowHandler,
     domain=DOMAIN
