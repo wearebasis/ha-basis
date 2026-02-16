@@ -77,6 +77,10 @@ For each circuit in your panel:
 
 For issues with this integration, please open an issue on GitHub.
 
+## Trademarks
+
+This project may contain trademarks or logos for Basis NZ Ltd. products or services. See [TRADEMARKS.md](TRADEMARKS.md) for details.
+
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
