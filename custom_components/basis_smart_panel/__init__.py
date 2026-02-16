@@ -1,19 +1,54 @@
+# Copyright Basis NZ Ltd 2026
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 from __future__ import annotations
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers import config_entry_oauth2_flow, device_registry as dr
-
 from .const import (
     DOMAIN,
     BRAND,
     DEFAULT_MODEL,
+    OAUTH2_CLIENT_ID,
+    OAUTH2_AUTHORIZE,
+    OAUTH2_TOKEN,
     PLATFORMS,
     LOGGER,
 )
+from .config_flow import BasisOAuth2Implementation
 
 from .coordinator import BoardsDiscoveryCoordinator, SwitchboardDataCoordinator, EnergyStatsCoordinator
 from .api import BasisAPI, AsyncConfigEntryAuth
+
+
+async def async_setup(hass: HomeAssistant, config) -> bool:
+    """Set up the Basis Smart Panel component."""
+    config_entry_oauth2_flow.async_register_implementation(
+        hass,
+        DOMAIN,
+        BasisOAuth2Implementation(
+            hass,
+            DOMAIN,
+            OAUTH2_CLIENT_ID,
+            authorize_url=OAUTH2_AUTHORIZE,
+            token_url=OAUTH2_TOKEN,
+            client_secret="",
+            code_verifier_length=128,
+        ),
+    )
+    return True
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
