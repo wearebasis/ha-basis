@@ -126,12 +126,12 @@ class BasisPanelPowerSensor(CoordinatorEntity[SwitchboardDataCoordinator], Senso
 
 
 class BasisPanelImportPowerSensor(CoordinatorEntity[SwitchboardDataCoordinator], SensorEntity):
-    """Sensor for panel import power."""
+    """Sensor for house consumption power."""
 
     _attr_device_class = SensorDeviceClass.POWER
     _attr_state_class = SensorStateClass.MEASUREMENT
     _attr_native_unit_of_measurement = UnitOfPower.WATT
-    _attr_icon = "mdi:transmission-tower-import"
+    _attr_icon = "mdi:home-lightning-bolt"
 
     def __init__(self, coordinator: SwitchboardDataCoordinator) -> None:
         super().__init__(coordinator)
@@ -143,7 +143,7 @@ class BasisPanelImportPowerSensor(CoordinatorEntity[SwitchboardDataCoordinator],
 
     @property
     def name(self) -> str:
-        return "Import Power"
+        return "House Consumption Power"
 
     @property
     def device_info(self) -> DeviceInfo:
@@ -161,12 +161,12 @@ class BasisPanelImportPowerSensor(CoordinatorEntity[SwitchboardDataCoordinator],
 
 
 class BasisPanelExportPowerSensor(CoordinatorEntity[SwitchboardDataCoordinator], SensorEntity):
-    """Sensor for panel export power (solar)."""
+    """Sensor for generation power (solar)."""
 
     _attr_device_class = SensorDeviceClass.POWER
     _attr_state_class = SensorStateClass.MEASUREMENT
     _attr_native_unit_of_measurement = UnitOfPower.WATT
-    _attr_icon = "mdi:transmission-tower-export"
+    _attr_icon = "mdi:solar-power"
 
     def __init__(self, coordinator: SwitchboardDataCoordinator) -> None:
         super().__init__(coordinator)
@@ -178,7 +178,7 @@ class BasisPanelExportPowerSensor(CoordinatorEntity[SwitchboardDataCoordinator],
 
     @property
     def name(self) -> str:
-        return "Export Power"
+        return "Generation Power"
 
     @property
     def device_info(self) -> DeviceInfo:
@@ -235,7 +235,7 @@ class BasisPanelCurrentSensor(CoordinatorEntity[SwitchboardDataCoordinator], Sen
 
 
 class BasisEnergyTodayImportSensor(CoordinatorEntity[EnergyStatsCoordinator], SensorEntity):
-    """Sensor for energy imported today."""
+    """Sensor for house energy consumption today."""
 
     _attr_device_class = SensorDeviceClass.ENERGY
     _attr_state_class = SensorStateClass.TOTAL
@@ -252,7 +252,7 @@ class BasisEnergyTodayImportSensor(CoordinatorEntity[EnergyStatsCoordinator], Se
 
     @property
     def name(self) -> str:
-        return "Energy Today Import"
+        return "Consumption Energy Today"
 
     @property
     def device_info(self) -> DeviceInfo:
@@ -266,7 +266,7 @@ class BasisEnergyTodayImportSensor(CoordinatorEntity[EnergyStatsCoordinator], Se
 
 
 class BasisEnergyTodayExportSensor(CoordinatorEntity[EnergyStatsCoordinator], SensorEntity):
-    """Sensor for energy exported today (solar)."""
+    """Sensor for energy generated today (solar)."""
 
     _attr_device_class = SensorDeviceClass.ENERGY
     _attr_state_class = SensorStateClass.TOTAL
@@ -283,7 +283,7 @@ class BasisEnergyTodayExportSensor(CoordinatorEntity[EnergyStatsCoordinator], Se
 
     @property
     def name(self) -> str:
-        return "Energy Today Export"
+        return "Generation Energy Today"
 
     @property
     def device_info(self) -> DeviceInfo:
@@ -297,7 +297,7 @@ class BasisEnergyTodayExportSensor(CoordinatorEntity[EnergyStatsCoordinator], Se
 
 
 class BasisEnergyMonthImportSensor(CoordinatorEntity[EnergyStatsCoordinator], SensorEntity):
-    """Sensor for energy imported this month."""
+    """Sensor for house energy consumption this month."""
 
     _attr_device_class = SensorDeviceClass.ENERGY
     _attr_state_class = SensorStateClass.TOTAL
@@ -314,7 +314,7 @@ class BasisEnergyMonthImportSensor(CoordinatorEntity[EnergyStatsCoordinator], Se
 
     @property
     def name(self) -> str:
-        return "Energy This Month Import"
+        return "Consumption Energy This Month"
 
     @property
     def device_info(self) -> DeviceInfo:
@@ -328,7 +328,7 @@ class BasisEnergyMonthImportSensor(CoordinatorEntity[EnergyStatsCoordinator], Se
 
 
 class BasisEnergyMonthExportSensor(CoordinatorEntity[EnergyStatsCoordinator], SensorEntity):
-    """Sensor for energy exported this month (solar)."""
+    """Sensor for energy generated this month (solar)."""
 
     _attr_device_class = SensorDeviceClass.ENERGY
     _attr_state_class = SensorStateClass.TOTAL
@@ -345,7 +345,7 @@ class BasisEnergyMonthExportSensor(CoordinatorEntity[EnergyStatsCoordinator], Se
 
     @property
     def name(self) -> str:
-        return "Energy This Month Export"
+        return "Generation Energy This Month"
 
     @property
     def device_info(self) -> DeviceInfo:
