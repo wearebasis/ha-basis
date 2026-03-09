@@ -86,7 +86,7 @@ class BasisAPI:
         for attempt in range(1, MAX_RETRIES + 1):
             try:
                 client = await self._create_client()
-                return await client.execute_async(document, variables)
+                return await client.execute_async(document, variable_values=variables)
             except (asyncio.TimeoutError, ClientError, TransportError, OSError) as err:
                 if attempt == MAX_RETRIES:
                     LOGGER.error("Query failed after %s attempts: %s", MAX_RETRIES, err)
@@ -236,4 +236,4 @@ class BasisAPI:
             }
         }
 
-        return await client.execute_async(mutation, variables)
+        return await client.execute_async(mutation, variable_values=variables)
