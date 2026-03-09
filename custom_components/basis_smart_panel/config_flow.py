@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import base64
+import json
 import logging
 
 from typing import Any
@@ -20,6 +22,7 @@ from collections.abc import Mapping
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers import config_entry_oauth2_flow
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.config_entry_oauth2_flow import LocalOAuth2ImplementationWithPkce
 
 from .const import (
@@ -90,6 +93,21 @@ class BasisOAuth2Implementation(LocalOAuth2ImplementationWithPkce):
 
         return await resp.json(content_type=None)
 
+
+def _decode_jwt_payload(token: str) -> dict:
+    """Decode the payload segment of a JWT without verification."""
+    parts = token.split(".")
+    if len(parts) != 3:
+        raise ValueError("Token is not a valid JWT")
+    payload = parts[1]
+    # Add padding if needed
+    padding = 4 - len(payload) % 4
+    if padding != 4:
+        payload += "=" * padding
+    decoded = base64.urlsafe_b64decode(payload)
+    return json.loads(decoded)
+
+
 class BasisSmartPanelConfigFlowHandler(
     config_entry_oauth2_flow.AbstractOAuth2FlowHandler,
     domain=DOMAIN
@@ -140,11 +158,39 @@ class BasisSmartPanelConfigFlowHandler(
             return self.async_show_form(step_id="reauth_confirm")
         return await self.async_step_user()
 
+    async def _get_user_info(self, data: dict) -> tuple[str, str]:
+        """Extract user ID and email from OAuth token data."""
+        token_data = data.get("token", data)
+
+        # Try decoding the id_token JWT
+        id_token = token_data.get("id_token")
+        if id_token:
+            try:
+                claims = _decode_jwt_payload(id_token)
+                sub = claims.get("sub")
+                email = claims.get("email", "unknown")
+                if sub:
+                    return sub, email
+            except (ValueError, json.JSONDecodeError, KeyError) as err:
+                LOGGER.debug("Failed to decode id_token: %s", err)
+
+        raise ValueError("Could not determine user identity from OAuth tokens")
+
     async def async_oauth_create_entry(self, data: dict) -> FlowResult:
-        """Create an entry."""
-        existing_entry = await self.async_set_unique_id(DOMAIN)
-        if existing_entry:
-            self.hass.config_entries.async_update_entry(existing_entry, data=data)
-            await self.hass.config_entries.async_reload(existing_entry.entry_id)
+        """Create an entry for the authenticated user."""
+        user_id, email = await self._get_user_info(data)
+        await self.async_set_unique_id(user_id)
+
+        # Reauth: update existing entry
+        if self._reauth_entry:
+            self.hass.config_entries.async_update_entry(
+                self._reauth_entry, data=data
+            )
+            await self.hass.config_entries.async_reload(
+                self._reauth_entry.entry_id
+            )
             return self.async_abort(reason="reauth_successful")
-        return await super().async_oauth_create_entry(data)
+
+        # New entry: prevent duplicate accounts
+        self._abort_if_unique_id_configured()
+        return self.async_create_entry(title=f"Basis ({email})", data=data)

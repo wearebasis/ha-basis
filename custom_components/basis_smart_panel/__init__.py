@@ -14,9 +14,12 @@
 
 from __future__ import annotations
 
+import json
+
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers import config_entry_oauth2_flow, device_registry as dr
+from .config_flow import BasisOAuth2Implementation, _decode_jwt_payload
 from .const import (
     DOMAIN,
     BRAND,
@@ -27,7 +30,6 @@ from .const import (
     PLATFORMS,
     LOGGER,
 )
-from .config_flow import BasisOAuth2Implementation
 
 from .coordinator import BoardsDiscoveryCoordinator, SwitchboardDataCoordinator, EnergyStatsCoordinator
 from .api import BasisAPI, AsyncConfigEntryAuth
@@ -53,6 +55,20 @@ async def async_setup(hass: HomeAssistant, config) -> bool:
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Basis Panel from a config entry."""
+    # Migrate legacy unique_id from static DOMAIN to Auth0 user sub
+    if entry.unique_id == DOMAIN:
+        token_data = entry.data.get("token", entry.data)
+        id_token = token_data.get("id_token")
+        if id_token:
+            try:
+                claims = _decode_jwt_payload(id_token)
+                new_uid = claims.get("sub")
+                if new_uid:
+                    hass.config_entries.async_update_entry(entry, unique_id=new_uid)
+                    LOGGER.info("Migrated unique_id from '%s' to '%s'", DOMAIN, new_uid)
+            except (ValueError, json.JSONDecodeError) as err:
+                LOGGER.warning("Could not migrate unique_id: %s", err)
+
     implementation = (
         await config_entry_oauth2_flow.async_get_config_entry_implementation(
             hass, entry
