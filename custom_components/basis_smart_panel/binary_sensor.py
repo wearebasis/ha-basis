@@ -21,7 +21,13 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .coordinator import BasisConfigEntry, SwitchboardDataCoordinator
-from .entity import BasisEntity, async_add_basis_entities, panel_entity_id
+from .entity import (
+    BasisEntity,
+    BasisSubcircuitEntity,
+    async_add_basis_entities,
+    panel_entity_id,
+)
+from .models import Subcircuit
 
 
 async def async_setup_entry(
@@ -30,12 +36,19 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up the Basis binary sensors."""
+    boards = config_entry.runtime_data.boards.values()
     async_add_basis_entities(
         config_entry,
         async_add_entities,
         [
-            BasisConnectivitySensor(board.live)
-            for board in config_entry.runtime_data.boards.values()
+            *(BasisConnectivitySensor(board.live) for board in boards),
+            *(
+                BasisCircuitFaultSensor(board.live, subcircuit)
+                for board in boards
+                if board.live.data is not None
+                for subcircuit in board.live.data.subcircuits
+                if not subcircuit.is_spare
+            ),
         ],
     )
 
@@ -74,3 +87,26 @@ class BasisConnectivitySensor(BasisEntity[SwitchboardDataCoordinator], BinarySen
         if connectivity.disconnect_reason:
             attrs["disconnect_reason"] = connectivity.disconnect_reason
         return attrs
+
+
+class BasisCircuitFaultSensor(BasisSubcircuitEntity, BinarySensorEntity):
+    """Problem sensor that is on while the circuit reports an electrical fault."""
+
+    _attr_device_class = BinarySensorDeviceClass.PROBLEM
+    _attr_name = "Fault"
+
+    def __init__(self, coordinator: SwitchboardDataCoordinator, subcircuit: Subcircuit) -> None:
+        """Initialize the fault sensor."""
+        super().__init__(coordinator, subcircuit, "fault")
+        self.entity_id = panel_entity_id(
+            Platform.BINARY_SENSOR, coordinator.serial, f"{subcircuit.number:02d}", "fault"
+        )
+
+    @property
+    def is_on(self) -> bool | None:
+        """Return True while the circuit reports an electrical fault."""
+        subcircuit = self.subcircuit
+        if subcircuit is None or subcircuit.live is None:
+            return None
+        state = subcircuit.live.known_state
+        return None if state is None else state == "ELECTRICAL_FAULT"

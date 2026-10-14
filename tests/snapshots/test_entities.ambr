@@ -283,6 +283,312 @@
     }),
   ])
 # ---
+# name: test_entities[binary_sensor.basis_panel_sb_0000000001_01_fault-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'binary_sensor',
+    'entity_category': None,
+    'entity_id': 'binary_sensor.basis_panel_sb_0000000001_01_fault',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': None,
+    'options': dict({
+    }),
+    'original_device_class': <BinarySensorDeviceClass.PROBLEM: 'problem'>,
+    'original_icon': None,
+    'original_name': 'Fault',
+    'platform': 'basis_smart_panel',
+    'previous_unique_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_01_fault',
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'basis_fault_SB-0000000001_circuit_1',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_entities[binary_sensor.basis_panel_sb_0000000001_01_fault-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'problem',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '01 · Lights · Basis Panel SB-0000000001 Fault',
+    }),
+    'context': <ANY>,
+    'entity_id': 'binary_sensor.basis_panel_sb_0000000001_01_fault',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'off',
+  })
+# ---
+# name: test_entities[binary_sensor.basis_panel_sb_0000000001_02_fault-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'binary_sensor',
+    'entity_category': None,
+    'entity_id': 'binary_sensor.basis_panel_sb_0000000001_02_fault',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': None,
+    'options': dict({
+    }),
+    'original_device_class': <BinarySensorDeviceClass.PROBLEM: 'problem'>,
+    'original_icon': None,
+    'original_name': 'Fault',
+    'platform': 'basis_smart_panel',
+    'previous_unique_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_02_fault',
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'basis_fault_SB-0000000001_circuit_2',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_entities[binary_sensor.basis_panel_sb_0000000001_02_fault-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'problem',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '02 · Power · Basis Panel SB-0000000001 Fault',
+    }),
+    'context': <ANY>,
+    'entity_id': 'binary_sensor.basis_panel_sb_0000000001_02_fault',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'off',
+  })
+# ---
+# name: test_entities[binary_sensor.basis_panel_sb_0000000001_03_fault-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'binary_sensor',
+    'entity_category': None,
+    'entity_id': 'binary_sensor.basis_panel_sb_0000000001_03_fault',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': None,
+    'options': dict({
+    }),
+    'original_device_class': <BinarySensorDeviceClass.PROBLEM: 'problem'>,
+    'original_icon': None,
+    'original_name': 'Fault',
+    'platform': 'basis_smart_panel',
+    'previous_unique_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_03_fault',
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'basis_fault_SB-0000000001_circuit_3',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_entities[binary_sensor.basis_panel_sb_0000000001_03_fault-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'problem',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '03 · Hob · Basis Panel SB-0000000001 Fault',
+    }),
+    'context': <ANY>,
+    'entity_id': 'binary_sensor.basis_panel_sb_0000000001_03_fault',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'off',
+  })
+# ---
+# name: test_entities[binary_sensor.basis_panel_sb_0000000001_05_fault-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'binary_sensor',
+    'entity_category': None,
+    'entity_id': 'binary_sensor.basis_panel_sb_0000000001_05_fault',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': None,
+    'options': dict({
+    }),
+    'original_device_class': <BinarySensorDeviceClass.PROBLEM: 'problem'>,
+    'original_icon': None,
+    'original_name': 'Fault',
+    'platform': 'basis_smart_panel',
+    'previous_unique_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_05_fault',
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'basis_fault_SB-0000000001_circuit_5',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_entities[binary_sensor.basis_panel_sb_0000000001_05_fault-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'problem',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '05 · EV Charger · Basis Panel SB-0000000001 Fault',
+    }),
+    'context': <ANY>,
+    'entity_id': 'binary_sensor.basis_panel_sb_0000000001_05_fault',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'off',
+  })
+# ---
+# name: test_entities[binary_sensor.basis_panel_sb_0000000001_06_fault-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'binary_sensor',
+    'entity_category': None,
+    'entity_id': 'binary_sensor.basis_panel_sb_0000000001_06_fault',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': None,
+    'options': dict({
+    }),
+    'original_device_class': <BinarySensorDeviceClass.PROBLEM: 'problem'>,
+    'original_icon': None,
+    'original_name': 'Fault',
+    'platform': 'basis_smart_panel',
+    'previous_unique_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_06_fault',
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'basis_fault_SB-0000000001_circuit_6',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_entities[binary_sensor.basis_panel_sb_0000000001_06_fault-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'problem',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '06 · light · Basis Panel SB-0000000001 Fault',
+    }),
+    'context': <ANY>,
+    'entity_id': 'binary_sensor.basis_panel_sb_0000000001_06_fault',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'off',
+  })
+# ---
+# name: test_entities[binary_sensor.basis_panel_sb_0000000001_07_fault-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'binary_sensor',
+    'entity_category': None,
+    'entity_id': 'binary_sensor.basis_panel_sb_0000000001_07_fault',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': None,
+    'options': dict({
+    }),
+    'original_device_class': <BinarySensorDeviceClass.PROBLEM: 'problem'>,
+    'original_icon': None,
+    'original_name': 'Fault',
+    'platform': 'basis_smart_panel',
+    'previous_unique_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_07_fault',
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'basis_fault_SB-0000000001_circuit_7',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_entities[binary_sensor.basis_panel_sb_0000000001_07_fault-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'problem',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '07 · Solar · Basis Panel SB-0000000001 Fault',
+    }),
+    'context': <ANY>,
+    'entity_id': 'binary_sensor.basis_panel_sb_0000000001_07_fault',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'off',
+  })
+# ---
 # name: test_entities[binary_sensor.basis_panel_sb_0000000001_connectivity-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
@@ -332,6 +638,108 @@
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': 'on',
+  })
+# ---
+# name: test_entities[binary_sensor.basis_panel_sb_0000000002_01_fault-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'binary_sensor',
+    'entity_category': None,
+    'entity_id': 'binary_sensor.basis_panel_sb_0000000002_01_fault',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': None,
+    'options': dict({
+    }),
+    'original_device_class': <BinarySensorDeviceClass.PROBLEM: 'problem'>,
+    'original_icon': None,
+    'original_name': 'Fault',
+    'platform': 'basis_smart_panel',
+    'previous_unique_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000002_01_fault',
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'basis_fault_SB-0000000002_circuit_1',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_entities[binary_sensor.basis_panel_sb_0000000002_01_fault-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'problem',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '01 · Lights · Basis Panel SB-0000000002 Fault',
+    }),
+    'context': <ANY>,
+    'entity_id': 'binary_sensor.basis_panel_sb_0000000002_01_fault',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'unavailable',
+  })
+# ---
+# name: test_entities[binary_sensor.basis_panel_sb_0000000002_02_fault-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'binary_sensor',
+    'entity_category': None,
+    'entity_id': 'binary_sensor.basis_panel_sb_0000000002_02_fault',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': None,
+    'options': dict({
+    }),
+    'original_device_class': <BinarySensorDeviceClass.PROBLEM: 'problem'>,
+    'original_icon': None,
+    'original_name': 'Fault',
+    'platform': 'basis_smart_panel',
+    'previous_unique_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000002_02_fault',
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'basis_fault_SB-0000000002_circuit_2',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_entities[binary_sensor.basis_panel_sb_0000000002_02_fault-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'problem',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '02 · Hot Water Cylinder · Basis Panel SB-0000000002 Fault',
+    }),
+    'context': <ANY>,
+    'entity_id': 'binary_sensor.basis_panel_sb_0000000002_02_fault',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'unavailable',
   })
 # ---
 # name: test_entities[binary_sensor.basis_panel_sb_0000000002_connectivity-entry]
@@ -562,6 +970,74 @@
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '120.5',
+  })
+# ---
+# name: test_entities[sensor.basis_panel_sb_0000000001_01_state-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.OPTIONS: 'options'>: list([
+        'live',
+        'safe',
+        'standby',
+        'electrical_fault',
+        'system_fault',
+        'lockout',
+      ]),
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.basis_panel_sb_0000000001_01_state',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': None,
+    'options': dict({
+    }),
+    'original_device_class': <SensorDeviceClass.ENUM: 'enum'>,
+    'original_icon': None,
+    'original_name': 'State',
+    'platform': 'basis_smart_panel',
+    'previous_unique_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_01_state',
+    'supported_features': 0,
+    'translation_key': 'circuit_state',
+    'unique_id': 'basis_state_SB-0000000001_circuit_1',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_entities[sensor.basis_panel_sb_0000000001_01_state-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'enum',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '01 · Lights · Basis Panel SB-0000000001 State',
+      <SensorEntityCapabilityAttribute.OPTIONS: 'options'>: list([
+        'live',
+        'safe',
+        'standby',
+        'electrical_fault',
+        'system_fault',
+        'lockout',
+      ]),
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.basis_panel_sb_0000000001_01_state',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'live',
   })
 # ---
 # name: test_entities[sensor.basis_panel_sb_0000000001_01_voltage-entry]
@@ -800,6 +1276,74 @@
     'state': '850.0',
   })
 # ---
+# name: test_entities[sensor.basis_panel_sb_0000000001_02_state-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.OPTIONS: 'options'>: list([
+        'live',
+        'safe',
+        'standby',
+        'electrical_fault',
+        'system_fault',
+        'lockout',
+      ]),
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.basis_panel_sb_0000000001_02_state',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': None,
+    'options': dict({
+    }),
+    'original_device_class': <SensorDeviceClass.ENUM: 'enum'>,
+    'original_icon': None,
+    'original_name': 'State',
+    'platform': 'basis_smart_panel',
+    'previous_unique_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_02_state',
+    'supported_features': 0,
+    'translation_key': 'circuit_state',
+    'unique_id': 'basis_state_SB-0000000001_circuit_2',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_entities[sensor.basis_panel_sb_0000000001_02_state-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'enum',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '02 · Power · Basis Panel SB-0000000001 State',
+      <SensorEntityCapabilityAttribute.OPTIONS: 'options'>: list([
+        'live',
+        'safe',
+        'standby',
+        'electrical_fault',
+        'system_fault',
+        'lockout',
+      ]),
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.basis_panel_sb_0000000001_02_state',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'live',
+  })
+# ---
 # name: test_entities[sensor.basis_panel_sb_0000000001_02_voltage-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
@@ -1034,6 +1578,74 @@
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '0.0',
+  })
+# ---
+# name: test_entities[sensor.basis_panel_sb_0000000001_03_state-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.OPTIONS: 'options'>: list([
+        'live',
+        'safe',
+        'standby',
+        'electrical_fault',
+        'system_fault',
+        'lockout',
+      ]),
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.basis_panel_sb_0000000001_03_state',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': None,
+    'options': dict({
+    }),
+    'original_device_class': <SensorDeviceClass.ENUM: 'enum'>,
+    'original_icon': None,
+    'original_name': 'State',
+    'platform': 'basis_smart_panel',
+    'previous_unique_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_03_state',
+    'supported_features': 0,
+    'translation_key': 'circuit_state',
+    'unique_id': 'basis_state_SB-0000000001_circuit_3',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_entities[sensor.basis_panel_sb_0000000001_03_state-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'enum',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '03 · Hob · Basis Panel SB-0000000001 State',
+      <SensorEntityCapabilityAttribute.OPTIONS: 'options'>: list([
+        'live',
+        'safe',
+        'standby',
+        'electrical_fault',
+        'system_fault',
+        'lockout',
+      ]),
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.basis_panel_sb_0000000001_03_state',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'live',
   })
 # ---
 # name: test_entities[sensor.basis_panel_sb_0000000001_03_voltage-entry]
@@ -1272,6 +1884,74 @@
     'state': '0.0',
   })
 # ---
+# name: test_entities[sensor.basis_panel_sb_0000000001_05_state-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.OPTIONS: 'options'>: list([
+        'live',
+        'safe',
+        'standby',
+        'electrical_fault',
+        'system_fault',
+        'lockout',
+      ]),
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.basis_panel_sb_0000000001_05_state',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': None,
+    'options': dict({
+    }),
+    'original_device_class': <SensorDeviceClass.ENUM: 'enum'>,
+    'original_icon': None,
+    'original_name': 'State',
+    'platform': 'basis_smart_panel',
+    'previous_unique_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_05_state',
+    'supported_features': 0,
+    'translation_key': 'circuit_state',
+    'unique_id': 'basis_state_SB-0000000001_circuit_5',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_entities[sensor.basis_panel_sb_0000000001_05_state-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'enum',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '05 · EV Charger · Basis Panel SB-0000000001 State',
+      <SensorEntityCapabilityAttribute.OPTIONS: 'options'>: list([
+        'live',
+        'safe',
+        'standby',
+        'electrical_fault',
+        'system_fault',
+        'lockout',
+      ]),
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.basis_panel_sb_0000000001_05_state',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'standby',
+  })
+# ---
 # name: test_entities[sensor.basis_panel_sb_0000000001_05_voltage-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
@@ -1508,6 +2188,74 @@
     'state': '15.0',
   })
 # ---
+# name: test_entities[sensor.basis_panel_sb_0000000001_06_state-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.OPTIONS: 'options'>: list([
+        'live',
+        'safe',
+        'standby',
+        'electrical_fault',
+        'system_fault',
+        'lockout',
+      ]),
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.basis_panel_sb_0000000001_06_state',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': None,
+    'options': dict({
+    }),
+    'original_device_class': <SensorDeviceClass.ENUM: 'enum'>,
+    'original_icon': None,
+    'original_name': 'State',
+    'platform': 'basis_smart_panel',
+    'previous_unique_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_06_state',
+    'supported_features': 0,
+    'translation_key': 'circuit_state',
+    'unique_id': 'basis_state_SB-0000000001_circuit_6',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_entities[sensor.basis_panel_sb_0000000001_06_state-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'enum',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '06 · light · Basis Panel SB-0000000001 State',
+      <SensorEntityCapabilityAttribute.OPTIONS: 'options'>: list([
+        'live',
+        'safe',
+        'standby',
+        'electrical_fault',
+        'system_fault',
+        'lockout',
+      ]),
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.basis_panel_sb_0000000001_06_state',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'live',
+  })
+# ---
 # name: test_entities[sensor.basis_panel_sb_0000000001_06_voltage-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
@@ -1742,6 +2490,74 @@
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '-2400.0',
+  })
+# ---
+# name: test_entities[sensor.basis_panel_sb_0000000001_07_state-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.OPTIONS: 'options'>: list([
+        'live',
+        'safe',
+        'standby',
+        'electrical_fault',
+        'system_fault',
+        'lockout',
+      ]),
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.basis_panel_sb_0000000001_07_state',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': None,
+    'options': dict({
+    }),
+    'original_device_class': <SensorDeviceClass.ENUM: 'enum'>,
+    'original_icon': None,
+    'original_name': 'State',
+    'platform': 'basis_smart_panel',
+    'previous_unique_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_07_state',
+    'supported_features': 0,
+    'translation_key': 'circuit_state',
+    'unique_id': 'basis_state_SB-0000000001_circuit_7',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_entities[sensor.basis_panel_sb_0000000001_07_state-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'enum',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '07 · Solar · Basis Panel SB-0000000001 State',
+      <SensorEntityCapabilityAttribute.OPTIONS: 'options'>: list([
+        'live',
+        'safe',
+        'standby',
+        'electrical_fault',
+        'system_fault',
+        'lockout',
+      ]),
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.basis_panel_sb_0000000001_07_state',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'live',
   })
 # ---
 # name: test_entities[sensor.basis_panel_sb_0000000001_07_voltage-entry]
@@ -2452,6 +3268,74 @@
     'state': 'unavailable',
   })
 # ---
+# name: test_entities[sensor.basis_panel_sb_0000000002_01_state-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.OPTIONS: 'options'>: list([
+        'live',
+        'safe',
+        'standby',
+        'electrical_fault',
+        'system_fault',
+        'lockout',
+      ]),
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.basis_panel_sb_0000000002_01_state',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': None,
+    'options': dict({
+    }),
+    'original_device_class': <SensorDeviceClass.ENUM: 'enum'>,
+    'original_icon': None,
+    'original_name': 'State',
+    'platform': 'basis_smart_panel',
+    'previous_unique_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000002_01_state',
+    'supported_features': 0,
+    'translation_key': 'circuit_state',
+    'unique_id': 'basis_state_SB-0000000002_circuit_1',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_entities[sensor.basis_panel_sb_0000000002_01_state-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'enum',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '01 · Lights · Basis Panel SB-0000000002 State',
+      <SensorEntityCapabilityAttribute.OPTIONS: 'options'>: list([
+        'live',
+        'safe',
+        'standby',
+        'electrical_fault',
+        'system_fault',
+        'lockout',
+      ]),
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.basis_panel_sb_0000000002_01_state',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'unavailable',
+  })
+# ---
 # name: test_entities[sensor.basis_panel_sb_0000000002_01_voltage-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
@@ -2682,6 +3566,74 @@
     }),
     'context': <ANY>,
     'entity_id': 'sensor.basis_panel_sb_0000000002_02_power',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'unavailable',
+  })
+# ---
+# name: test_entities[sensor.basis_panel_sb_0000000002_02_state-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.OPTIONS: 'options'>: list([
+        'live',
+        'safe',
+        'standby',
+        'electrical_fault',
+        'system_fault',
+        'lockout',
+      ]),
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.basis_panel_sb_0000000002_02_state',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': None,
+    'options': dict({
+    }),
+    'original_device_class': <SensorDeviceClass.ENUM: 'enum'>,
+    'original_icon': None,
+    'original_name': 'State',
+    'platform': 'basis_smart_panel',
+    'previous_unique_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000002_02_state',
+    'supported_features': 0,
+    'translation_key': 'circuit_state',
+    'unique_id': 'basis_state_SB-0000000002_circuit_2',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_entities[sensor.basis_panel_sb_0000000002_02_state-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'enum',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '02 · Hot Water Cylinder · Basis Panel SB-0000000002 State',
+      <SensorEntityCapabilityAttribute.OPTIONS: 'options'>: list([
+        'live',
+        'safe',
+        'standby',
+        'electrical_fault',
+        'system_fault',
+        'lockout',
+      ]),
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.basis_panel_sb_0000000002_02_state',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,

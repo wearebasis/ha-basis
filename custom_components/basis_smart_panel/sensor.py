@@ -27,6 +27,7 @@ from homeassistant.components.sensor import (
     SensorStateClass,
 )
 from homeassistant.const import (
+    EntityCategory,
     Platform,
     UnitOfPower,
     UnitOfElectricCurrent,
@@ -204,6 +205,7 @@ async def async_setup_entry(
                     board.subcircuit_energy, board.live, subcircuit
                 )
             )
+            entities.append(BasisCircuitStateSensor(board.live, subcircuit))
 
     for site_energy in config_entry.runtime_data.site_energy.values():
         entities.extend(BasisDeviceSensor(site_energy, d) for d in ENERGY_SENSORS)
@@ -332,3 +334,32 @@ class BasisSubcircuitImportEnergySensor(
         if not self.coordinator.data:
             return None
         return self.coordinator.data.get(self._subcircuit_number)
+
+
+CIRCUIT_STATES = ("LIVE", "SAFE", "STANDBY", "ELECTRICAL_FAULT", "SYSTEM_FAULT", "LOCKOUT")
+
+
+class BasisCircuitStateSensor(BasisSubcircuitEntity, SensorEntity):
+    """Diagnostic sensor that shows the state that the circuit reports."""
+
+    _attr_name = "State"
+    _attr_device_class = SensorDeviceClass.ENUM
+    _attr_entity_category = EntityCategory.DIAGNOSTIC
+    _attr_options = [state.lower() for state in CIRCUIT_STATES]
+    _attr_translation_key = "circuit_state"
+
+    def __init__(self, coordinator: SwitchboardDataCoordinator, subcircuit: Subcircuit) -> None:
+        """Initialize the state sensor."""
+        super().__init__(coordinator, subcircuit, "state")
+        self.entity_id = panel_entity_id(
+            Platform.SENSOR, coordinator.serial, f"{subcircuit.number:02d}", "state"
+        )
+
+    @property
+    def native_value(self) -> str | None:
+        subcircuit = self.subcircuit
+        if subcircuit is None or subcircuit.live is None:
+            return None
+        state = subcircuit.live.known_state
+        # HA rejects a value outside the options, and the API can add a state later.
+        return state.lower() if state in CIRCUIT_STATES else None

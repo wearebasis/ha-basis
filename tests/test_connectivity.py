@@ -85,6 +85,8 @@ async def test_live_entities_are_unavailable_while_the_panel_is_disconnected(
         ("sensor", circuit_uid("power", SERIAL_A, 1)),
         ("sensor", circuit_uid("voltage", SERIAL_A, 1)),
         ("switch", circuit_uid("switch", SERIAL_A, 1)),
+        ("binary_sensor", circuit_uid("fault", SERIAL_A, 1)),
+        ("sensor", circuit_uid("state", SERIAL_A, 1)),
     ]
     history = [
         ("sensor", f"basis_energy_today_import_{SERIAL_A}"),

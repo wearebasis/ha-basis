@@ -24,5 +24,19 @@
     "create_entry": {
       "default": "Successfully authenticated with Basis"
     }
+  },
+  "entity": {
+    "sensor": {
+      "circuit_state": {
+        "state": {
+          "live": "Live",
+          "safe": "Safe",
+          "standby": "Standby",
+          "electrical_fault": "Electrical fault",
+          "system_fault": "System fault",
+          "lockout": "Lockout"
+        }
+      }
+    }
   }
 }

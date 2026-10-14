@@ -98,8 +98,9 @@ Each circuit device gets these sensors:
 | Current | Current of the circuit (A) | 5 seconds |
 | Voltage | Voltage of the circuit (V) | 5 seconds |
 | Import Energy Today | Energy that the circuit imported since midnight (kWh) | 5 minutes |
+| State | State that the circuit reports: Live, Safe, Standby, Electrical fault, System fault or Lockout. Unknown if the Basis cloud does not know the state. This is a diagnostic entity. | 5 seconds |
 
-While the panel is disconnected, the Power, Current and Voltage sensors are unavailable. Import Energy Today keeps its value.
+While the panel is disconnected, the Power, Current, Voltage and State sensors are unavailable. Import Energy Today keeps its value.
 
 The integration identifies a circuit by its panel and position. If an electrician replaces the module in a position, the device, the entities and their history stay. When the circuits of a panel change, the integration reloads and updates the devices and entities:
 
@@ -118,6 +119,14 @@ Add the "Today" sensor or the "This Month" sensor of a value, not both. If you a
 | Entity | Description |
 |--------|-------------|
 | Connectivity | On when the panel is connected to the Basis cloud. While the panel is disconnected, the attributes `last_seen` and `disconnect_reason` show the last contact and the reason. This is a diagnostic entity. |
+
+Each circuit device also gets this binary sensor:
+
+| Entity | Description |
+|--------|-------------|
+| Fault | Shows "Problem" while the circuit reports an electrical fault, and "OK" in the other states. Unknown if the Basis cloud does not know the state. Unavailable while the panel is disconnected. |
+
+The integration reads the circuit state every 5 seconds. A fault that starts and clears between two reads does not appear in Home Assistant.
 
 ### Switches
 

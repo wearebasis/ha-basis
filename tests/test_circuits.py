@@ -28,7 +28,7 @@ from .conftest import (
 )
 from .fake_backend import SERIAL_A, SERIAL_B, FakeBasisBackend, subcircuit
 
-CIRCUIT_KEYS = ("power", "current", "voltage", "energy_import", "switch")
+CIRCUIT_KEYS = ("power", "current", "voltage", "energy_import", "switch", "fault", "state")
 
 
 def entity_id_of(

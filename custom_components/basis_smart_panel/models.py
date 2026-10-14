@@ -36,6 +36,11 @@ class SubcircuitLiveState:
     primary_current: float
     phase_voltage: float
 
+    @property
+    def known_state(self) -> str | None:
+        """Return the state, or None if the API does not know the state of the circuit."""
+        return None if self.state in ("UNKNOWN", "UNAVAILABLE") else self.state
+
 
 @dataclass(frozen=True, slots=True)
 class Subcircuit:
