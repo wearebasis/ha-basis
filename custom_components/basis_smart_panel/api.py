@@ -27,6 +27,14 @@ from .const import (
     LOGGER,
     API_BASE_URL
 )
+from .models import (
+    Connectivity,
+    EnergyTotals,
+    Subcircuit,
+    SubcircuitLiveState,
+    Switchboard,
+    SwitchboardLiveState,
+)
 
 MAX_RETRIES = 3
 RETRY_DELAY_SECONDS = 2
@@ -97,12 +105,8 @@ class BasisAPI:
                 )
                 await asyncio.sleep(RETRY_DELAY_SECONDS)
 
-    async def get_available_switchboards(self) -> list[dict]:
-        """Discover all switchboards available to the user.
-
-        Returns:
-            List of switchboard info dicts with serial and connected status.
-        """
+    async def get_available_switchboards(self) -> list[str]:
+        """Return the serials of all switchboards available to the user."""
         query = gql("""
             query {
                 sites(input: { query: "" }) {
@@ -120,22 +124,15 @@ class BasisAPI:
         """)
 
         result = await self._execute_with_retry(query)
+        serials = [
+            board["serial"]
+            for site in result["sites"]["sites"]
+            for board in site["switchboards"]
+        ]
+        LOGGER.debug(f"Discovered {len(serials)} switchboards")
+        return serials
 
-        # Flatten switchboards from all sites
-        switchboards = []
-        for site in result.get("sites", {}).get("sites", []):
-            site_id = site.get("id")
-            for board in site.get("switchboards", []):
-                switchboards.append({
-                    "serial": board["serial"],
-                    "site_id": site_id,
-                    "connected": board.get("connectivity", {}).get("connected", False),
-                })
-
-        LOGGER.debug(f"Discovered {len(switchboards)} switchboards")
-        return switchboards
-
-    async def get_switchboard_data(self, serial: str):
+    async def get_switchboard_data(self, serial: str) -> Switchboard:
         """Get switchboard data from the API."""
         query = gql("""
             query GetSwitchboardData($serial: String!) {
@@ -181,18 +178,13 @@ class BasisAPI:
             "serial": serial
         }
 
-        return await self._execute_with_retry(query, variables)
+        result = await self._execute_with_retry(query, variables)
+        return _parse_switchboard(result["switchboard"])
 
-    async def get_switchboard_energy_usage(self, serial: str, start_time: str):
-        """Get energy usage for the switchboard.
-
-        Args:
-            serial: Switchboard serial number
-            start_time: ISO 8601 formatted start time
-
-        Returns:
-            Energy usage data with import/export kWh
-        """
+    async def get_switchboard_energy_usage(
+        self, serial: str, start_time: str
+    ) -> EnergyTotals:
+        """Get the energy that the switchboard used since start_time (ISO 8601)."""
         query = gql("""
             query GetSwitchboardEnergyUsage($serial: String!, $startTime: Time!) {
                 switchboard(serial: $serial) {
@@ -209,17 +201,16 @@ class BasisAPI:
             "startTime": start_time,
         }
 
-        return await self._execute_with_retry(query, variables)
+        result = await self._execute_with_retry(query, variables)
+        usage = result["switchboard"]["totalSwitchboardEnergyUsage"]
+        return EnergyTotals(import_kwh=usage["importKwh"], export_kwh=usage["exportKwh"])
 
-    async def get_subcircuit_energy_usage(self, serial: str, start_time: str):
-        """Get per-subcircuit energy usage.
+    async def get_subcircuit_energy_usage(
+        self, serial: str, start_time: str
+    ) -> dict[str, float | None]:
+        """Get the import energy of each subcircuit in the last daily bucket.
 
-        Args:
-            serial: Switchboard serial number
-            start_time: ISO 8601 formatted start time (midnight today)
-
-        Returns:
-            Subcircuit energy usage data with import kWh per circuit.
+        Keys are subcircuit serials. start_time is ISO 8601 (midnight today).
         """
         query = gql("""
             query GetSubcircuitEnergyUsage($serial: String!, $startTime: Time!) {
@@ -254,7 +245,11 @@ class BasisAPI:
             "startTime": start_time,
         }
 
-        return await self._execute_with_retry(query, variables)
+        result = await self._execute_with_retry(query, variables)
+        return {
+            subcircuit["serial"]: _last_import_kwh(subcircuit["energyUsage"]["data"])
+            for subcircuit in result["switchboard"]["subcircuits"]
+        }
 
     async def set_subcircuit_standby(
         self, switchboard_serial: str, subcircuit_serial: str, standby_state: bool
@@ -282,3 +277,57 @@ class BasisAPI:
         }
 
         return await client.execute_async(mutation, variable_values=variables)
+
+
+def _parse_switchboard(data: dict) -> Switchboard:
+    connectivity = data["connectivity"]
+    live = data["liveState"]
+    return Switchboard(
+        serial=data["serial"],
+        model=data["model"],
+        version=data["version"],
+        connectivity=Connectivity(
+            connected=connectivity["connected"],
+            last_seen=connectivity["updatedTimestamp"],
+            disconnect_reason=connectivity["disconnectReason"],
+        ),
+        live=SwitchboardLiveState(
+            power=live["power"],
+            import_power=live["powerUsage"]["importPower"],
+            export_power=live["powerUsage"]["exportPower"],
+            primary_current=live["primaryCurrent"],
+        )
+        if live
+        else None,
+        subcircuits=tuple(_parse_subcircuit(sub) for sub in data["subcircuits"]),
+    )
+
+
+def _parse_subcircuit(data: dict) -> Subcircuit:
+    config = data["config"]
+    live = data["liveState"]
+    return Subcircuit(
+        serial=data["serial"],
+        number=data["number"],
+        label=config["label"],
+        config_version=config["version"],
+        standby_locked=config["standbyLocked"],
+        live=SubcircuitLiveState(
+            state=live["state"],
+            power=live["power"],
+            primary_current=live["primaryCurrent"],
+            phase_voltage=live["phaseVoltage"],
+        )
+        if live
+        else None,
+    )
+
+
+def _last_import_kwh(data_points: list[dict]) -> float | None:
+    """Return the last non-null importKwh of the data points."""
+    result = None
+    for point in data_points:
+        value = point["usage"]["importKwh"]
+        if value is not None:
+            result = value
+    return result

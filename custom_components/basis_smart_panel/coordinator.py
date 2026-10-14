@@ -14,7 +14,9 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from dataclasses import dataclass, field
+from datetime import timedelta
+from typing import TYPE_CHECKING, ClassVar
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
@@ -30,191 +32,142 @@ from .const import (
     ENERGY_STATS_UPDATE_INTERVAL,
 )
 
+from .models import BoardEnergy, Switchboard
+
 if TYPE_CHECKING:
     from .api import BasisAPI
 
+type BasisConfigEntry = ConfigEntry[BasisData]
 
-class BoardsDiscoveryCoordinator(DataUpdateCoordinator):
+
+@dataclass
+class BoardCoordinators:
+    """The coordinators of one switchboard."""
+
+    live: SwitchboardDataCoordinator
+    energy: EnergyStatsCoordinator
+    subcircuit_energy: SubcircuitEnergyCoordinator
+
+
+@dataclass
+class BasisData:
+    """Runtime data of one Basis account."""
+
+    api: BasisAPI
+    discovery: BoardsDiscoveryCoordinator
+    boards: dict[str, BoardCoordinators] = field(default_factory=dict)
+
+
+class BoardsDiscoveryCoordinator(DataUpdateCoordinator[list[str]]):
     """Coordinator to discover available switchboards periodically."""
 
     def __init__(
         self,
         hass: HomeAssistant,
-        entry: ConfigEntry,
+        entry: BasisConfigEntry,
         api: BasisAPI,
     ) -> None:
         """Initialize the boards discovery coordinator."""
         super().__init__(
             hass,
             LOGGERFORHA,
+            config_entry=entry,
             name=f"{DOMAIN}_boards_discovery",
             update_interval=BOARDS_DISCOVERY_INTERVAL,
         )
         self._api = api
-        self._entry = entry
         self._known_serials: set[str] = set()
 
-    async def _async_update_data(self) -> list[dict]:
+    async def _async_update_data(self) -> list[str]:
         """Fetch available switchboards from the API."""
-        switchboards = await self._api.get_available_switchboards()
+        serials = await self._api.get_available_switchboards()
 
-        # Track newly discovered boards
-        current_serials = {board["serial"] for board in switchboards}
+        current_serials = set(serials)
         new_serials = current_serials - self._known_serials
 
         if new_serials:
             LOGGER.info(f"Discovered new switchboards: {new_serials}")
 
         self._known_serials = current_serials
-        return switchboards
+        return serials
 
     @property
     def switchboard_serials(self) -> list[str]:
         """Return list of discovered switchboard serials."""
-        if self.data is None:
-            return []
-        return [board["serial"] for board in self.data]
+        return self.data or []
 
 
-class SwitchboardDataCoordinator(DataUpdateCoordinator):
+class BasisBoardCoordinator[_DataT](DataUpdateCoordinator[_DataT]):
+    """Base for the coordinators of one switchboard."""
+
+    NAME_SUFFIX: ClassVar[str]
+    UPDATE_INTERVAL: ClassVar[timedelta]
+
+    def __init__(
+        self,
+        hass: HomeAssistant,
+        entry: BasisConfigEntry,
+        api: BasisAPI,
+        serial: str,
+    ) -> None:
+        """Initialize the coordinator."""
+        super().__init__(
+            hass,
+            LOGGERFORHA,
+            config_entry=entry,
+            name=f"{DOMAIN}_{serial}{self.NAME_SUFFIX}",
+            update_interval=self.UPDATE_INTERVAL,
+        )
+        self.api = api
+        self.serial = serial
+
+
+class SwitchboardDataCoordinator(BasisBoardCoordinator[Switchboard]):
     """Coordinator for a single switchboard's data updates."""
 
-    def __init__(
-        self,
-        hass: HomeAssistant,
-        api: BasisAPI,
-        serial: str,
-    ) -> None:
-        """Initialize the switchboard data coordinator."""
-        super().__init__(
-            hass,
-            LOGGERFORHA,
-            name=f"{DOMAIN}_{serial}",
-            update_interval=SWITCHBOARD_UPDATE_INTERVAL,
-        )
-        self._api = api
-        self._serial = serial
+    NAME_SUFFIX = ""
+    UPDATE_INTERVAL = SWITCHBOARD_UPDATE_INTERVAL
 
-    @property
-    def serial(self) -> str:
-        """Return the switchboard serial."""
-        return self._serial
-
-    async def _async_update_data(self) -> dict:
+    async def _async_update_data(self) -> Switchboard:
         """Fetch switchboard data from the API."""
-        data = await self._api.get_switchboard_data(self._serial)
-        return data.get("switchboard", {})
+        return await self.api.get_switchboard_data(self.serial)
 
 
-class EnergyStatsCoordinator(DataUpdateCoordinator):
+class EnergyStatsCoordinator(BasisBoardCoordinator[BoardEnergy]):
     """Coordinator for energy statistics (today and this month)."""
 
-    def __init__(
-        self,
-        hass: HomeAssistant,
-        api: BasisAPI,
-        serial: str,
-    ) -> None:
-        """Initialize the energy stats coordinator."""
-        super().__init__(
-            hass,
-            LOGGERFORHA,
-            name=f"{DOMAIN}_{serial}_energy",
-            update_interval=ENERGY_STATS_UPDATE_INTERVAL,
-        )
-        self._api = api
-        self._serial = serial
+    NAME_SUFFIX = "_energy"
+    UPDATE_INTERVAL = ENERGY_STATS_UPDATE_INTERVAL
 
-    @property
-    def serial(self) -> str:
-        """Return the switchboard serial."""
-        return self._serial
-
-    async def _async_update_data(self) -> dict:
+    async def _async_update_data(self) -> BoardEnergy:
         """Fetch energy statistics from the API."""
         now = dt_util.now()
-
-        # Start of today (midnight local time)
         start_of_today = now.replace(hour=0, minute=0, second=0, microsecond=0)
-
-        # Start of this month (first day at midnight local time)
         start_of_month = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
 
-        # Fetch energy for today
-        today_data = await self._api.get_switchboard_energy_usage(
-            self._serial,
+        today = await self.api.get_switchboard_energy_usage(
+            self.serial,
             start_of_today.isoformat(),
         )
-
-        # Fetch energy for this month
-        month_data = await self._api.get_switchboard_energy_usage(
-            self._serial,
+        month = await self.api.get_switchboard_energy_usage(
+            self.serial,
             start_of_month.isoformat(),
         )
-
-        today_usage = today_data.get("switchboard", {}).get("totalSwitchboardEnergyUsage", {})
-        month_usage = month_data.get("switchboard", {}).get("totalSwitchboardEnergyUsage", {})
-
-        return {
-            "today": {
-                "import_kwh": today_usage.get("importKwh"),
-                "export_kwh": today_usage.get("exportKwh"),
-            },
-            "month": {
-                "import_kwh": month_usage.get("importKwh"),
-                "export_kwh": month_usage.get("exportKwh"),
-            },
-        }
+        return BoardEnergy(today=today, month=month)
 
 
-class SubcircuitEnergyCoordinator(DataUpdateCoordinator):
+class SubcircuitEnergyCoordinator(BasisBoardCoordinator[dict[str, float | None]]):
     """Coordinator for per-subcircuit energy statistics."""
 
-    def __init__(
-        self,
-        hass: HomeAssistant,
-        api: BasisAPI,
-        serial: str,
-    ) -> None:
-        super().__init__(
-            hass,
-            LOGGERFORHA,
-            name=f"{DOMAIN}_{serial}_subcircuit_energy",
-            update_interval=ENERGY_STATS_UPDATE_INTERVAL,
-        )
-        self._api = api
-        self._serial = serial
+    NAME_SUFFIX = "_subcircuit_energy"
+    UPDATE_INTERVAL = ENERGY_STATS_UPDATE_INTERVAL
 
-    @property
-    def serial(self) -> str:
-        return self._serial
-
-    async def _async_update_data(self) -> dict:
+    async def _async_update_data(self) -> dict[str, float | None]:
+        """Fetch today's import energy of each subcircuit."""
         now = dt_util.now()
         start_of_today = now.replace(hour=0, minute=0, second=0, microsecond=0)
 
-        result = await self._api.get_subcircuit_energy_usage(
-            self._serial,
+        return await self.api.get_subcircuit_energy_usage(
+            self.serial,
             start_of_today.isoformat(),
         )
-
-        subcircuits = result.get("switchboard", {}).get("subcircuits", [])
-        energy_by_serial: dict[str, float | None] = {}
-
-        for subcircuit in subcircuits:
-            sub_serial = subcircuit["serial"]
-            data_points = subcircuit.get("energyUsage", {}).get("data", [])
-            import_kwh = self._extract_last_non_null(data_points)
-            energy_by_serial[sub_serial] = import_kwh
-
-        return energy_by_serial
-
-    @staticmethod
-    def _extract_last_non_null(data_points: list[dict]) -> float | None:
-        """Return the last non-null importKwh from the data points."""
-        result = None
-        for point in data_points:
-            value = point.get("usage", {}).get("importKwh")
-            if value is not None:
-                result = value
-        return result

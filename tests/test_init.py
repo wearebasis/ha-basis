@@ -7,7 +7,7 @@ from datetime import timedelta
 import pytest
 from freezegun.api import FrozenDateTimeFactory
 from homeassistant.config_entries import ConfigEntryState
-from homeassistant.const import STATE_UNAVAILABLE
+from homeassistant.const import STATE_UNAVAILABLE, STATE_UNKNOWN
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers import entity_registry as er
@@ -182,23 +182,41 @@ async def test_board_removed_after_setup(
     assert hass.states.get(power_a).state == "120.5"
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason="sensor.py calls .get on a null subcircuit liveState",
+@pytest.mark.parametrize(
+    ("domain", "unique_id"),
+    [
+        ("sensor", f"basis_power_{SERIAL_A}_SC-A08"),
+        ("sensor", f"basis_current_{SERIAL_A}_SC-A08"),
+        ("sensor", f"basis_voltage_{SERIAL_A}_SC-A08"),
+        ("switch", f"basis_switch_{SERIAL_A}_SC-A08"),
+    ],
 )
 async def test_subcircuit_without_live_state(
     hass: HomeAssistant,
     fake_backend: FakeBasisBackend,
     config_entry: MockConfigEntry,
     entity_registry: er.EntityRegistry,
+    domain: str,
+    unique_id: str,
 ) -> None:
     new_circuit = subcircuit(8, "SC-A08", "pool")
     new_circuit["liveState"] = None
     fake_backend.board(SERIAL_A)["subcircuits"].append(new_circuit)
     await setup_integration(hass, config_entry)
 
-    entity_id = entity_registry.async_get_entity_id(
-        "sensor", DOMAIN, f"basis_power_{SERIAL_A}_SC-A08"
-    )
+    entity_id = entity_registry.async_get_entity_id(domain, DOMAIN, unique_id)
     assert entity_id
-    assert hass.states.get(entity_id).state == "unknown"
+    assert hass.states.get(entity_id).state == STATE_UNKNOWN
+
+
+async def test_board_without_subcircuits(
+    hass: HomeAssistant,
+    fake_backend: FakeBasisBackend,
+    config_entry: MockConfigEntry,
+    device_registry: dr.DeviceRegistry,
+) -> None:
+    fake_backend.board(SERIAL_A)["subcircuits"] = []
+    await setup_integration(hass, config_entry)
+
+    assert config_entry.state is ConfigEntryState.LOADED
+    assert board_device(device_registry, config_entry, SERIAL_A).hw_version == "Unknown"
