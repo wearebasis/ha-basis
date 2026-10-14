@@ -1,0 +1,122 @@
+scalar Time
+
+type Query {
+  sites(input: SitesInput!): SitesResult!
+  switchboard(serial: String!): Switchboard!
+}
+
+type Mutation {
+  updateSubcircuitStandbyState(input: UpdateSubcircuitStandbyStateInput!): Subcircuit!
+}
+
+input SitesInput {
+  query: String
+}
+
+type SitesResult {
+  sites: [Site!]!
+}
+
+type Site {
+  id: ID!
+  switchboards: [Switchboard!]!
+}
+
+type Switchboard {
+  serial: String!
+  model: String
+  version: String
+  connectivity: SwitchboardConnectivity!
+  liveState: SwitchboardLiveState
+  subcircuits: [Subcircuit!]!
+  totalSwitchboardEnergyUsage(input: TotalEnergyUsageInput!): EnergyUsage!
+}
+
+type SwitchboardConnectivity {
+  connected: Boolean!
+  updatedTimestamp: Time
+  disconnectReason: DisconnectReason
+}
+
+enum DisconnectReason {
+  UNKNOWN
+}
+
+type SwitchboardLiveState {
+  power: Float!
+  powerUsage: PowerUsage!
+  primaryCurrent: Float!
+  updatedTimestamp: Time!
+}
+
+type PowerUsage {
+  importPower: Float!
+  exportPower: Float!
+}
+
+type Subcircuit {
+  number: Int!
+  serial: String!
+  config: SubcircuitConfig!
+  liveState: SubcircuitLiveState
+  energyUsage(input: EnergyUsageInput!): EnergyUsageResult!
+}
+
+type SubcircuitConfig {
+  version: String!
+  label: String!
+  standbyLocked: Boolean!
+}
+
+type SubcircuitLiveState {
+  state: SubcircuitState!
+  power: Float!
+  primaryCurrent: Float!
+  phaseVoltage: Float!
+  updatedTimestamp: Time!
+}
+
+enum SubcircuitState {
+  UNKNOWN
+  LIVE
+  STANDBY
+  UNAVAILABLE
+}
+
+type EnergyUsage {
+  importKwh: Float
+  exportKwh: Float
+}
+
+type EnergyUsageResult {
+  data: [EnergyUsageData!]!
+}
+
+type EnergyUsageData {
+  time: Time!
+  usage: EnergyUsage!
+}
+
+input EnergyUsageInput {
+  startTime: Time!
+  resolution: EnergyUsageResolutionInput!
+}
+
+input EnergyUsageResolutionInput {
+  value: Int!
+  unit: ResolutionUnit!
+}
+
+enum ResolutionUnit {
+  DAY
+}
+
+input TotalEnergyUsageInput {
+  startTime: Time!
+}
+
+input UpdateSubcircuitStandbyStateInput {
+  switchboardSerial: String!
+  subcircuitSerial: String!
+  activateStandby: Boolean!
+}
