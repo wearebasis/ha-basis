@@ -211,6 +211,51 @@ class BasisAPI:
 
         return await self._execute_with_retry(query, variables)
 
+    async def get_subcircuit_energy_usage(self, serial: str, start_time: str):
+        """Get per-subcircuit energy usage.
+
+        Args:
+            serial: Switchboard serial number
+            start_time: ISO 8601 formatted start time (midnight today)
+
+        Returns:
+            Subcircuit energy usage data with import kWh per circuit.
+        """
+        query = gql("""
+            query GetSubcircuitEnergyUsage($serial: String!, $startTime: Time!) {
+                switchboard(serial: $serial) {
+                    subcircuits {
+                        serial
+                        number
+                        config {
+                            label
+                        }
+                        energyUsage(input: {
+                            startTime: $startTime
+                            resolution: {
+                                value: 1
+                                unit: DAY
+                            }
+                        }) {
+                            data {
+                                time
+                                usage {
+                                    importKwh
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        """)
+
+        variables = {
+            "serial": serial,
+            "startTime": start_time,
+        }
+
+        return await self._execute_with_retry(query, variables)
+
     async def set_subcircuit_standby(
         self, switchboard_serial: str, subcircuit_serial: str, standby_state: bool
     ):

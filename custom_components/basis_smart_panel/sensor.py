@@ -29,7 +29,7 @@ from homeassistant.const import (
     UnitOfEnergy,
 )
 
-from .coordinator import SwitchboardDataCoordinator, EnergyStatsCoordinator
+from .coordinator import SwitchboardDataCoordinator, EnergyStatsCoordinator, SubcircuitEnergyCoordinator
 from .const import (
     DOMAIN,
     LOGGER,
@@ -49,6 +49,9 @@ async def async_setup_entry(
     )
     energy_coordinators: dict[str, EnergyStatsCoordinator] = (
         hass.data[DOMAIN][config_entry.entry_id]["energy_coordinators"]
+    )
+    subcircuit_energy_coordinators: dict[str, SubcircuitEnergyCoordinator] = (
+        hass.data[DOMAIN][config_entry.entry_id]["subcircuit_energy_coordinators"]
     )
 
     entities = []
@@ -73,6 +76,9 @@ async def async_setup_entry(
             entities.append(BasisEnergyMonthImportSensor(energy_coordinator))
             entities.append(BasisEnergyMonthExportSensor(energy_coordinator))
 
+        # Subcircuit energy coordinator for this switchboard
+        sub_energy_coordinator = subcircuit_energy_coordinators.get(serial)
+
         # Subcircuit sensors (skip spare circuits)
         for subcircuit in switchboard_data.get("subcircuits", []):
             label = subcircuit.get("config", {}).get("label", "")
@@ -81,6 +87,13 @@ async def async_setup_entry(
             entities.append(BasisSubcircuitPowerSensor(coordinator, subcircuit))
             entities.append(BasisSubcircuitCurrentSensor(coordinator, subcircuit))
             entities.append(BasisSubcircuitVoltageSensor(coordinator, subcircuit))
+
+            if sub_energy_coordinator:
+                entities.append(
+                    BasisSubcircuitImportEnergySensor(
+                        sub_energy_coordinator, serial, subcircuit
+                    )
+                )
 
     async_add_entities(entities)
 
@@ -238,7 +251,7 @@ class BasisEnergyTodayImportSensor(CoordinatorEntity[EnergyStatsCoordinator], Se
     """Sensor for house energy consumption today."""
 
     _attr_device_class = SensorDeviceClass.ENERGY
-    _attr_state_class = SensorStateClass.TOTAL
+    _attr_state_class = SensorStateClass.TOTAL_INCREASING
     _attr_native_unit_of_measurement = UnitOfEnergy.KILO_WATT_HOUR
     _attr_icon = "mdi:lightning-bolt"
 
@@ -269,7 +282,7 @@ class BasisEnergyTodayExportSensor(CoordinatorEntity[EnergyStatsCoordinator], Se
     """Sensor for energy generated today (solar)."""
 
     _attr_device_class = SensorDeviceClass.ENERGY
-    _attr_state_class = SensorStateClass.TOTAL
+    _attr_state_class = SensorStateClass.TOTAL_INCREASING
     _attr_native_unit_of_measurement = UnitOfEnergy.KILO_WATT_HOUR
     _attr_icon = "mdi:solar-power"
 
@@ -300,7 +313,7 @@ class BasisEnergyMonthImportSensor(CoordinatorEntity[EnergyStatsCoordinator], Se
     """Sensor for house energy consumption this month."""
 
     _attr_device_class = SensorDeviceClass.ENERGY
-    _attr_state_class = SensorStateClass.TOTAL
+    _attr_state_class = SensorStateClass.TOTAL_INCREASING
     _attr_native_unit_of_measurement = UnitOfEnergy.KILO_WATT_HOUR
     _attr_icon = "mdi:lightning-bolt"
 
@@ -331,7 +344,7 @@ class BasisEnergyMonthExportSensor(CoordinatorEntity[EnergyStatsCoordinator], Se
     """Sensor for energy generated this month (solar)."""
 
     _attr_device_class = SensorDeviceClass.ENERGY
-    _attr_state_class = SensorStateClass.TOTAL
+    _attr_state_class = SensorStateClass.TOTAL_INCREASING
     _attr_native_unit_of_measurement = UnitOfEnergy.KILO_WATT_HOUR
     _attr_icon = "mdi:solar-power"
 
@@ -515,3 +528,54 @@ class BasisSubcircuitVoltageSensor(CoordinatorEntity[SwitchboardDataCoordinator]
             if subcircuit["serial"] == self._subcircuit_serial:
                 return subcircuit
         return None
+
+
+# =============================================================================
+# Subcircuit energy sensors
+# =============================================================================
+
+
+class BasisSubcircuitImportEnergySensor(
+    CoordinatorEntity[SubcircuitEnergyCoordinator], SensorEntity
+):
+    """Sensor for subcircuit import energy (consumption)."""
+
+    _attr_device_class = SensorDeviceClass.ENERGY
+    _attr_state_class = SensorStateClass.TOTAL_INCREASING
+    _attr_native_unit_of_measurement = UnitOfEnergy.KILO_WATT_HOUR
+    _attr_icon = "mdi:lightning-bolt"
+
+    def __init__(
+        self,
+        coordinator: SubcircuitEnergyCoordinator,
+        switchboard_serial: str,
+        subcircuit: dict,
+    ) -> None:
+        super().__init__(coordinator)
+        self._switchboard_serial = switchboard_serial
+        self._subcircuit_serial = subcircuit["serial"]
+        self._subcircuit_number = subcircuit["number"]
+        self._subcircuit_label = subcircuit.get("config", {}).get("label", "")
+
+    @property
+    def unique_id(self) -> str:
+        return f"basis_energy_import_{self._switchboard_serial}_{self._subcircuit_serial}"
+
+    @property
+    def name(self) -> str:
+        friendly_name = LABEL_NAME_MAP.get(self._subcircuit_label, self._subcircuit_label)
+        return f"[{self._subcircuit_number:02d}] {friendly_name} Import Energy"
+
+    @property
+    def device_info(self) -> DeviceInfo:
+        return DeviceInfo(identifiers={(DOMAIN, self._switchboard_serial)})
+
+    @property
+    def icon(self) -> str:
+        return LABEL_ICON_MAP.get(self._subcircuit_label, "mdi:lightning-bolt")
+
+    @property
+    def native_value(self) -> float | None:
+        if not self.coordinator.data:
+            return None
+        return self.coordinator.data.get(self._subcircuit_serial)

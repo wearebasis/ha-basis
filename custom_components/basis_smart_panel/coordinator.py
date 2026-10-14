@@ -165,3 +165,56 @@ class EnergyStatsCoordinator(DataUpdateCoordinator):
                 "export_kwh": month_usage.get("exportKwh"),
             },
         }
+
+
+class SubcircuitEnergyCoordinator(DataUpdateCoordinator):
+    """Coordinator for per-subcircuit energy statistics."""
+
+    def __init__(
+        self,
+        hass: HomeAssistant,
+        api: BasisAPI,
+        serial: str,
+    ) -> None:
+        super().__init__(
+            hass,
+            LOGGERFORHA,
+            name=f"{DOMAIN}_{serial}_subcircuit_energy",
+            update_interval=ENERGY_STATS_UPDATE_INTERVAL,
+        )
+        self._api = api
+        self._serial = serial
+
+    @property
+    def serial(self) -> str:
+        return self._serial
+
+    async def _async_update_data(self) -> dict:
+        now = dt_util.now()
+        start_of_today = now.replace(hour=0, minute=0, second=0, microsecond=0)
+
+        result = await self._api.get_subcircuit_energy_usage(
+            self._serial,
+            start_of_today.isoformat(),
+        )
+
+        subcircuits = result.get("switchboard", {}).get("subcircuits", [])
+        energy_by_serial: dict[str, float | None] = {}
+
+        for subcircuit in subcircuits:
+            sub_serial = subcircuit["serial"]
+            data_points = subcircuit.get("energyUsage", {}).get("data", [])
+            import_kwh = self._extract_last_non_null(data_points)
+            energy_by_serial[sub_serial] = import_kwh
+
+        return energy_by_serial
+
+    @staticmethod
+    def _extract_last_non_null(data_points: list[dict]) -> float | None:
+        """Return the last non-null importKwh from the data points."""
+        result = None
+        for point in data_points:
+            value = point.get("usage", {}).get("importKwh")
+            if value is not None:
+                result = value
+        return result

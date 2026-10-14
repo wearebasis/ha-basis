@@ -31,7 +31,7 @@ from .const import (
     LOGGER,
 )
 
-from .coordinator import BoardsDiscoveryCoordinator, SwitchboardDataCoordinator, EnergyStatsCoordinator
+from .coordinator import BoardsDiscoveryCoordinator, SwitchboardDataCoordinator, EnergyStatsCoordinator, SubcircuitEnergyCoordinator
 from .api import BasisAPI, AsyncConfigEntryAuth
 
 
@@ -93,6 +93,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         "boards_coordinator": None,
         "switchboard_coordinators": {},
         "energy_coordinators": {},
+        "subcircuit_energy_coordinators": {},
     }
 
     # Create boards discovery coordinator
@@ -133,6 +134,7 @@ async def _async_setup_switchboard_coordinators(
     """Set up data coordinators for each switchboard."""
     switchboard_coordinators = hass.data[DOMAIN][entry.entry_id]["switchboard_coordinators"]
     energy_coordinators = hass.data[DOMAIN][entry.entry_id]["energy_coordinators"]
+    subcircuit_energy_coordinators = hass.data[DOMAIN][entry.entry_id]["subcircuit_energy_coordinators"]
 
     for serial in boards_coordinator.switchboard_serials:
         if serial not in switchboard_coordinators:
@@ -147,6 +149,12 @@ async def _async_setup_switchboard_coordinators(
             await energy_coordinator.async_config_entry_first_refresh()
             energy_coordinators[serial] = energy_coordinator
             LOGGER.debug(f"Created energy coordinator for switchboard {serial}")
+
+            # Create subcircuit energy coordinator
+            sub_energy_coordinator = SubcircuitEnergyCoordinator(hass, api, serial)
+            await sub_energy_coordinator.async_config_entry_first_refresh()
+            subcircuit_energy_coordinators[serial] = sub_energy_coordinator
+            LOGGER.debug(f"Created subcircuit energy coordinator for switchboard {serial}")
 
 
 async def _async_register_switchboard_devices(
@@ -191,6 +199,7 @@ async def _async_handle_boards_change(
     """Handle added or removed switchboards."""
     switchboard_coordinators = hass.data[DOMAIN][entry.entry_id]["switchboard_coordinators"]
     energy_coordinators = hass.data[DOMAIN][entry.entry_id]["energy_coordinators"]
+    subcircuit_energy_coordinators = hass.data[DOMAIN][entry.entry_id]["subcircuit_energy_coordinators"]
 
     current_serials = set(boards_coordinator.switchboard_serials)
     coordinator_serials = set(switchboard_coordinators.keys())
@@ -222,6 +231,7 @@ async def _async_handle_boards_change(
             # Clean up coordinators
             switchboard_coordinators.pop(serial, None)
             energy_coordinators.pop(serial, None)
+            subcircuit_energy_coordinators.pop(serial, None)
 
             # Remove device from registry
             device = device_registry.async_get_device(identifiers={(DOMAIN, serial)})
@@ -245,6 +255,11 @@ async def _async_handle_boards_change(
             energy_coordinator = EnergyStatsCoordinator(hass, api, serial)
             await energy_coordinator.async_config_entry_first_refresh()
             energy_coordinators[serial] = energy_coordinator
+
+            # Subcircuit energy coordinator
+            sub_energy_coordinator = SubcircuitEnergyCoordinator(hass, api, serial)
+            await sub_energy_coordinator.async_config_entry_first_refresh()
+            subcircuit_energy_coordinators[serial] = sub_energy_coordinator
 
         # Register new devices
         await _async_register_switchboard_devices(hass, entry, boards_coordinator)
