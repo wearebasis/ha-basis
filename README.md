@@ -68,23 +68,23 @@ A site with two or more panels gets these sensors. They show the total of all pa
 
 | Entity | Description | Update interval |
 |--------|-------------|-----------------|
-| Consumption Energy Today | Energy imported since midnight (kWh) | 5 minutes |
-| Generation Energy Today | Energy exported since midnight (kWh) | 5 minutes |
-| Consumption Energy This Month | Energy imported since the first day of the month (kWh) | 5 minutes |
-| Generation Energy This Month | Energy exported since the first day of the month (kWh) | 5 minutes |
+| Consumption energy today | Energy imported since midnight (kWh) | 5 minutes |
+| Generation energy today | Energy exported since midnight (kWh) | 5 minutes |
+| Consumption energy this month | Energy imported since the first day of the month (kWh) | 5 minutes |
+| Generation energy this month | Energy exported since the first day of the month (kWh) | 5 minutes |
 
 ### Panel sensors
 
 | Entity | Description | Update interval |
 |--------|-------------|-----------------|
-| Current Power | Net power of the panel (W) | 5 seconds |
-| House Consumption Power | Power that the circuits import (W) | 5 seconds |
-| Generation Power | Power that the circuits export, for example from solar (W) | 5 seconds |
-| Primary Current | Current at the main supply (A) | 5 seconds |
-| Consumption Energy Today | Energy imported since midnight (kWh) | 5 minutes |
-| Generation Energy Today | Energy exported since midnight (kWh) | 5 minutes |
-| Consumption Energy This Month | Energy imported since the first day of the month (kWh) | 5 minutes |
-| Generation Energy This Month | Energy exported since the first day of the month (kWh) | 5 minutes |
+| Net power | Net power of the panel (W). Negative while the panel exports more than it imports. | 5 seconds |
+| Consumption power | Power that the circuits import (W) | 5 seconds |
+| Generation power | Power that the circuits export, for example from solar (W) | 5 seconds |
+| Primary current | Current at the main supply (A) | 5 seconds |
+| Consumption energy today | Energy imported since midnight (kWh) | 5 minutes |
+| Generation energy today | Energy exported since midnight (kWh) | 5 minutes |
+| Consumption energy this month | Energy imported since the first day of the month (kWh) | 5 minutes |
+| Generation energy this month | Energy exported since the first day of the month (kWh) | 5 minutes |
 
 While the panel is disconnected, the sensors with a 5-second update interval are unavailable. The energy sensors keep their values, because the Basis cloud keeps the energy history.
 
@@ -97,10 +97,10 @@ Each circuit device gets these sensors:
 | Power | Power of the circuit (W) | 5 seconds |
 | Current | Current of the circuit (A) | 5 seconds |
 | Voltage | Voltage of the circuit (V) | 5 seconds |
-| Import Energy Today | Energy that the circuit imported since midnight (kWh) | 5 minutes |
+| Consumption energy today | Energy that the circuit imported since midnight (kWh) | 5 minutes |
 | State | State that the circuit reports: Live, Safe, Standby, Electrical fault, System fault or Lockout. Unknown if the Basis cloud does not know the state. This is a diagnostic entity. | 5 seconds |
 
-While the panel is disconnected, the Power, Current, Voltage and State sensors are unavailable. Import Energy Today keeps its value.
+While the panel is disconnected, the Power, Current, Voltage and State sensors are unavailable. Consumption energy today keeps its value.
 
 The integration identifies a circuit by its panel and position. If an electrician replaces the module in a position, the device, the entities and their history stay. When the circuits of a panel change, the integration reloads and updates the devices and entities:
 
@@ -148,6 +148,7 @@ A circuit that becomes locked for standby loses its switch. If the Basis cloud r
 - Each circuit is now a device under its panel, and the circuit entities move from the panel device to the circuit device. Their entity IDs and history stay.
 - Existing entities keep their entity IDs. Only a new entity gets an entity ID from the panel serial and the circuit position, for example a circuit that you add later.
 - The circuit entities now show the name of the circuit device, for example "01 · Lights · Office Panel Power". If you renamed the panel in Home Assistant, the circuit devices use that name.
+- Some sensors have new names, and all names use sentence case. "Current Power" is now "Net power", "House Consumption Power" is now "Consumption power", and the circuit sensor "Import Energy Today" is now "Consumption energy today". Names that you set and existing entity IDs stay.
 - An automation or a script that targets the panel device no longer reaches the circuit switches and sensors. Target the circuit devices or the entities instead.
 - Each circuit device gets the area of its panel. Area actions and voice commands reach the circuit entities as before.
 - While a panel is disconnected, its power, current and voltage sensors are now unavailable. Earlier versions showed the values that the Basis cloud returned for a disconnected panel, for example 0 W.

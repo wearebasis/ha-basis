@@ -76,14 +76,14 @@ async def test_import_energy_name_follows_the_label(
         "sensor", DOMAIN, circuit_uid("energy_import", SERIAL_A, 1)
     )
     assert hass.states.get(entity_id).name == (
-        f"01 · Lights · Basis Panel {SERIAL_A} Import Energy Today"
+        f"01 · Lights · Basis Panel {SERIAL_A} Consumption energy today"
     )
 
     fake_backend.board(SERIAL_A)["subcircuits"][0]["config"]["label"] = "hwc"
     await advance(hass, freezer, ENERGY_STATS_UPDATE_INTERVAL + timedelta(seconds=1))
 
     state = hass.states.get(entity_id)
-    assert state.name == f"01 · Hot Water Cylinder · Basis Panel {SERIAL_A} Import Energy Today"
+    assert state.name == f"01 · Hot Water Cylinder · Basis Panel {SERIAL_A} Consumption energy today"
     assert state.attributes["icon"] == "mdi:water-boiler"
 
 
@@ -145,7 +145,7 @@ async def test_import_energy_name_follows_the_label_at_the_next_live_poll(
     await advance(hass, freezer, POLL)
 
     state = hass.states.get(entity_id)
-    assert state.name == f"01 · Hot Water Cylinder · Basis Panel {SERIAL_A} Import Energy Today"
+    assert state.name == f"01 · Hot Water Cylinder · Basis Panel {SERIAL_A} Consumption energy today"
     assert state.attributes["icon"] == "mdi:water-boiler"
 
     reported = state.last_reported

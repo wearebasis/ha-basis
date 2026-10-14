@@ -73,7 +73,7 @@ class BasisSubcircuitSensorDescription(SensorEntityDescription):
 PANEL_SENSORS: tuple[BasisDeviceSensorDescription[Switchboard], ...] = (
     BasisDeviceSensorDescription(
         key="power_panel",
-        name="Current Power",
+        name="Net power",
         device_class=SensorDeviceClass.POWER,
         state_class=SensorStateClass.MEASUREMENT,
         native_unit_of_measurement=UnitOfPower.WATT,
@@ -82,7 +82,7 @@ PANEL_SENSORS: tuple[BasisDeviceSensorDescription[Switchboard], ...] = (
     ),
     BasisDeviceSensorDescription(
         key="import_power",
-        name="House Consumption Power",
+        name="Consumption power",
         device_class=SensorDeviceClass.POWER,
         state_class=SensorStateClass.MEASUREMENT,
         native_unit_of_measurement=UnitOfPower.WATT,
@@ -91,7 +91,7 @@ PANEL_SENSORS: tuple[BasisDeviceSensorDescription[Switchboard], ...] = (
     ),
     BasisDeviceSensorDescription(
         key="export_power",
-        name="Generation Power",
+        name="Generation power",
         device_class=SensorDeviceClass.POWER,
         state_class=SensorStateClass.MEASUREMENT,
         native_unit_of_measurement=UnitOfPower.WATT,
@@ -100,7 +100,7 @@ PANEL_SENSORS: tuple[BasisDeviceSensorDescription[Switchboard], ...] = (
     ),
     BasisDeviceSensorDescription(
         key="current",
-        name="Primary Current",
+        name="Primary current",
         device_class=SensorDeviceClass.CURRENT,
         state_class=SensorStateClass.MEASUREMENT,
         native_unit_of_measurement=UnitOfElectricCurrent.AMPERE,
@@ -112,7 +112,7 @@ PANEL_SENSORS: tuple[BasisDeviceSensorDescription[Switchboard], ...] = (
 ENERGY_SENSORS: tuple[BasisDeviceSensorDescription[EnergyStats], ...] = (
     BasisDeviceSensorDescription(
         key="energy_today_import",
-        name="Consumption Energy Today",
+        name="Consumption energy today",
         device_class=SensorDeviceClass.ENERGY,
         state_class=SensorStateClass.TOTAL_INCREASING,
         native_unit_of_measurement=UnitOfEnergy.KILO_WATT_HOUR,
@@ -121,7 +121,7 @@ ENERGY_SENSORS: tuple[BasisDeviceSensorDescription[EnergyStats], ...] = (
     ),
     BasisDeviceSensorDescription(
         key="energy_today_export",
-        name="Generation Energy Today",
+        name="Generation energy today",
         device_class=SensorDeviceClass.ENERGY,
         state_class=SensorStateClass.TOTAL_INCREASING,
         native_unit_of_measurement=UnitOfEnergy.KILO_WATT_HOUR,
@@ -130,7 +130,7 @@ ENERGY_SENSORS: tuple[BasisDeviceSensorDescription[EnergyStats], ...] = (
     ),
     BasisDeviceSensorDescription(
         key="energy_month_import",
-        name="Consumption Energy This Month",
+        name="Consumption energy this month",
         device_class=SensorDeviceClass.ENERGY,
         state_class=SensorStateClass.TOTAL_INCREASING,
         native_unit_of_measurement=UnitOfEnergy.KILO_WATT_HOUR,
@@ -139,7 +139,7 @@ ENERGY_SENSORS: tuple[BasisDeviceSensorDescription[EnergyStats], ...] = (
     ),
     BasisDeviceSensorDescription(
         key="energy_month_export",
-        name="Generation Energy This Month",
+        name="Generation energy this month",
         device_class=SensorDeviceClass.ENERGY,
         state_class=SensorStateClass.TOTAL_INCREASING,
         native_unit_of_measurement=UnitOfEnergy.KILO_WATT_HOUR,
@@ -279,7 +279,7 @@ class BasisSubcircuitImportEnergySensor(
 ):
     """Sensor for subcircuit import energy (consumption)."""
 
-    _attr_name = "Import Energy Today"
+    _attr_name = "Consumption energy today"
     _attr_device_class = SensorDeviceClass.ENERGY
     _attr_state_class = SensorStateClass.TOTAL_INCREASING
     _attr_native_unit_of_measurement = UnitOfEnergy.KILO_WATT_HOUR

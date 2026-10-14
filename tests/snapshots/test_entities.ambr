@@ -795,6 +795,65 @@
     'state': 'off',
   })
 # ---
+# name: test_entities[sensor.basis_panel_sb_0000000001_01_consumption_energy_today-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': None,
+    'entity_id': 'sensor.basis_panel_sb_0000000001_01_consumption_energy_today',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': None,
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:lightbulb',
+    'original_name': 'Consumption energy today',
+    'platform': 'basis_smart_panel',
+    'previous_unique_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_01_consumption_energy_today',
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'basis_energy_import_SB-0000000001_circuit_1',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_entities[sensor.basis_panel_sb_0000000001_01_consumption_energy_today-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '01 · Lights · Basis Panel SB-0000000001 Consumption energy today',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:lightbulb',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.basis_panel_sb_0000000001_01_consumption_energy_today',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '1.2',
+  })
+# ---
 # name: test_entities[sensor.basis_panel_sb_0000000001_01_current-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
@@ -852,65 +911,6 @@
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '0.52',
-  })
-# ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_01_import_energy_today-entry]
-  EntityRegistryEntrySnapshot({
-    'aliases': list([
-      None,
-    ]),
-    'area_id': None,
-    'capabilities': dict({
-      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
-    }),
-    'config_entry_id': <ANY>,
-    'config_subentry_id': <ANY>,
-    'device_class': None,
-    'device_id': <ANY>,
-    'disabled_by': None,
-    'domain': 'sensor',
-    'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_01_import_energy_today',
-    'has_entity_name': True,
-    'hidden_by': None,
-    'icon': None,
-    'id': <ANY>,
-    'labels': set({
-    }),
-    'name': None,
-    'object_id_base': None,
-    'options': dict({
-      'sensor': dict({
-        'suggested_display_precision': 2,
-      }),
-    }),
-    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
-    'original_icon': 'mdi:lightbulb',
-    'original_name': 'Import Energy Today',
-    'platform': 'basis_smart_panel',
-    'previous_unique_id': None,
-    'suggested_object_id': 'basis_panel_sb_0000000001_01_import_energy_today',
-    'supported_features': 0,
-    'translation_key': None,
-    'unique_id': 'basis_energy_import_SB-0000000001_circuit_1',
-    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
-  })
-# ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_01_import_energy_today-state]
-  StateSnapshot({
-    'attributes': ReadOnlyDict({
-      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '01 · Lights · Basis Panel SB-0000000001 Import Energy Today',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:lightbulb',
-      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
-      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
-    }),
-    'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_01_import_energy_today',
-    'last_changed': <ANY>,
-    'last_reported': <ANY>,
-    'last_updated': <ANY>,
-    'state': '1.2',
   })
 # ---
 # name: test_entities[sensor.basis_panel_sb_0000000001_01_power-entry]
@@ -1099,6 +1099,65 @@
     'state': '231.2',
   })
 # ---
+# name: test_entities[sensor.basis_panel_sb_0000000001_02_consumption_energy_today-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': None,
+    'entity_id': 'sensor.basis_panel_sb_0000000001_02_consumption_energy_today',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': None,
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:flash',
+    'original_name': 'Consumption energy today',
+    'platform': 'basis_smart_panel',
+    'previous_unique_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_02_consumption_energy_today',
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'basis_energy_import_SB-0000000001_circuit_2',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_entities[sensor.basis_panel_sb_0000000001_02_consumption_energy_today-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '02 · Power · Basis Panel SB-0000000001 Consumption energy today',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:flash',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.basis_panel_sb_0000000001_02_consumption_energy_today',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '5.4',
+  })
+# ---
 # name: test_entities[sensor.basis_panel_sb_0000000001_02_current-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
@@ -1156,65 +1215,6 @@
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '3.7',
-  })
-# ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_02_import_energy_today-entry]
-  EntityRegistryEntrySnapshot({
-    'aliases': list([
-      None,
-    ]),
-    'area_id': None,
-    'capabilities': dict({
-      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
-    }),
-    'config_entry_id': <ANY>,
-    'config_subentry_id': <ANY>,
-    'device_class': None,
-    'device_id': <ANY>,
-    'disabled_by': None,
-    'domain': 'sensor',
-    'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_02_import_energy_today',
-    'has_entity_name': True,
-    'hidden_by': None,
-    'icon': None,
-    'id': <ANY>,
-    'labels': set({
-    }),
-    'name': None,
-    'object_id_base': None,
-    'options': dict({
-      'sensor': dict({
-        'suggested_display_precision': 2,
-      }),
-    }),
-    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
-    'original_icon': 'mdi:flash',
-    'original_name': 'Import Energy Today',
-    'platform': 'basis_smart_panel',
-    'previous_unique_id': None,
-    'suggested_object_id': 'basis_panel_sb_0000000001_02_import_energy_today',
-    'supported_features': 0,
-    'translation_key': None,
-    'unique_id': 'basis_energy_import_SB-0000000001_circuit_2',
-    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
-  })
-# ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_02_import_energy_today-state]
-  StateSnapshot({
-    'attributes': ReadOnlyDict({
-      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '02 · Power · Basis Panel SB-0000000001 Import Energy Today',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:flash',
-      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
-      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
-    }),
-    'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_02_import_energy_today',
-    'last_changed': <ANY>,
-    'last_reported': <ANY>,
-    'last_updated': <ANY>,
-    'state': '5.4',
   })
 # ---
 # name: test_entities[sensor.basis_panel_sb_0000000001_02_power-entry]
@@ -1403,6 +1403,65 @@
     'state': '231.0',
   })
 # ---
+# name: test_entities[sensor.basis_panel_sb_0000000001_03_consumption_energy_today-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': None,
+    'entity_id': 'sensor.basis_panel_sb_0000000001_03_consumption_energy_today',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': None,
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:pot-steam',
+    'original_name': 'Consumption energy today',
+    'platform': 'basis_smart_panel',
+    'previous_unique_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_03_consumption_energy_today',
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'basis_energy_import_SB-0000000001_circuit_3',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_entities[sensor.basis_panel_sb_0000000001_03_consumption_energy_today-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '03 · Hob · Basis Panel SB-0000000001 Consumption energy today',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:pot-steam',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.basis_panel_sb_0000000001_03_consumption_energy_today',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '0.0',
+  })
+# ---
 # name: test_entities[sensor.basis_panel_sb_0000000001_03_current-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
@@ -1456,65 +1515,6 @@
     }),
     'context': <ANY>,
     'entity_id': 'sensor.basis_panel_sb_0000000001_03_current',
-    'last_changed': <ANY>,
-    'last_reported': <ANY>,
-    'last_updated': <ANY>,
-    'state': '0.0',
-  })
-# ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_03_import_energy_today-entry]
-  EntityRegistryEntrySnapshot({
-    'aliases': list([
-      None,
-    ]),
-    'area_id': None,
-    'capabilities': dict({
-      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
-    }),
-    'config_entry_id': <ANY>,
-    'config_subentry_id': <ANY>,
-    'device_class': None,
-    'device_id': <ANY>,
-    'disabled_by': None,
-    'domain': 'sensor',
-    'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_03_import_energy_today',
-    'has_entity_name': True,
-    'hidden_by': None,
-    'icon': None,
-    'id': <ANY>,
-    'labels': set({
-    }),
-    'name': None,
-    'object_id_base': None,
-    'options': dict({
-      'sensor': dict({
-        'suggested_display_precision': 2,
-      }),
-    }),
-    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
-    'original_icon': 'mdi:pot-steam',
-    'original_name': 'Import Energy Today',
-    'platform': 'basis_smart_panel',
-    'previous_unique_id': None,
-    'suggested_object_id': 'basis_panel_sb_0000000001_03_import_energy_today',
-    'supported_features': 0,
-    'translation_key': None,
-    'unique_id': 'basis_energy_import_SB-0000000001_circuit_3',
-    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
-  })
-# ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_03_import_energy_today-state]
-  StateSnapshot({
-    'attributes': ReadOnlyDict({
-      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '03 · Hob · Basis Panel SB-0000000001 Import Energy Today',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:pot-steam',
-      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
-      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
-    }),
-    'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_03_import_energy_today',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
@@ -1707,6 +1707,65 @@
     'state': '230.8',
   })
 # ---
+# name: test_entities[sensor.basis_panel_sb_0000000001_05_consumption_energy_today-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': None,
+    'entity_id': 'sensor.basis_panel_sb_0000000001_05_consumption_energy_today',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': None,
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:ev-station',
+    'original_name': 'Consumption energy today',
+    'platform': 'basis_smart_panel',
+    'previous_unique_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_05_consumption_energy_today',
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'basis_energy_import_SB-0000000001_circuit_5',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_entities[sensor.basis_panel_sb_0000000001_05_consumption_energy_today-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '05 · EV Charger · Basis Panel SB-0000000001 Consumption energy today',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:ev-station',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.basis_panel_sb_0000000001_05_consumption_energy_today',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '7.0',
+  })
+# ---
 # name: test_entities[sensor.basis_panel_sb_0000000001_05_current-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
@@ -1764,65 +1823,6 @@
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '0.0',
-  })
-# ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_05_import_energy_today-entry]
-  EntityRegistryEntrySnapshot({
-    'aliases': list([
-      None,
-    ]),
-    'area_id': None,
-    'capabilities': dict({
-      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
-    }),
-    'config_entry_id': <ANY>,
-    'config_subentry_id': <ANY>,
-    'device_class': None,
-    'device_id': <ANY>,
-    'disabled_by': None,
-    'domain': 'sensor',
-    'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_05_import_energy_today',
-    'has_entity_name': True,
-    'hidden_by': None,
-    'icon': None,
-    'id': <ANY>,
-    'labels': set({
-    }),
-    'name': None,
-    'object_id_base': None,
-    'options': dict({
-      'sensor': dict({
-        'suggested_display_precision': 2,
-      }),
-    }),
-    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
-    'original_icon': 'mdi:ev-station',
-    'original_name': 'Import Energy Today',
-    'platform': 'basis_smart_panel',
-    'previous_unique_id': None,
-    'suggested_object_id': 'basis_panel_sb_0000000001_05_import_energy_today',
-    'supported_features': 0,
-    'translation_key': None,
-    'unique_id': 'basis_energy_import_SB-0000000001_circuit_5',
-    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
-  })
-# ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_05_import_energy_today-state]
-  StateSnapshot({
-    'attributes': ReadOnlyDict({
-      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '05 · EV Charger · Basis Panel SB-0000000001 Import Energy Today',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:ev-station',
-      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
-      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
-    }),
-    'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_05_import_energy_today',
-    'last_changed': <ANY>,
-    'last_reported': <ANY>,
-    'last_updated': <ANY>,
-    'state': '7.0',
   })
 # ---
 # name: test_entities[sensor.basis_panel_sb_0000000001_05_power-entry]
@@ -2011,6 +2011,65 @@
     'state': '231.1',
   })
 # ---
+# name: test_entities[sensor.basis_panel_sb_0000000001_06_consumption_energy_today-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': None,
+    'entity_id': 'sensor.basis_panel_sb_0000000001_06_consumption_energy_today',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': None,
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:lightning-bolt',
+    'original_name': 'Consumption energy today',
+    'platform': 'basis_smart_panel',
+    'previous_unique_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_06_consumption_energy_today',
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'basis_energy_import_SB-0000000001_circuit_6',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_entities[sensor.basis_panel_sb_0000000001_06_consumption_energy_today-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '06 · light · Basis Panel SB-0000000001 Consumption energy today',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:lightning-bolt',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.basis_panel_sb_0000000001_06_consumption_energy_today',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '0.3',
+  })
+# ---
 # name: test_entities[sensor.basis_panel_sb_0000000001_06_current-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
@@ -2068,65 +2127,6 @@
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '0.07',
-  })
-# ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_06_import_energy_today-entry]
-  EntityRegistryEntrySnapshot({
-    'aliases': list([
-      None,
-    ]),
-    'area_id': None,
-    'capabilities': dict({
-      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
-    }),
-    'config_entry_id': <ANY>,
-    'config_subentry_id': <ANY>,
-    'device_class': None,
-    'device_id': <ANY>,
-    'disabled_by': None,
-    'domain': 'sensor',
-    'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_06_import_energy_today',
-    'has_entity_name': True,
-    'hidden_by': None,
-    'icon': None,
-    'id': <ANY>,
-    'labels': set({
-    }),
-    'name': None,
-    'object_id_base': None,
-    'options': dict({
-      'sensor': dict({
-        'suggested_display_precision': 2,
-      }),
-    }),
-    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
-    'original_icon': 'mdi:lightning-bolt',
-    'original_name': 'Import Energy Today',
-    'platform': 'basis_smart_panel',
-    'previous_unique_id': None,
-    'suggested_object_id': 'basis_panel_sb_0000000001_06_import_energy_today',
-    'supported_features': 0,
-    'translation_key': None,
-    'unique_id': 'basis_energy_import_SB-0000000001_circuit_6',
-    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
-  })
-# ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_06_import_energy_today-state]
-  StateSnapshot({
-    'attributes': ReadOnlyDict({
-      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '06 · light · Basis Panel SB-0000000001 Import Energy Today',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:lightning-bolt',
-      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
-      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
-    }),
-    'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_06_import_energy_today',
-    'last_changed': <ANY>,
-    'last_reported': <ANY>,
-    'last_updated': <ANY>,
-    'state': '0.3',
   })
 # ---
 # name: test_entities[sensor.basis_panel_sb_0000000001_06_power-entry]
@@ -2315,6 +2315,65 @@
     'state': '231.0',
   })
 # ---
+# name: test_entities[sensor.basis_panel_sb_0000000001_07_consumption_energy_today-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': None,
+    'entity_id': 'sensor.basis_panel_sb_0000000001_07_consumption_energy_today',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': None,
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:solar-power',
+    'original_name': 'Consumption energy today',
+    'platform': 'basis_smart_panel',
+    'previous_unique_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_07_consumption_energy_today',
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'basis_energy_import_SB-0000000001_circuit_7',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_entities[sensor.basis_panel_sb_0000000001_07_consumption_energy_today-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '07 · Solar · Basis Panel SB-0000000001 Consumption energy today',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:solar-power',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.basis_panel_sb_0000000001_07_consumption_energy_today',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '0.0',
+  })
+# ---
 # name: test_entities[sensor.basis_panel_sb_0000000001_07_current-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
@@ -2372,65 +2431,6 @@
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '10.4',
-  })
-# ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_07_import_energy_today-entry]
-  EntityRegistryEntrySnapshot({
-    'aliases': list([
-      None,
-    ]),
-    'area_id': None,
-    'capabilities': dict({
-      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
-    }),
-    'config_entry_id': <ANY>,
-    'config_subentry_id': <ANY>,
-    'device_class': None,
-    'device_id': <ANY>,
-    'disabled_by': None,
-    'domain': 'sensor',
-    'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_07_import_energy_today',
-    'has_entity_name': True,
-    'hidden_by': None,
-    'icon': None,
-    'id': <ANY>,
-    'labels': set({
-    }),
-    'name': None,
-    'object_id_base': None,
-    'options': dict({
-      'sensor': dict({
-        'suggested_display_precision': 2,
-      }),
-    }),
-    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
-    'original_icon': 'mdi:solar-power',
-    'original_name': 'Import Energy Today',
-    'platform': 'basis_smart_panel',
-    'previous_unique_id': None,
-    'suggested_object_id': 'basis_panel_sb_0000000001_07_import_energy_today',
-    'supported_features': 0,
-    'translation_key': None,
-    'unique_id': 'basis_energy_import_SB-0000000001_circuit_7',
-    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
-  })
-# ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_07_import_energy_today-state]
-  StateSnapshot({
-    'attributes': ReadOnlyDict({
-      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '07 · Solar · Basis Panel SB-0000000001 Import Energy Today',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:solar-power',
-      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
-      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
-    }),
-    'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_07_import_energy_today',
-    'last_changed': <ANY>,
-    'last_reported': <ANY>,
-    'last_updated': <ANY>,
-    'state': '0.0',
   })
 # ---
 # name: test_entities[sensor.basis_panel_sb_0000000001_07_power-entry]
@@ -2651,7 +2651,7 @@
     }),
     'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
     'original_icon': 'mdi:lightning-bolt',
-    'original_name': 'Consumption Energy This Month',
+    'original_name': 'Consumption energy this month',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
     'suggested_object_id': 'basis_panel_sb_0000000001_consumption_energy_this_month',
@@ -2665,7 +2665,7 @@
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 Consumption Energy This Month',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 Consumption energy this month',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:lightning-bolt',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
@@ -2710,7 +2710,7 @@
     }),
     'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
     'original_icon': 'mdi:lightning-bolt',
-    'original_name': 'Consumption Energy Today',
+    'original_name': 'Consumption energy today',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
     'suggested_object_id': 'basis_panel_sb_0000000001_consumption_energy_today',
@@ -2724,7 +2724,7 @@
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 Consumption Energy Today',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 Consumption energy today',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:lightning-bolt',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
@@ -2737,7 +2737,7 @@
     'state': '12.5',
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_current_power-entry]
+# name: test_entities[sensor.basis_panel_sb_0000000001_consumption_power-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -2753,7 +2753,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_current_power',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_consumption_power',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -2769,31 +2769,31 @@
     }),
     'original_device_class': <SensorDeviceClass.POWER: 'power'>,
     'original_icon': 'mdi:home-lightning-bolt',
-    'original_name': 'Current Power',
+    'original_name': 'Consumption power',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': 'basis_panel_sb_0000000001_current_power',
+    'suggested_object_id': 'basis_panel_sb_0000000001_consumption_power',
     'supported_features': 0,
     'translation_key': None,
-    'unique_id': 'basis_power_panel_SB-0000000001',
+    'unique_id': 'basis_import_power_SB-0000000001',
     'unit_of_measurement': <UnitOfPower.WATT: 'W'>,
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_current_power-state]
+# name: test_entities[sensor.basis_panel_sb_0000000001_consumption_power-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'power',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 Current Power',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 Consumption power',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:home-lightning-bolt',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfPower.WATT: 'W'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_current_power',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_consumption_power',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
-    'state': '-1414.5',
+    'state': '985.5',
   })
 # ---
 # name: test_entities[sensor.basis_panel_sb_0000000001_generation_energy_this_month-entry]
@@ -2828,7 +2828,7 @@
     }),
     'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
     'original_icon': 'mdi:solar-power',
-    'original_name': 'Generation Energy This Month',
+    'original_name': 'Generation energy this month',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
     'suggested_object_id': 'basis_panel_sb_0000000001_generation_energy_this_month',
@@ -2842,7 +2842,7 @@
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 Generation Energy This Month',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 Generation energy this month',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:solar-power',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
@@ -2887,7 +2887,7 @@
     }),
     'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
     'original_icon': 'mdi:solar-power',
-    'original_name': 'Generation Energy Today',
+    'original_name': 'Generation energy today',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
     'suggested_object_id': 'basis_panel_sb_0000000001_generation_energy_today',
@@ -2901,7 +2901,7 @@
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 Generation Energy Today',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 Generation energy today',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:solar-power',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
@@ -2946,7 +2946,7 @@
     }),
     'original_device_class': <SensorDeviceClass.POWER: 'power'>,
     'original_icon': 'mdi:solar-power',
-    'original_name': 'Generation Power',
+    'original_name': 'Generation power',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
     'suggested_object_id': 'basis_panel_sb_0000000001_generation_power',
@@ -2960,7 +2960,7 @@
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'power',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 Generation Power',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 Generation power',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:solar-power',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfPower.WATT: 'W'>,
@@ -2973,7 +2973,7 @@
     'state': '2400.0',
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_house_consumption_power-entry]
+# name: test_entities[sensor.basis_panel_sb_0000000001_net_power-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -2989,7 +2989,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_house_consumption_power',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_net_power',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -3005,31 +3005,31 @@
     }),
     'original_device_class': <SensorDeviceClass.POWER: 'power'>,
     'original_icon': 'mdi:home-lightning-bolt',
-    'original_name': 'House Consumption Power',
+    'original_name': 'Net power',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': 'basis_panel_sb_0000000001_house_consumption_power',
+    'suggested_object_id': 'basis_panel_sb_0000000001_net_power',
     'supported_features': 0,
     'translation_key': None,
-    'unique_id': 'basis_import_power_SB-0000000001',
+    'unique_id': 'basis_power_panel_SB-0000000001',
     'unit_of_measurement': <UnitOfPower.WATT: 'W'>,
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_house_consumption_power-state]
+# name: test_entities[sensor.basis_panel_sb_0000000001_net_power-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'power',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 House Consumption Power',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 Net power',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:home-lightning-bolt',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfPower.WATT: 'W'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_house_consumption_power',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_net_power',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
-    'state': '985.5',
+    'state': '-1414.5',
   })
 # ---
 # name: test_entities[sensor.basis_panel_sb_0000000001_primary_current-entry]
@@ -3064,7 +3064,7 @@
     }),
     'original_device_class': <SensorDeviceClass.CURRENT: 'current'>,
     'original_icon': 'mdi:current-ac',
-    'original_name': 'Primary Current',
+    'original_name': 'Primary current',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
     'suggested_object_id': 'basis_panel_sb_0000000001_primary_current',
@@ -3078,7 +3078,7 @@
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'current',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 Primary Current',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 Primary current',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:current-ac',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfElectricCurrent.AMPERE: 'A'>,
@@ -3089,6 +3089,65 @@
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '17.0',
+  })
+# ---
+# name: test_entities[sensor.basis_panel_sb_0000000002_01_consumption_energy_today-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': None,
+    'entity_id': 'sensor.basis_panel_sb_0000000002_01_consumption_energy_today',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': None,
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:lightbulb',
+    'original_name': 'Consumption energy today',
+    'platform': 'basis_smart_panel',
+    'previous_unique_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000002_01_consumption_energy_today',
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'basis_energy_import_SB-0000000002_circuit_1',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_entities[sensor.basis_panel_sb_0000000002_01_consumption_energy_today-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '01 · Lights · Basis Panel SB-0000000002 Consumption energy today',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:lightbulb',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.basis_panel_sb_0000000002_01_consumption_energy_today',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '0.0',
   })
 # ---
 # name: test_entities[sensor.basis_panel_sb_0000000002_01_current-entry]
@@ -3148,65 +3207,6 @@
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': 'unavailable',
-  })
-# ---
-# name: test_entities[sensor.basis_panel_sb_0000000002_01_import_energy_today-entry]
-  EntityRegistryEntrySnapshot({
-    'aliases': list([
-      None,
-    ]),
-    'area_id': None,
-    'capabilities': dict({
-      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
-    }),
-    'config_entry_id': <ANY>,
-    'config_subentry_id': <ANY>,
-    'device_class': None,
-    'device_id': <ANY>,
-    'disabled_by': None,
-    'domain': 'sensor',
-    'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000002_01_import_energy_today',
-    'has_entity_name': True,
-    'hidden_by': None,
-    'icon': None,
-    'id': <ANY>,
-    'labels': set({
-    }),
-    'name': None,
-    'object_id_base': None,
-    'options': dict({
-      'sensor': dict({
-        'suggested_display_precision': 2,
-      }),
-    }),
-    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
-    'original_icon': 'mdi:lightbulb',
-    'original_name': 'Import Energy Today',
-    'platform': 'basis_smart_panel',
-    'previous_unique_id': None,
-    'suggested_object_id': 'basis_panel_sb_0000000002_01_import_energy_today',
-    'supported_features': 0,
-    'translation_key': None,
-    'unique_id': 'basis_energy_import_SB-0000000002_circuit_1',
-    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
-  })
-# ---
-# name: test_entities[sensor.basis_panel_sb_0000000002_01_import_energy_today-state]
-  StateSnapshot({
-    'attributes': ReadOnlyDict({
-      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '01 · Lights · Basis Panel SB-0000000002 Import Energy Today',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:lightbulb',
-      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
-      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
-    }),
-    'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000002_01_import_energy_today',
-    'last_changed': <ANY>,
-    'last_reported': <ANY>,
-    'last_updated': <ANY>,
-    'state': '0.0',
   })
 # ---
 # name: test_entities[sensor.basis_panel_sb_0000000002_01_power-entry]
@@ -3395,6 +3395,65 @@
     'state': 'unavailable',
   })
 # ---
+# name: test_entities[sensor.basis_panel_sb_0000000002_02_consumption_energy_today-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': None,
+    'entity_id': 'sensor.basis_panel_sb_0000000002_02_consumption_energy_today',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': None,
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:water-boiler',
+    'original_name': 'Consumption energy today',
+    'platform': 'basis_smart_panel',
+    'previous_unique_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000002_02_consumption_energy_today',
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'basis_energy_import_SB-0000000002_circuit_2',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_entities[sensor.basis_panel_sb_0000000002_02_consumption_energy_today-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '02 · Hot Water Cylinder · Basis Panel SB-0000000002 Consumption energy today',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:water-boiler',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.basis_panel_sb_0000000002_02_consumption_energy_today',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '0.0',
+  })
+# ---
 # name: test_entities[sensor.basis_panel_sb_0000000002_02_current-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
@@ -3452,65 +3511,6 @@
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': 'unavailable',
-  })
-# ---
-# name: test_entities[sensor.basis_panel_sb_0000000002_02_import_energy_today-entry]
-  EntityRegistryEntrySnapshot({
-    'aliases': list([
-      None,
-    ]),
-    'area_id': None,
-    'capabilities': dict({
-      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
-    }),
-    'config_entry_id': <ANY>,
-    'config_subentry_id': <ANY>,
-    'device_class': None,
-    'device_id': <ANY>,
-    'disabled_by': None,
-    'domain': 'sensor',
-    'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000002_02_import_energy_today',
-    'has_entity_name': True,
-    'hidden_by': None,
-    'icon': None,
-    'id': <ANY>,
-    'labels': set({
-    }),
-    'name': None,
-    'object_id_base': None,
-    'options': dict({
-      'sensor': dict({
-        'suggested_display_precision': 2,
-      }),
-    }),
-    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
-    'original_icon': 'mdi:water-boiler',
-    'original_name': 'Import Energy Today',
-    'platform': 'basis_smart_panel',
-    'previous_unique_id': None,
-    'suggested_object_id': 'basis_panel_sb_0000000002_02_import_energy_today',
-    'supported_features': 0,
-    'translation_key': None,
-    'unique_id': 'basis_energy_import_SB-0000000002_circuit_2',
-    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
-  })
-# ---
-# name: test_entities[sensor.basis_panel_sb_0000000002_02_import_energy_today-state]
-  StateSnapshot({
-    'attributes': ReadOnlyDict({
-      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '02 · Hot Water Cylinder · Basis Panel SB-0000000002 Import Energy Today',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:water-boiler',
-      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
-      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
-    }),
-    'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000002_02_import_energy_today',
-    'last_changed': <ANY>,
-    'last_reported': <ANY>,
-    'last_updated': <ANY>,
-    'state': '0.0',
   })
 # ---
 # name: test_entities[sensor.basis_panel_sb_0000000002_02_power-entry]
@@ -3731,7 +3731,7 @@
     }),
     'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
     'original_icon': 'mdi:lightning-bolt',
-    'original_name': 'Consumption Energy This Month',
+    'original_name': 'Consumption energy this month',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
     'suggested_object_id': 'basis_panel_sb_0000000002_consumption_energy_this_month',
@@ -3745,7 +3745,7 @@
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000002 Consumption Energy This Month',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000002 Consumption energy this month',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:lightning-bolt',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
@@ -3790,7 +3790,7 @@
     }),
     'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
     'original_icon': 'mdi:lightning-bolt',
-    'original_name': 'Consumption Energy Today',
+    'original_name': 'Consumption energy today',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
     'suggested_object_id': 'basis_panel_sb_0000000002_consumption_energy_today',
@@ -3804,7 +3804,7 @@
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000002 Consumption Energy Today',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000002 Consumption energy today',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:lightning-bolt',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
@@ -3817,7 +3817,7 @@
     'state': 'unknown',
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000002_current_power-entry]
+# name: test_entities[sensor.basis_panel_sb_0000000002_consumption_power-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -3833,7 +3833,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000002_current_power',
+    'entity_id': 'sensor.basis_panel_sb_0000000002_consumption_power',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -3849,27 +3849,27 @@
     }),
     'original_device_class': <SensorDeviceClass.POWER: 'power'>,
     'original_icon': 'mdi:home-lightning-bolt',
-    'original_name': 'Current Power',
+    'original_name': 'Consumption power',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': 'basis_panel_sb_0000000002_current_power',
+    'suggested_object_id': 'basis_panel_sb_0000000002_consumption_power',
     'supported_features': 0,
     'translation_key': None,
-    'unique_id': 'basis_power_panel_SB-0000000002',
+    'unique_id': 'basis_import_power_SB-0000000002',
     'unit_of_measurement': <UnitOfPower.WATT: 'W'>,
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000002_current_power-state]
+# name: test_entities[sensor.basis_panel_sb_0000000002_consumption_power-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'power',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000002 Current Power',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000002 Consumption power',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:home-lightning-bolt',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfPower.WATT: 'W'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000002_current_power',
+    'entity_id': 'sensor.basis_panel_sb_0000000002_consumption_power',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
@@ -3908,7 +3908,7 @@
     }),
     'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
     'original_icon': 'mdi:solar-power',
-    'original_name': 'Generation Energy This Month',
+    'original_name': 'Generation energy this month',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
     'suggested_object_id': 'basis_panel_sb_0000000002_generation_energy_this_month',
@@ -3922,7 +3922,7 @@
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000002 Generation Energy This Month',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000002 Generation energy this month',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:solar-power',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
@@ -3967,7 +3967,7 @@
     }),
     'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
     'original_icon': 'mdi:solar-power',
-    'original_name': 'Generation Energy Today',
+    'original_name': 'Generation energy today',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
     'suggested_object_id': 'basis_panel_sb_0000000002_generation_energy_today',
@@ -3981,7 +3981,7 @@
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000002 Generation Energy Today',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000002 Generation energy today',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:solar-power',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
@@ -4026,7 +4026,7 @@
     }),
     'original_device_class': <SensorDeviceClass.POWER: 'power'>,
     'original_icon': 'mdi:solar-power',
-    'original_name': 'Generation Power',
+    'original_name': 'Generation power',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
     'suggested_object_id': 'basis_panel_sb_0000000002_generation_power',
@@ -4040,7 +4040,7 @@
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'power',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000002 Generation Power',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000002 Generation power',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:solar-power',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfPower.WATT: 'W'>,
@@ -4053,7 +4053,7 @@
     'state': 'unavailable',
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000002_house_consumption_power-entry]
+# name: test_entities[sensor.basis_panel_sb_0000000002_net_power-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -4069,7 +4069,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000002_house_consumption_power',
+    'entity_id': 'sensor.basis_panel_sb_0000000002_net_power',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -4085,27 +4085,27 @@
     }),
     'original_device_class': <SensorDeviceClass.POWER: 'power'>,
     'original_icon': 'mdi:home-lightning-bolt',
-    'original_name': 'House Consumption Power',
+    'original_name': 'Net power',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': 'basis_panel_sb_0000000002_house_consumption_power',
+    'suggested_object_id': 'basis_panel_sb_0000000002_net_power',
     'supported_features': 0,
     'translation_key': None,
-    'unique_id': 'basis_import_power_SB-0000000002',
+    'unique_id': 'basis_power_panel_SB-0000000002',
     'unit_of_measurement': <UnitOfPower.WATT: 'W'>,
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000002_house_consumption_power-state]
+# name: test_entities[sensor.basis_panel_sb_0000000002_net_power-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'power',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000002 House Consumption Power',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000002 Net power',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:home-lightning-bolt',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfPower.WATT: 'W'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000002_house_consumption_power',
+    'entity_id': 'sensor.basis_panel_sb_0000000002_net_power',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
@@ -4144,7 +4144,7 @@
     }),
     'original_device_class': <SensorDeviceClass.CURRENT: 'current'>,
     'original_icon': 'mdi:current-ac',
-    'original_name': 'Primary Current',
+    'original_name': 'Primary current',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
     'suggested_object_id': 'basis_panel_sb_0000000002_primary_current',
@@ -4158,7 +4158,7 @@
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'current',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000002 Primary Current',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000002 Primary current',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:current-ac',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfElectricCurrent.AMPERE: 'A'>,

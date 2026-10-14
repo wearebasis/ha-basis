@@ -97,11 +97,11 @@ async def test_entity_ids_use_the_serial_and_position_not_the_names(
     assert entity_id("sensor", circuit_uid("power", SERIAL_A, 1)) == f"sensor.{prefix}_01_power"
     assert (
         entity_id("sensor", circuit_uid("energy_import", SERIAL_A, 1))
-        == f"sensor.{prefix}_01_import_energy_today"
+        == f"sensor.{prefix}_01_consumption_energy_today"
     )
     assert entity_id("switch", circuit_uid("switch", SERIAL_A, 1)) == f"switch.{prefix}_01"
     assert (
-        entity_id("sensor", f"basis_power_panel_{SERIAL_A}") == f"sensor.{prefix}_current_power"
+        entity_id("sensor", f"basis_power_panel_{SERIAL_A}") == f"sensor.{prefix}_net_power"
     )
     assert (
         entity_id("binary_sensor", f"basis_connectivity_{SERIAL_A}")
