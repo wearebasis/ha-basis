@@ -9,11 +9,12 @@ A Home Assistant integration for Basis Smart panels by [Basis NZ Ltd](https://we
 - **Energy statistics**: daily and monthly import and export energy of each panel, for the Energy dashboard.
 - **Circuit control**: put a circuit in standby, or make it live again.
 - **Connectivity status**: a binary sensor that shows if the panel is connected to the Basis cloud.
-- **More than one panel**: all panels of your Basis account appear in one integration entry.
+- **More than one panel and site**: all panels of all sites in your Basis account appear in one integration entry.
+- **More than one account**: you can add each Basis account as its own integration entry.
 
 ## Requirements
 
-- Home Assistant 2025.4.0 or newer
+- Home Assistant 2026.8.0 or newer
 - A Basis Smart Panel with an active cloud connection
 - A Basis account
 
@@ -43,11 +44,26 @@ A Home Assistant integration for Basis Smart panels by [Basis NZ Ltd](https://we
 
 If your sign-in expires, Home Assistant asks you to sign in again. Sign in with the same Basis account. The integration rejects a different account.
 
-New panels in your Basis account appear automatically. A panel that is no longer in your account is removed after it is missing for 10 to 15 minutes.
+New panels in your Basis account appear automatically. A panel or a site that is no longer in your account is removed after it is missing for 10 to 15 minutes.
+
+Two Basis accounts can have access to the same site. If you add both accounts, only one account provides the devices of that site. If you remove that account, the other account provides the devices within 5 minutes.
 
 ## Entities
 
+A site with two or more panels is a device with the address of the site as its name. A site without an address is named "Basis Site". The panels of the site appear under the site device. A site with one panel has no site device.
+
 Each panel is a device with the name that the panel has in the Basis app. When you rename the panel in the app, the device name follows. A panel without a name is named "Basis Panel" with its serial. The device page shows the panel serial as the serial number.
+
+### Site sensors
+
+A site with two or more panels gets these sensors. They show the total of all panels of the site.
+
+| Entity | Description | Update interval |
+|--------|-------------|-----------------|
+| Consumption Energy Today | Energy imported since midnight (kWh) | 5 minutes |
+| Generation Energy Today | Energy exported since midnight (kWh) | 5 minutes |
+| Consumption Energy This Month | Energy imported since the first day of the month (kWh) | 5 minutes |
+| Generation Energy This Month | Energy exported since the first day of the month (kWh) | 5 minutes |
 
 ### Panel sensors
 
@@ -83,9 +99,9 @@ The integration identifies a circuit by its panel and position. If an electricia
 
 ### Energy dashboard
 
-The energy sensors restart at midnight, and the monthly sensors restart on the first day of the month. Home Assistant records each reset as the start of a new cycle, so you can add these sensors to the Energy dashboard.
+The energy sensors restart at midnight, and the monthly sensors restart on the first day of the month. The integration uses the time zone of the site. If the site has no time zone, it uses the time zone of Home Assistant. Home Assistant records each reset as the start of a new cycle, so you can add these sensors to the Energy dashboard.
 
-Add the "Today" sensor or the "This Month" sensor of a value, not both. If you add both, the dashboard counts the energy two times.
+Add the "Today" sensor or the "This Month" sensor of a value, not both. If you add both, the dashboard counts the energy two times. For the same reason, add the site sensor or the sensors of its panels, not both.
 
 ### Binary sensor
 

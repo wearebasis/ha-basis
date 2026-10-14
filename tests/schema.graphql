@@ -1,6 +1,7 @@
 scalar Time
 
 type Query {
+  site(id: ID!): Site!
   sites(input: SitesInput!): SitesResult!
   switchboard(serial: String!): Switchboard!
 }
@@ -19,7 +20,14 @@ type SitesResult {
 
 type Site {
   id: ID!
+  address: Address
+  timeZone: String
   switchboards: [Switchboard!]!
+  totalEnergyUsage(input: TotalEnergyUsageInput!): EnergyUsage
+}
+
+type Address {
+  address: String!
 }
 
 type Switchboard {

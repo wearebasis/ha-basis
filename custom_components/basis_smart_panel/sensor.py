@@ -34,8 +34,8 @@ from homeassistant.const import (
 )
 
 from .coordinator import (
-    BasisBoardCoordinator,
     BasisConfigEntry,
+    BasisDeviceCoordinator,
     SubcircuitEnergyCoordinator,
     SwitchboardDataCoordinator,
 )
@@ -47,12 +47,12 @@ from .entity import (
     circuit_name,
     circuit_unique_id,
 )
-from .models import BoardEnergy, Subcircuit, Switchboard
+from .models import EnergyStats, Subcircuit, Switchboard
 
 
 @dataclass(frozen=True, kw_only=True)
-class BasisBoardSensorDescription[_DataT](SensorEntityDescription):
-    """Sensor that reads one value from the data of a board coordinator."""
+class BasisDeviceSensorDescription[_DataT](SensorEntityDescription):
+    """Sensor that reads one value from the data of a device coordinator."""
 
     value_fn: Callable[[_DataT], float | None]
 
@@ -66,8 +66,8 @@ class BasisSubcircuitSensorDescription(SensorEntityDescription):
     label_icon_fallback: str | None = None
 
 
-PANEL_SENSORS: tuple[BasisBoardSensorDescription[Switchboard], ...] = (
-    BasisBoardSensorDescription(
+PANEL_SENSORS: tuple[BasisDeviceSensorDescription[Switchboard], ...] = (
+    BasisDeviceSensorDescription(
         key="power_panel",
         name="Current Power",
         device_class=SensorDeviceClass.POWER,
@@ -76,7 +76,7 @@ PANEL_SENSORS: tuple[BasisBoardSensorDescription[Switchboard], ...] = (
         icon="mdi:home-lightning-bolt",
         value_fn=lambda board: board.live.power if board.live else None,
     ),
-    BasisBoardSensorDescription(
+    BasisDeviceSensorDescription(
         key="import_power",
         name="House Consumption Power",
         device_class=SensorDeviceClass.POWER,
@@ -85,7 +85,7 @@ PANEL_SENSORS: tuple[BasisBoardSensorDescription[Switchboard], ...] = (
         icon="mdi:home-lightning-bolt",
         value_fn=lambda board: board.live.import_power if board.live else None,
     ),
-    BasisBoardSensorDescription(
+    BasisDeviceSensorDescription(
         key="export_power",
         name="Generation Power",
         device_class=SensorDeviceClass.POWER,
@@ -94,7 +94,7 @@ PANEL_SENSORS: tuple[BasisBoardSensorDescription[Switchboard], ...] = (
         icon="mdi:solar-power",
         value_fn=lambda board: board.live.export_power if board.live else None,
     ),
-    BasisBoardSensorDescription(
+    BasisDeviceSensorDescription(
         key="current",
         name="Primary Current",
         device_class=SensorDeviceClass.CURRENT,
@@ -105,8 +105,8 @@ PANEL_SENSORS: tuple[BasisBoardSensorDescription[Switchboard], ...] = (
     ),
 )
 
-ENERGY_SENSORS: tuple[BasisBoardSensorDescription[BoardEnergy], ...] = (
-    BasisBoardSensorDescription(
+ENERGY_SENSORS: tuple[BasisDeviceSensorDescription[EnergyStats], ...] = (
+    BasisDeviceSensorDescription(
         key="energy_today_import",
         name="Consumption Energy Today",
         device_class=SensorDeviceClass.ENERGY,
@@ -115,7 +115,7 @@ ENERGY_SENSORS: tuple[BasisBoardSensorDescription[BoardEnergy], ...] = (
         icon="mdi:lightning-bolt",
         value_fn=lambda energy: energy.today.import_kwh,
     ),
-    BasisBoardSensorDescription(
+    BasisDeviceSensorDescription(
         key="energy_today_export",
         name="Generation Energy Today",
         device_class=SensorDeviceClass.ENERGY,
@@ -124,7 +124,7 @@ ENERGY_SENSORS: tuple[BasisBoardSensorDescription[BoardEnergy], ...] = (
         icon="mdi:solar-power",
         value_fn=lambda energy: energy.today.export_kwh,
     ),
-    BasisBoardSensorDescription(
+    BasisDeviceSensorDescription(
         key="energy_month_import",
         name="Consumption Energy This Month",
         device_class=SensorDeviceClass.ENERGY,
@@ -133,7 +133,7 @@ ENERGY_SENSORS: tuple[BasisBoardSensorDescription[BoardEnergy], ...] = (
         icon="mdi:lightning-bolt",
         value_fn=lambda energy: energy.month.import_kwh,
     ),
-    BasisBoardSensorDescription(
+    BasisDeviceSensorDescription(
         key="energy_month_export",
         name="Generation Energy This Month",
         device_class=SensorDeviceClass.ENERGY,
@@ -184,8 +184,8 @@ async def async_setup_entry(
     entities: list[SensorEntity] = []
 
     for board in config_entry.runtime_data.boards.values():
-        entities.extend(BasisBoardSensor(board.live, d) for d in PANEL_SENSORS)
-        entities.extend(BasisBoardSensor(board.energy, d) for d in ENERGY_SENSORS)
+        entities.extend(BasisDeviceSensor(board.live, d) for d in PANEL_SENSORS)
+        entities.extend(BasisDeviceSensor(board.energy, d) for d in ENERGY_SENSORS)
 
         if board.live.data is None:
             continue
@@ -202,21 +202,24 @@ async def async_setup_entry(
                 )
             )
 
+    for site_energy in config_entry.runtime_data.site_energy.values():
+        entities.extend(BasisDeviceSensor(site_energy, d) for d in ENERGY_SENSORS)
+
     async_add_basis_entities(config_entry, async_add_entities, entities)
 
 
-class BasisBoardSensor(BasisEntity[BasisBoardCoordinator[Any]], SensorEntity):
-    """Sensor of one switchboard."""
+class BasisDeviceSensor(BasisEntity[BasisDeviceCoordinator[Any]], SensorEntity):
+    """Sensor of one switchboard or one site."""
 
-    entity_description: BasisBoardSensorDescription[Any]
+    entity_description: BasisDeviceSensorDescription[Any]
 
     def __init__(
         self,
-        coordinator: BasisBoardCoordinator[Any],
-        description: BasisBoardSensorDescription[Any],
+        coordinator: BasisDeviceCoordinator[Any],
+        description: BasisDeviceSensorDescription[Any],
     ) -> None:
         """Initialize the sensor."""
-        super().__init__(coordinator, f"basis_{description.key}_{coordinator.serial}")
+        super().__init__(coordinator, f"basis_{description.key}_{coordinator.identifier}")
         self.entity_description = description
 
     @property

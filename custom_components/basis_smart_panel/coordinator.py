@@ -15,7 +15,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import timedelta
+from datetime import timedelta, tzinfo
 from typing import ClassVar
 
 from homeassistant.config_entries import ConfigEntry
@@ -34,9 +34,14 @@ from .const import (
 )
 
 from .api import BasisAPI, BasisApiError, BasisAuthError, BasisRateLimitError
-from .models import BoardEnergy, Switchboard
+from .models import EnergyStats, Site, Switchboard
 
 type BasisConfigEntry = ConfigEntry[BasisData]
+
+
+def site_identifier(site_id: str) -> str:
+    """Return the device identifier of a site."""
+    return f"site_{site_id}"
 
 
 @dataclass
@@ -46,6 +51,7 @@ class BoardCoordinators:
     live: SwitchboardDataCoordinator
     energy: EnergyStatsCoordinator
     subcircuit_energy: SubcircuitEnergyCoordinator
+    site_id: str
     layout: frozenset[tuple[int, bool, bool]] = frozenset()
 
 
@@ -56,6 +62,7 @@ class BasisData:
     api: BasisAPI
     discovery: BoardsDiscoveryCoordinator
     boards: dict[str, BoardCoordinators] = field(default_factory=dict)
+    site_energy: dict[str, SiteEnergyCoordinator] = field(default_factory=dict)
     missing_polls: dict[str, int] = field(default_factory=dict)
     unique_ids: set[str] = field(default_factory=set)
     set_up_platforms: set[str] = field(default_factory=set)
@@ -78,8 +85,8 @@ class BasisCoordinator[_DataT](DataUpdateCoordinator[_DataT]):
         raise NotImplementedError
 
 
-class BoardsDiscoveryCoordinator(BasisCoordinator[list[str]]):
-    """Coordinator to discover available switchboards periodically."""
+class BoardsDiscoveryCoordinator(BasisCoordinator[list[Site]]):
+    """Coordinator to discover available sites and switchboards periodically."""
 
     def __init__(
         self,
@@ -98,27 +105,32 @@ class BoardsDiscoveryCoordinator(BasisCoordinator[list[str]]):
         self._api = api
         self._known_serials: set[str] = set()
 
-    async def _async_fetch(self) -> list[str]:
-        """Fetch available switchboards from the API."""
-        serials = await self._api.get_available_switchboards()
+    async def _async_fetch(self) -> list[Site]:
+        """Fetch available sites from the API."""
+        sites = await self._api.get_sites()
 
-        current_serials = set(serials)
+        current_serials = {serial for site in sites for serial in site.serials}
         new_serials = current_serials - self._known_serials
 
         if new_serials:
             LOGGER.info(f"Discovered new switchboards: {new_serials}")
 
         self._known_serials = current_serials
-        return serials
+        return sites
+
+    @property
+    def sites(self) -> list[Site]:
+        """Return the discovered sites."""
+        return self.data or []
 
     @property
     def switchboard_serials(self) -> list[str]:
         """Return list of discovered switchboard serials."""
-        return self.data or []
+        return [serial for site in self.sites for serial in site.serials]
 
 
-class BasisBoardCoordinator[_DataT](BasisCoordinator[_DataT]):
-    """Base for the coordinators of one switchboard."""
+class BasisDeviceCoordinator[_DataT](BasisCoordinator[_DataT]):
+    """Base for the coordinators of one device."""
 
     NAME_SUFFIX: ClassVar[str]
     UPDATE_INTERVAL: ClassVar[timedelta]
@@ -128,18 +140,29 @@ class BasisBoardCoordinator[_DataT](BasisCoordinator[_DataT]):
         hass: HomeAssistant,
         entry: BasisConfigEntry,
         api: BasisAPI,
-        serial: str,
+        identifier: str,
+        time_zone: tzinfo | None = None,
     ) -> None:
         """Initialize the coordinator."""
         super().__init__(
             hass,
             LOGGERFORHA,
             config_entry=entry,
-            name=f"{DOMAIN}_{serial}{self.NAME_SUFFIX}",
+            name=f"{DOMAIN}_{identifier}{self.NAME_SUFFIX}",
             update_interval=self.UPDATE_INTERVAL,
         )
         self.api = api
-        self.serial = serial
+        self.identifier = identifier
+        self.time_zone = time_zone
+
+
+class BasisBoardCoordinator[_DataT](BasisDeviceCoordinator[_DataT]):
+    """Base for the coordinators of one switchboard."""
+
+    @property
+    def serial(self) -> str:
+        """Return the serial of the switchboard."""
+        return self.identifier
 
 
 class SwitchboardDataCoordinator(BasisBoardCoordinator[Switchboard]):
@@ -153,27 +176,18 @@ class SwitchboardDataCoordinator(BasisBoardCoordinator[Switchboard]):
         return await self.api.get_switchboard_data(self.serial)
 
 
-class EnergyStatsCoordinator(BasisBoardCoordinator[BoardEnergy]):
+class EnergyStatsCoordinator(BasisBoardCoordinator[EnergyStats]):
     """Coordinator for energy statistics (today and this month)."""
 
     NAME_SUFFIX = "_energy"
     UPDATE_INTERVAL = ENERGY_STATS_UPDATE_INTERVAL
 
-    async def _async_fetch(self) -> BoardEnergy:
+    async def _async_fetch(self) -> EnergyStats:
         """Fetch energy statistics from the API."""
-        now = dt_util.now()
-        start_of_today = now.replace(hour=0, minute=0, second=0, microsecond=0)
-        start_of_month = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
-
-        today = await self.api.get_switchboard_energy_usage(
-            self.serial,
-            start_of_today.isoformat(),
-        )
-        month = await self.api.get_switchboard_energy_usage(
-            self.serial,
-            start_of_month.isoformat(),
-        )
-        return BoardEnergy(today=today, month=month)
+        start_of_today, start_of_month = _period_starts(self.time_zone)
+        today = await self.api.get_switchboard_energy_usage(self.serial, start_of_today)
+        month = await self.api.get_switchboard_energy_usage(self.serial, start_of_month)
+        return EnergyStats(today=today, month=month)
 
 
 class SubcircuitEnergyCoordinator(BasisBoardCoordinator[dict[int, float | None]]):
@@ -184,10 +198,42 @@ class SubcircuitEnergyCoordinator(BasisBoardCoordinator[dict[int, float | None]]
 
     async def _async_fetch(self) -> dict[int, float | None]:
         """Fetch today's import energy of each subcircuit."""
-        now = dt_util.now()
-        start_of_today = now.replace(hour=0, minute=0, second=0, microsecond=0)
+        start_of_today, _ = _period_starts(self.time_zone)
+        return await self.api.get_subcircuit_energy_usage(self.serial, start_of_today)
 
-        return await self.api.get_subcircuit_energy_usage(
-            self.serial,
-            start_of_today.isoformat(),
-        )
+
+class SiteEnergyCoordinator(BasisDeviceCoordinator[EnergyStats]):
+    """Coordinator for the energy statistics of all switchboards of a site."""
+
+    NAME_SUFFIX = "_energy"
+    UPDATE_INTERVAL = ENERGY_STATS_UPDATE_INTERVAL
+
+    def __init__(
+        self,
+        hass: HomeAssistant,
+        entry: BasisConfigEntry,
+        api: BasisAPI,
+        site: Site,
+        time_zone: tzinfo | None,
+    ) -> None:
+        """Initialize the coordinator."""
+        super().__init__(hass, entry, api, site_identifier(site.id), time_zone)
+        self.site_id = site.id
+
+    async def _async_fetch(self) -> EnergyStats:
+        """Fetch energy statistics from the API."""
+        start_of_today, start_of_month = _period_starts(self.time_zone)
+        today = await self.api.get_site_energy_usage(self.site_id, start_of_today)
+        month = await self.api.get_site_energy_usage(self.site_id, start_of_month)
+        return EnergyStats(today=today, month=month)
+
+
+def _period_starts(time_zone: tzinfo | None) -> tuple[str, str]:
+    """Return the start of today and of this month in the time zone, as ISO 8601.
+
+    Without a time zone, use the time zone of HA.
+    """
+    now = dt_util.now(time_zone)
+    start_of_today = now.replace(hour=0, minute=0, second=0, microsecond=0)
+    start_of_month = start_of_today.replace(day=1)
+    return start_of_today.isoformat(), start_of_month.isoformat()

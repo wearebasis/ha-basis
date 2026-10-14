@@ -33,6 +33,7 @@ from .const import (
 from .models import (
     Connectivity,
     EnergyTotals,
+    Site,
     Subcircuit,
     SubcircuitLiveState,
     Switchboard,
@@ -153,13 +154,17 @@ class BasisAPI:
                 )
                 await asyncio.sleep(RETRY_DELAY_SECONDS)
 
-    async def get_available_switchboards(self) -> list[str]:
-        """Return the serials of all switchboards available to the user."""
+    async def get_sites(self) -> list[Site]:
+        """Return all sites available to the user."""
         query = gql("""
             query {
                 sites(input: { query: "" }) {
                     sites {
                         id
+                        address {
+                            address
+                        }
+                        timeZone
                         switchboards {
                             serial
                             connectivity {
@@ -172,13 +177,17 @@ class BasisAPI:
         """)
 
         result = await self._execute(query)
-        serials = [
-            board["serial"]
+        sites = [
+            Site(
+                id=site["id"],
+                address=site["address"]["address"] if site["address"] else None,
+                time_zone=site["timeZone"],
+                serials=tuple(board["serial"] for board in site["switchboards"]),
+            )
             for site in result["sites"]["sites"]
-            for board in site["switchboards"]
         ]
-        LOGGER.debug(f"Discovered {len(serials)} switchboards")
-        return serials
+        LOGGER.debug(f"Discovered {len(sites)} sites")
+        return sites
 
     async def get_switchboard_data(self, serial: str) -> Switchboard:
         """Get switchboard data from the API."""
@@ -253,6 +262,29 @@ class BasisAPI:
 
         result = await self._execute(query, variables)
         usage = result["switchboard"]["totalSwitchboardEnergyUsage"]
+        return EnergyTotals(import_kwh=usage["importKwh"], export_kwh=usage["exportKwh"])
+
+    async def get_site_energy_usage(self, site_id: str, start_time: str) -> EnergyTotals:
+        """Get the energy that all switchboards of the site used since start_time (ISO 8601)."""
+        query = gql("""
+            query GetSiteEnergyUsage($id: ID!, $startTime: Time!) {
+                site(id: $id) {
+                    totalEnergyUsage(input: { startTime: $startTime }) {
+                        importKwh
+                        exportKwh
+                    }
+                }
+            }
+        """)
+
+        variables = {
+            "id": site_id,
+            "startTime": start_time,
+        }
+
+        result = await self._execute(query, variables)
+        if (usage := result["site"]["totalEnergyUsage"]) is None:
+            return EnergyTotals(import_kwh=None, export_kwh=None)
         return EnergyTotals(import_kwh=usage["importKwh"], export_kwh=usage["exportKwh"])
 
     async def get_subcircuit_energy_usage(

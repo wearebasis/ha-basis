@@ -27,7 +27,7 @@ from homeassistant.helpers.entity_platform import (
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import DOMAIN, LABEL_NAME_MAP
-from .coordinator import BasisBoardCoordinator, BasisConfigEntry, SwitchboardDataCoordinator
+from .coordinator import BasisConfigEntry, BasisDeviceCoordinator, SwitchboardDataCoordinator
 from .models import Subcircuit
 
 
@@ -60,10 +60,10 @@ def async_add_basis_entities(
     async_add_entities(entities)
 
 
-class BasisEntity[_CoordinatorT: BasisBoardCoordinator[Any]](
+class BasisEntity[_CoordinatorT: BasisDeviceCoordinator[Any]](
     CoordinatorEntity[_CoordinatorT]
 ):
-    """Entity on the device of one switchboard."""
+    """Entity on the device of one switchboard or one site."""
 
     _attr_has_entity_name = True
 
@@ -71,7 +71,7 @@ class BasisEntity[_CoordinatorT: BasisBoardCoordinator[Any]](
         """Initialize the entity."""
         super().__init__(coordinator)
         self._attr_unique_id = unique_id
-        self._attr_device_info = DeviceInfo(identifiers={(DOMAIN, coordinator.serial)})
+        self._attr_device_info = DeviceInfo(identifiers={(DOMAIN, coordinator.identifier)})
 
 
 class BasisSubcircuitEntity(BasisEntity[SwitchboardDataCoordinator]):

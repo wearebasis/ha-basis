@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from datetime import timedelta
-
 import pytest
 from freezegun.api import FrozenDateTimeFactory
 from homeassistant.config_entries import ConfigEntryState
@@ -14,44 +12,21 @@ from homeassistant.helpers import entity_registry as er
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.basis_smart_panel import BOARD_REMOVAL_POLLS
-from custom_components.basis_smart_panel.const import (
-    BOARDS_DISCOVERY_INTERVAL,
-    DOMAIN,
-)
+from custom_components.basis_smart_panel.const import DOMAIN
 
 from .conftest import (
     ACCESS_TOKEN,
+    DISCOVERY,
     POLL,
     USER_SUB,
     advance,
+    board_device,
     circuit_uid,
     make_token,
+    power_entity,
     setup_integration,
 )
 from .fake_backend import SERIAL_A, SERIAL_B, FakeBasisBackend, subcircuit
-
-DISCOVERY = BOARDS_DISCOVERY_INTERVAL + timedelta(seconds=1)
-
-
-def power_entity(entity_registry: er.EntityRegistry, serial: str, number: int) -> str:
-    entity_id = entity_registry.async_get_entity_id(
-        "sensor", DOMAIN, circuit_uid("power", serial, number)
-    )
-    assert entity_id
-    return entity_id
-
-
-def board_device(
-    device_registry: dr.DeviceRegistry, entry: MockConfigEntry, serial: str
-) -> dr.DeviceEntry | None:
-    return next(
-        (
-            device
-            for device in dr.async_entries_for_config_entry(device_registry, entry.entry_id)
-            if (DOMAIN, serial) in device.identifiers
-        ),
-        None,
-    )
 
 
 async def test_setup_and_unload(

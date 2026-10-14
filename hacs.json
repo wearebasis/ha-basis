@@ -1,4 +1,5 @@
 {
   "name": "Basis Smart Panel integration",
-  "content_in_root": false
+  "content_in_root": false,
+  "homeassistant": "2026.8.0"
 }

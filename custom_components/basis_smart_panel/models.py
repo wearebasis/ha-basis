@@ -18,6 +18,16 @@ from dataclasses import dataclass
 
 
 @dataclass(frozen=True, slots=True)
+class Site:
+    """One site of the account and the serials of its switchboards."""
+
+    id: str
+    address: str | None
+    time_zone: str | None
+    serials: tuple[str, ...]
+
+
+@dataclass(frozen=True, slots=True)
 class SubcircuitLiveState:
     """Live readings of one subcircuit."""
 
@@ -97,8 +107,8 @@ class EnergyTotals:
 
 
 @dataclass(frozen=True, slots=True)
-class BoardEnergy:
-    """Energy totals of a switchboard for today and this month."""
+class EnergyStats:
+    """Energy totals of a switchboard or a site for today and this month."""
 
     today: EnergyTotals
     month: EnergyTotals

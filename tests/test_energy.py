@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+import logging
 from datetime import timedelta
 
+import pytest
 from freezegun.api import FrozenDateTimeFactory
 from homeassistant.const import STATE_UNKNOWN
 from homeassistant.core import HomeAssistant
@@ -19,6 +21,9 @@ from .conftest import POLL, advance, circuit_uid, setup_integration
 from .fake_backend import SERIAL_A, TODAY_BUCKET, FakeBasisBackend
 
 EARLIER_BUCKET = "2026-10-13T11:00:00Z"
+# Sydney starts daylight saving time on 4 October 2026.
+SYDNEY_TODAY_START = "2026-10-15T00:00:00+11:00"
+SYDNEY_MONTH_START = "2026-10-01T00:00:00+10:00"
 
 
 def import_energy_state(
@@ -78,6 +83,48 @@ async def test_import_energy_name_follows_the_label(
     state = hass.states.get(entity_id)
     assert state.name.endswith("[01] Hot Water Cylinder · Import Energy Today")
     assert state.attributes["icon"] == "mdi:water-boiler"
+
+
+async def test_energy_periods_start_at_midnight_of_the_site(
+    hass: HomeAssistant,
+    fake_backend: FakeBasisBackend,
+    config_entry: MockConfigEntry,
+    entity_registry: er.EntityRegistry,
+) -> None:
+    fake_backend.site_details["site-1"]["timeZone"] = "Australia/Sydney"
+    fake_backend.board_energy[SERIAL_A] = {
+        SYDNEY_TODAY_START: {"importKwh": 4.0, "exportKwh": 1.0},
+        SYDNEY_MONTH_START: {"importKwh": 90.0, "exportKwh": 30.0},
+    }
+    fake_backend.today_starts[SERIAL_A] = SYDNEY_TODAY_START
+    await setup_integration(hass, config_entry)
+
+    for key, value in (("energy_today_import", "4.0"), ("energy_month_import", "90.0")):
+        entity_id = entity_registry.async_get_entity_id(
+            "sensor", DOMAIN, f"basis_{key}_{SERIAL_A}"
+        )
+        assert hass.states.get(entity_id).state == value
+    assert import_energy_state(hass, entity_registry, 1) == "1.2"
+
+
+async def test_unknown_time_zone_of_the_site_uses_the_time_zone_of_ha(
+    hass: HomeAssistant,
+    fake_backend: FakeBasisBackend,
+    config_entry: MockConfigEntry,
+    entity_registry: er.EntityRegistry,
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    fake_backend.site_details["site-1"]["timeZone"] = "Mars/Olympus_Mons"
+    await setup_integration(hass, config_entry)
+
+    assert any(
+        record.levelno == logging.WARNING and "Mars/Olympus_Mons" in record.getMessage()
+        for record in caplog.records
+    )
+    entity_id = entity_registry.async_get_entity_id(
+        "sensor", DOMAIN, f"basis_energy_today_import_{SERIAL_A}"
+    )
+    assert hass.states.get(entity_id).state == "12.5"
 
 
 async def test_import_energy_name_follows_the_label_at_the_next_live_poll(

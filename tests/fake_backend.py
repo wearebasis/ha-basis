@@ -139,6 +139,12 @@ class FakeBasisBackend:
     def __init__(self) -> None:
         """Load the default data."""
         self.sites: dict[str, list[str]] = {"site-1": [SERIAL_A], "site-2": [SERIAL_B]}
+        self.site_details: dict[str, dict[str, Any]] = {
+            "site-1": {"address": {"address": "1 Example Street"}, "timeZone": "Pacific/Auckland"},
+            "site-2": {"address": None, "timeZone": None},
+        }
+        self.today_starts = {SERIAL_A: TODAY_START, SERIAL_B: TODAY_START}
+        self.site_energy: dict[str, dict[str, dict[str, float | None] | None]] = {}
         self.boards = default_boards()
         self.board_energy = default_board_energy()
         self.subcircuit_energy = default_subcircuit_energy()
@@ -213,6 +219,7 @@ class FakeBasisBackend:
 
     def _root(self) -> dict[str, Any]:
         return {
+            "site": self._resolve_site,
             "sites": self._resolve_sites,
             "switchboard": self._resolve_switchboard,
             "updateSubcircuitStandbyState": self._resolve_standby,
@@ -222,11 +229,24 @@ class FakeBasisBackend:
         sites = [
             {
                 "id": site_id,
+                **self.site_details.get(site_id, {"address": None, "timeZone": None}),
                 "switchboards": [self._board_view(serial) for serial in serials],
             }
             for site_id, serials in self.sites.items()
         ]
         return {"sites": sites}
+
+    def _resolve_site(self, info: Any, id: str) -> dict[str, Any]:
+        if id not in self.sites:
+            raise GraphQLError(f"site {id} not found")
+        energy = self.site_energy.get(id, {})
+
+        def total(info: Any, input: dict[str, Any]) -> dict[str, Any] | None:
+            if input["startTime"] not in energy:
+                raise GraphQLError(f"unexpected startTime {input['startTime']}")
+            return energy[input["startTime"]]
+
+        return {"id": id, "totalEnergyUsage": total}
 
     def _resolve_switchboard(self, info: Any, serial: str) -> dict[str, Any]:
         if not any(serial in serials for serials in self.sites.values()):
@@ -265,7 +285,7 @@ class FakeBasisBackend:
         buckets = self.subcircuit_energy.get(serial, {}).get(sub_serial, [])
 
         def resolve(info: Any, input: dict[str, Any]) -> dict[str, Any]:
-            if input["startTime"] != TODAY_START:
+            if input["startTime"] != self.today_starts[serial]:
                 raise GraphQLError(f"unexpected startTime {input['startTime']}")
             return {
                 "data": [

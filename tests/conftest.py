@@ -12,6 +12,8 @@ from unittest.mock import patch
 import pytest
 from freezegun.api import FrozenDateTimeFactory
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers import device_registry as dr
+from homeassistant.helpers import entity_registry as er
 from pytest_homeassistant_custom_component.common import (
     MockConfigEntry,
     async_fire_time_changed,
@@ -20,6 +22,7 @@ from pytest_homeassistant_custom_component.syrupy import HomeAssistantSnapshotEx
 from syrupy.assertion import SnapshotAssertion
 
 from custom_components.basis_smart_panel.const import (
+    BOARDS_DISCOVERY_INTERVAL,
     DOMAIN,
     SWITCHBOARD_UPDATE_INTERVAL,
 )
@@ -28,16 +31,40 @@ from .fake_backend import FakeBasisBackend
 
 USER_SUB = "auth0|user-1"
 USER_EMAIL = "user@example.com"
+OTHER_SUB = "auth0|user-2"
+OTHER_EMAIL = "other@example.com"
 ACCESS_TOKEN = "test-access-token"
 NOW = "2026-10-15T10:00:00+13:00"
 
 # The coordinator adds up to 1 s of jitter to each refresh.
 POLL = SWITCHBOARD_UPDATE_INTERVAL + timedelta(seconds=1)
+DISCOVERY = BOARDS_DISCOVERY_INTERVAL + timedelta(seconds=1)
 
 
 def circuit_uid(key: str, serial: str, number: int) -> str:
     """Return the unique ID of a circuit entity, which follows the circuit position."""
     return f"basis_{key}_{serial}_circuit_{number}"
+
+
+def power_entity(entity_registry: er.EntityRegistry, serial: str, number: int) -> str:
+    entity_id = entity_registry.async_get_entity_id(
+        "sensor", DOMAIN, circuit_uid("power", serial, number)
+    )
+    assert entity_id
+    return entity_id
+
+
+def board_device(
+    device_registry: dr.DeviceRegistry, entry: MockConfigEntry, serial: str
+) -> dr.DeviceEntry | None:
+    return next(
+        (
+            device
+            for device in dr.async_entries_for_config_entry(device_registry, entry.entry_id)
+            if (DOMAIN, serial) in device.identifiers
+        ),
+        None,
+    )
 
 
 def make_id_token(sub: str, email: str) -> str:
@@ -102,6 +129,17 @@ def config_entry() -> MockConfigEntry:
         title=f"Basis ({USER_EMAIL})",
         unique_id=USER_SUB,
         data={"auth_implementation": DOMAIN, "token": make_token()},
+    )
+
+
+@pytest.fixture
+def other_entry() -> MockConfigEntry:
+    """Return a config entry for a second account with access to the same sites."""
+    return MockConfigEntry(
+        domain=DOMAIN,
+        title=f"Basis ({OTHER_EMAIL})",
+        unique_id=OTHER_SUB,
+        data={"auth_implementation": DOMAIN, "token": make_token(OTHER_SUB, OTHER_EMAIL)},
     )
 
 

@@ -15,14 +15,18 @@
 from __future__ import annotations
 
 import json
+from datetime import tzinfo
 from functools import partial
 
+from homeassistant.config_entries import ConfigEntry, ConfigEntryState
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers import (
     config_entry_oauth2_flow,
     device_registry as dr,
     entity_registry as er,
 )
+from homeassistant.util import dt as dt_util
+from homeassistant.util.hass_dict import HassKey
 from .config_flow import BasisOAuth2Implementation, _decode_jwt_payload
 from .const import (
     DOMAIN,
@@ -41,14 +45,20 @@ from .coordinator import (
     BoardCoordinators,
     BoardsDiscoveryCoordinator,
     EnergyStatsCoordinator,
+    SiteEnergyCoordinator,
     SubcircuitEnergyCoordinator,
     SwitchboardDataCoordinator,
+    site_identifier,
 )
 from .api import BasisAPI, AsyncConfigEntryAuth
 from .entity import circuit_unique_id
+from .models import Site
 
 BOARD_REMOVAL_POLLS = 3
 MODULE_KEYS = ("power", "current", "voltage", "switch", "energy_import")
+
+# Site ID to the ID of the config entry that provides its devices.
+SITE_OWNERS: HassKey[dict[str, str]] = HassKey(DOMAIN)
 
 
 async def async_setup(hass: HomeAssistant, config) -> bool:
@@ -100,13 +110,27 @@ async def async_setup_entry(hass: HomeAssistant, entry: BasisConfigEntry) -> boo
     await discovery.async_config_entry_first_refresh()
     entry.runtime_data = BasisData(api=api, discovery=discovery)
 
-    for serial in discovery.switchboard_serials:
-        if serial not in entry.runtime_data.boards:
-            entry.runtime_data.boards[serial] = await _async_setup_board(
-                hass, entry, api, serial
-            )
+    # Two accounts can see the same site, and HA allows one entity for each unique ID.
+    owners = hass.data.setdefault(SITE_OWNERS, {})
+    for site in discovery.sites:
+        if site.id not in owners and _may_claim(hass, entry, site):
+            owners[site.id] = entry.entry_id
+    entry.async_on_unload(partial(_async_release_sites, hass, entry))
 
-    await _async_register_switchboard_devices(hass, entry)
+    sites = _owned_sites(hass, entry)
+    time_zones = {site.id: await _async_time_zone(site) for site in sites}
+    for site in sites:
+        for serial in site.serials:
+            if serial not in entry.runtime_data.boards:
+                entry.runtime_data.boards[serial] = await _async_setup_board(
+                    hass, entry, api, serial, site, time_zones[site.id]
+                )
+    for site in _grouped(sites):
+        site_energy = SiteEnergyCoordinator(hass, entry, api, site, time_zones[site.id])
+        await site_energy.async_refresh()
+        entry.runtime_data.site_energy[site.id] = site_energy
+
+    _async_register_devices(hass, entry)
     _async_migrate_circuit_unique_ids(hass, entry)
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     _async_remove_stale_entities(hass, entry)
@@ -127,8 +151,26 @@ async def async_setup_entry(hass: HomeAssistant, entry: BasisConfigEntry) -> boo
     return True
 
 
+async def _async_time_zone(site: Site) -> tzinfo | None:
+    """Return the time zone of the site, or None for the time zone of HA."""
+    if site.time_zone is None:
+        return None
+    if (time_zone := await dt_util.async_get_time_zone(site.time_zone)) is None:
+        LOGGER.warning(
+            "Site %s has the unknown time zone %s, so its energy periods use the time zone of HA",
+            site.id,
+            site.time_zone,
+        )
+    return time_zone
+
+
 async def _async_setup_board(
-    hass: HomeAssistant, entry: BasisConfigEntry, api: BasisAPI, serial: str
+    hass: HomeAssistant,
+    entry: BasisConfigEntry,
+    api: BasisAPI,
+    serial: str,
+    site: Site,
+    time_zone: tzinfo | None,
 ) -> BoardCoordinators:
     """Create the coordinators of one switchboard and fetch their first data.
 
@@ -137,8 +179,9 @@ async def _async_setup_board(
     """
     board = BoardCoordinators(
         live=SwitchboardDataCoordinator(hass, entry, api, serial),
-        energy=EnergyStatsCoordinator(hass, entry, api, serial),
-        subcircuit_energy=SubcircuitEnergyCoordinator(hass, entry, api, serial),
+        energy=EnergyStatsCoordinator(hass, entry, api, serial, time_zone),
+        subcircuit_energy=SubcircuitEnergyCoordinator(hass, entry, api, serial, time_zone),
+        site_id=site.id,
     )
     for coordinator in (board.live, board.energy, board.subcircuit_energy):
         await coordinator.async_refresh()
@@ -148,80 +191,187 @@ async def _async_setup_board(
     return board
 
 
-async def _async_register_switchboard_devices(
-    hass: HomeAssistant, entry: BasisConfigEntry
-) -> None:
-    """Register each switchboard as a device."""
+@callback
+def _async_register_devices(hass: HomeAssistant, entry: BasisConfigEntry) -> None:
+    """Register each switchboard, and each site with more than one, as a device."""
     device_registry = dr.async_get(hass)
     data = entry.runtime_data
+    grouped = {site.id for site in _grouped(_owned_sites(hass, entry))}
 
-    for serial in data.discovery.switchboard_serials:
-        board = data.boards.get(serial)
-        if board is None:
-            continue
+    for site in _owned_sites(hass, entry):
+        site_device_id = None
+        if site.id in grouped:
+            site_device_id = device_registry.async_get_or_create(
+                config_entry_id=entry.entry_id,
+                identifiers={(DOMAIN, site_identifier(site.id))},
+                manufacturer=BRAND,
+                model="Site",
+                name=site.address or "Basis Site",
+            ).id
+        for serial in site.serials:
+            if (board := data.boards.get(serial)) is not None:
+                _async_register_switchboard_device(
+                    device_registry, entry, board, site_device_id
+                )
 
-        # Without data, keep the name of an existing device; a new one gets the default.
-        details: dict = {"default_name": _device_name(serial, None)}
-        if (switchboard := board.live.data) is not None:
-            model = switchboard.model
-            if (model == "unknown"):
-                model = DEFAULT_MODEL
-            details = {
-                "name": _device_name(serial, switchboard.name),
-                "model": model,
-                "sw_version": switchboard.version,
-                "hw_version": (
-                    switchboard.subcircuits[0].config_version
-                    if switchboard.subcircuits
-                    else "Unknown"
-                ),
-            }
 
-        device_registry.async_get_or_create(
-            config_entry_id=entry.entry_id,
-            identifiers={(DOMAIN, serial)},
-            manufacturer=BRAND,
-            serial_number=serial,
-            **details,
-        )
-        LOGGER.debug(f"Registered device for switchboard {serial}")
+@callback
+def _async_register_switchboard_device(
+    device_registry: dr.DeviceRegistry,
+    entry: BasisConfigEntry,
+    board: BoardCoordinators,
+    site_device_id: str | None,
+) -> None:
+    serial = board.live.serial
+    # Without data, keep the name of an existing device; a new one gets the default.
+    details: dict = {"default_name": _device_name(serial, None)}
+    if (switchboard := board.live.data) is not None:
+        model = switchboard.model
+        if (model == "unknown"):
+            model = DEFAULT_MODEL
+        details = {
+            "name": _device_name(serial, switchboard.name),
+            "model": model,
+            "sw_version": switchboard.version,
+            "hw_version": (
+                switchboard.subcircuits[0].config_version
+                if switchboard.subcircuits
+                else "Unknown"
+            ),
+        }
+
+    device_registry.async_get_or_create(
+        config_entry_id=entry.entry_id,
+        identifiers={(DOMAIN, serial)},
+        manufacturer=BRAND,
+        serial_number=serial,
+        via_device_id=site_device_id,
+        **details,
+    )
+    LOGGER.debug(f"Registered device for switchboard {serial}")
 
 
 @callback
 def _async_check_boards(hass: HomeAssistant, entry: BasisConfigEntry) -> None:
-    """Reload the entry when a switchboard appears or stays missing."""
+    """Reload the entry when a switchboard appears, and remove devices that stay missing."""
     data = entry.runtime_data
     if not data.discovery.last_update_success:
         return
 
-    current = set(data.discovery.switchboard_serials)
-    if new := current - set(data.boards):
+    if new := _owned_serials(hass, entry, claimable=True) - set(data.boards):
         LOGGER.info("Found new switchboards %s, reloading", new)
         hass.config_entries.async_schedule_reload(entry.entry_id)
         return
 
-    # An empty list is more likely an API fault than the loss of every board.
-    if not current:
+    if moved := {
+        serial
+        for site in _owned_sites(hass, entry)
+        for serial in site.serials
+        if (board := data.boards.get(serial)) is not None and board.site_id != site.id
+    }:
+        LOGGER.info("Switchboards %s moved to a different site, reloading", moved)
+        hass.config_entries.async_schedule_reload(entry.entry_id)
         return
+
+    # An empty list is more likely an API fault than the loss of every board.
+    if not data.discovery.switchboard_serials:
+        return
+
+    sites = _owned_sites(hass, entry)
+    current = {site_identifier(site.id) for site in _grouped(sites)} | {
+        serial for site in sites for serial in site.serials
+    }
 
     device_registry = dr.async_get(hass)
     reload = False
     for device in dr.async_entries_for_config_entry(device_registry, entry.entry_id):
-        serial = _device_serial(device)
-        if serial is None:
+        identifier = _device_identifier(device)
+        if identifier is None:
             continue
-        if serial in current:
-            data.missing_polls.pop(serial, None)
+        if identifier in current:
+            data.missing_polls.pop(identifier, None)
             continue
-        data.missing_polls[serial] = data.missing_polls.get(serial, 0) + 1
-        if data.missing_polls[serial] < BOARD_REMOVAL_POLLS:
+        data.missing_polls[identifier] = data.missing_polls.get(identifier, 0) + 1
+        if data.missing_polls[identifier] < BOARD_REMOVAL_POLLS:
             continue
-        LOGGER.info("Switchboard %s is no longer in the account, removing it", serial)
+        LOGGER.info("Device %s is no longer in this account, removing it", identifier)
         device_registry.async_remove_device(device.id)
-        reload |= serial in data.boards
+        reload |= identifier in data.boards
 
     if reload:
         hass.config_entries.async_schedule_reload(entry.entry_id)
+
+
+def _owned_sites(
+    hass: HomeAssistant, entry: BasisConfigEntry, claimable: bool = False
+) -> list[Site]:
+    """Return the sites that the entry owns.
+
+    With claimable, also return the sites that no entry owns and that this entry can claim.
+    """
+    owners = hass.data[SITE_OWNERS]
+    return [
+        site
+        for site in entry.runtime_data.discovery.sites
+        if owners.get(site.id) == entry.entry_id
+        or (claimable and site.id not in owners and _may_claim(hass, entry, site))
+    ]
+
+
+def _may_claim(hass: HomeAssistant, entry: BasisConfigEntry, site: Site) -> bool:
+    """Return True if the entry can own the site and keep the devices that HA has for it.
+
+    Each entry has its own devices, so a change of owner gives the site new devices.
+    Of the entries that have devices for the site and can set up, the first entry ID owns it.
+    """
+    identifiers = {(DOMAIN, serial) for serial in site.serials}
+    identifiers.add((DOMAIN, site_identifier(site.id)))
+    holders = {
+        device.config_entry_id
+        for device in dr.async_get(hass).async_get_devices(identifiers=identifiers)
+    }
+    candidates = [
+        holder.entry_id
+        for holder_id in holders
+        if (holder := hass.config_entries.async_get_entry(holder_id)) is not None
+        and _can_set_up(hass, holder)
+    ]
+    return not candidates or min(candidates) == entry.entry_id
+
+
+def _can_set_up(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+    if entry.disabled_by is not None:
+        return False
+    if entry.state is ConfigEntryState.NOT_LOADED:
+        # At startup HA sets up the entries in any order, so a waiting entry keeps its sites.
+        return not hass.is_running
+    return entry.state in (
+        ConfigEntryState.LOADED,
+        ConfigEntryState.SETUP_IN_PROGRESS,
+        ConfigEntryState.SETUP_RETRY,
+    )
+
+
+def _grouped(sites: list[Site]) -> list[Site]:
+    """Return the sites with more than one switchboard.
+
+    Only these sites get a device and energy sensors, because one switchboard needs no group.
+    """
+    return [site for site in sites if len(site.serials) > 1]
+
+
+def _owned_serials(
+    hass: HomeAssistant, entry: BasisConfigEntry, claimable: bool = False
+) -> set[str]:
+    return {serial for site in _owned_sites(hass, entry, claimable) for serial in site.serials}
+
+
+@callback
+def _async_release_sites(hass: HomeAssistant, entry: BasisConfigEntry) -> None:
+    """Let the entries of other accounts take the sites of this entry."""
+    owners = hass.data[SITE_OWNERS]
+    for site_id in [site_id for site_id, owner in owners.items() if owner == entry.entry_id]:
+        del owners[site_id]
 
 
 @callback
@@ -304,18 +454,21 @@ def _async_remove_stale_entities(hass: HomeAssistant, entry: BasisConfigEntry) -
         return
     entity_registry = er.async_get(hass)
     device_registry = dr.async_get(hass)
+    sites = {site_identifier(site.id) for site in _grouped(_owned_sites(hass, entry))}
     for registry_entry in er.async_entries_for_config_entry(entity_registry, entry.entry_id):
         if registry_entry.unique_id in data.unique_ids:
             continue
         device = device_registry.async_get(registry_entry.device_id or "")
-        board = data.boards.get(_device_serial(device)) if device else None
-        # Without circuit data, the platforms could not decide the entities of a board.
-        if board is None or not board.layout:
-            continue
-        # The migration renames this entry when its module is in the live data again.
-        if _is_module_unique_id(registry_entry.unique_id, board.live.serial):
-            continue
-        LOGGER.info("Removing %s, which no circuit provides", registry_entry.entity_id)
+        identifier = _device_identifier(device) if device else None
+        if identifier not in sites:
+            board = data.boards.get(identifier)
+            # Without circuit data, the platforms could not decide the entities of a board.
+            if board is None or not board.layout:
+                continue
+            # The migration renames this entry when its module is in the live data again.
+            if _is_module_unique_id(registry_entry.unique_id, board.live.serial):
+                continue
+        LOGGER.info("Removing %s, which no device provides", registry_entry.entity_id)
         entity_registry.async_remove(registry_entry.entity_id)
 
 
@@ -342,11 +495,11 @@ def _async_sync_device_name(
     name = _device_name(board.live.serial, board.live.data.name)
     device_registry = dr.async_get(hass)
     for device in dr.async_entries_for_config_entry(device_registry, entry.entry_id):
-        if _device_serial(device) == board.live.serial and device.name != name:
+        if _device_identifier(device) == board.live.serial and device.name != name:
             device_registry.async_update_device(device.id, name=name)
 
 
-def _device_serial(device: dr.DeviceEntry) -> str | None:
+def _device_identifier(device: dr.DeviceEntry) -> str | None:
     return next((value for domain, value in device.identifiers if domain == DOMAIN), None)
 
 
