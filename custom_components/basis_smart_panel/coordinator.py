@@ -16,11 +16,12 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import timedelta
-from typing import TYPE_CHECKING, ClassVar
+from typing import ClassVar
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
+from homeassistant.exceptions import ConfigEntryAuthFailed
+from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 from homeassistant.util import dt as dt_util
 
 from .const import (
@@ -32,10 +33,8 @@ from .const import (
     ENERGY_STATS_UPDATE_INTERVAL,
 )
 
+from .api import BasisAPI, BasisApiError, BasisAuthError, BasisRateLimitError
 from .models import BoardEnergy, Switchboard
-
-if TYPE_CHECKING:
-    from .api import BasisAPI
 
 type BasisConfigEntry = ConfigEntry[BasisData]
 
@@ -56,9 +55,27 @@ class BasisData:
     api: BasisAPI
     discovery: BoardsDiscoveryCoordinator
     boards: dict[str, BoardCoordinators] = field(default_factory=dict)
+    missing_polls: dict[str, int] = field(default_factory=dict)
 
 
-class BoardsDiscoveryCoordinator(DataUpdateCoordinator[list[str]]):
+class BasisCoordinator[_DataT](DataUpdateCoordinator[_DataT]):
+    """Coordinator that turns API errors into the errors that HA expects."""
+
+    async def _async_update_data(self) -> _DataT:
+        try:
+            return await self._async_fetch()
+        except BasisAuthError as err:
+            raise ConfigEntryAuthFailed(str(err)) from err
+        except BasisRateLimitError as err:
+            raise UpdateFailed(str(err), retry_after=err.retry_after) from err
+        except BasisApiError as err:
+            raise UpdateFailed(str(err)) from err
+
+    async def _async_fetch(self) -> _DataT:
+        raise NotImplementedError
+
+
+class BoardsDiscoveryCoordinator(BasisCoordinator[list[str]]):
     """Coordinator to discover available switchboards periodically."""
 
     def __init__(
@@ -78,7 +95,7 @@ class BoardsDiscoveryCoordinator(DataUpdateCoordinator[list[str]]):
         self._api = api
         self._known_serials: set[str] = set()
 
-    async def _async_update_data(self) -> list[str]:
+    async def _async_fetch(self) -> list[str]:
         """Fetch available switchboards from the API."""
         serials = await self._api.get_available_switchboards()
 
@@ -97,7 +114,7 @@ class BoardsDiscoveryCoordinator(DataUpdateCoordinator[list[str]]):
         return self.data or []
 
 
-class BasisBoardCoordinator[_DataT](DataUpdateCoordinator[_DataT]):
+class BasisBoardCoordinator[_DataT](BasisCoordinator[_DataT]):
     """Base for the coordinators of one switchboard."""
 
     NAME_SUFFIX: ClassVar[str]
@@ -128,7 +145,7 @@ class SwitchboardDataCoordinator(BasisBoardCoordinator[Switchboard]):
     NAME_SUFFIX = ""
     UPDATE_INTERVAL = SWITCHBOARD_UPDATE_INTERVAL
 
-    async def _async_update_data(self) -> Switchboard:
+    async def _async_fetch(self) -> Switchboard:
         """Fetch switchboard data from the API."""
         return await self.api.get_switchboard_data(self.serial)
 
@@ -139,7 +156,7 @@ class EnergyStatsCoordinator(BasisBoardCoordinator[BoardEnergy]):
     NAME_SUFFIX = "_energy"
     UPDATE_INTERVAL = ENERGY_STATS_UPDATE_INTERVAL
 
-    async def _async_update_data(self) -> BoardEnergy:
+    async def _async_fetch(self) -> BoardEnergy:
         """Fetch energy statistics from the API."""
         now = dt_util.now()
         start_of_today = now.replace(hour=0, minute=0, second=0, microsecond=0)
@@ -162,7 +179,7 @@ class SubcircuitEnergyCoordinator(BasisBoardCoordinator[dict[str, float | None]]
     NAME_SUFFIX = "_subcircuit_energy"
     UPDATE_INTERVAL = ENERGY_STATS_UPDATE_INTERVAL
 
-    async def _async_update_data(self) -> dict[str, float | None]:
+    async def _async_fetch(self) -> dict[str, float | None]:
         """Fetch today's import energy of each subcircuit."""
         now = dt_util.now()
         start_of_today = now.replace(hour=0, minute=0, second=0, microsecond=0)

@@ -11,28 +11,33 @@ from homeassistant.const import STATE_UNAVAILABLE, STATE_UNKNOWN
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers import entity_registry as er
-from pytest_homeassistant_custom_component.common import (
-    MockConfigEntry,
-    async_fire_time_changed,
-)
+from pytest_homeassistant_custom_component.common import MockConfigEntry
 
+from custom_components.basis_smart_panel import BOARD_REMOVAL_POLLS
 from custom_components.basis_smart_panel.const import (
+    BOARDS_DISCOVERY_INTERVAL,
     DOMAIN,
-    SWITCHBOARD_UPDATE_INTERVAL,
 )
 
-from .conftest import ACCESS_TOKEN, USER_SUB, make_token, setup_integration
+from .conftest import (
+    ACCESS_TOKEN,
+    POLL,
+    USER_SUB,
+    advance,
+    make_token,
+    setup_integration,
+)
 from .fake_backend import SERIAL_A, SERIAL_B, FakeBasisBackend, subcircuit
 
-# The coordinator adds up to 1 s of jitter to each refresh.
-POLL = SWITCHBOARD_UPDATE_INTERVAL + timedelta(seconds=1)
+DISCOVERY = BOARDS_DISCOVERY_INTERVAL + timedelta(seconds=1)
 
 
-async def advance(hass: HomeAssistant, freezer: FrozenDateTimeFactory, delta: timedelta) -> None:
-    """Move the clock and run the timers that are due."""
-    freezer.tick(delta)
-    async_fire_time_changed(hass)
-    await hass.async_block_till_done(wait_background_tasks=True)
+def power_entity(entity_registry: er.EntityRegistry, serial: str, sub: str) -> str:
+    entity_id = entity_registry.async_get_entity_id(
+        "sensor", DOMAIN, f"basis_power_{serial}_{sub}"
+    )
+    assert entity_id
+    return entity_id
 
 
 def board_device(
@@ -131,11 +136,6 @@ async def test_live_values_update_on_poll(
     assert hass.states.get(entity_id).state == "1200.0"
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason="the board-change handler unloads all platforms, then "
-    "async_config_entry_first_refresh raises because the entry is LOADED",
-)
 async def test_board_added_after_setup(
     hass: HomeAssistant,
     freezer: FrozenDateTimeFactory,
@@ -145,20 +145,16 @@ async def test_board_added_after_setup(
 ) -> None:
     fake_backend.remove_board(SERIAL_B)
     await setup_integration(hass, config_entry)
-    power_a = entity_registry.async_get_entity_id(
-        "sensor", DOMAIN, f"basis_power_{SERIAL_A}_SC-A01"
-    )
 
     fake_backend.sites["site-2"] = [SERIAL_B]
-    await advance(hass, freezer, timedelta(minutes=5))
+    await advance(hass, freezer, DISCOVERY)
 
-    assert hass.states.get(power_a).state == "120.5"
-    assert entity_registry.async_get_entity_id(
-        "sensor", DOMAIN, f"basis_power_{SERIAL_B}_SC-B01"
-    )
+    assert config_entry.state is ConfigEntryState.LOADED
+    assert hass.states.get(power_entity(entity_registry, SERIAL_A, "SC-A01")).state == "120.5"
+    assert hass.states.get(power_entity(entity_registry, SERIAL_B, "SC-B01"))
 
 
-async def test_board_removed_after_setup(
+async def test_board_removed_after_missing_polls(
     hass: HomeAssistant,
     freezer: FrozenDateTimeFactory,
     fake_backend: FakeBasisBackend,
@@ -167,19 +163,74 @@ async def test_board_removed_after_setup(
     device_registry: dr.DeviceRegistry,
 ) -> None:
     await setup_integration(hass, config_entry)
-    assert board_device(device_registry, config_entry, SERIAL_B)
 
     fake_backend.remove_board(SERIAL_B)
-    await advance(hass, freezer, timedelta(minutes=5))
+    for _ in range(BOARD_REMOVAL_POLLS - 1):
+        await advance(hass, freezer, DISCOVERY)
+    assert board_device(device_registry, config_entry, SERIAL_B)
 
+    await advance(hass, freezer, DISCOVERY)
     assert board_device(device_registry, config_entry, SERIAL_B) is None
     assert not entity_registry.async_get_entity_id(
         "sensor", DOMAIN, f"basis_power_{SERIAL_B}_SC-B01"
     )
-    power_a = entity_registry.async_get_entity_id(
-        "sensor", DOMAIN, f"basis_power_{SERIAL_A}_SC-A01"
+    assert config_entry.state is ConfigEntryState.LOADED
+    assert hass.states.get(power_entity(entity_registry, SERIAL_A, "SC-A01")).state == "120.5"
+
+
+async def test_board_missing_once_is_kept(
+    hass: HomeAssistant,
+    freezer: FrozenDateTimeFactory,
+    fake_backend: FakeBasisBackend,
+    config_entry: MockConfigEntry,
+    device_registry: dr.DeviceRegistry,
+) -> None:
+    await setup_integration(hass, config_entry)
+
+    fake_backend.remove_board(SERIAL_B)
+    await advance(hass, freezer, DISCOVERY)
+    fake_backend.sites["site-2"] = [SERIAL_B]
+    for _ in range(BOARD_REMOVAL_POLLS):
+        await advance(hass, freezer, DISCOVERY)
+
+    assert board_device(device_registry, config_entry, SERIAL_B)
+
+
+async def test_empty_board_list_removes_nothing(
+    hass: HomeAssistant,
+    freezer: FrozenDateTimeFactory,
+    fake_backend: FakeBasisBackend,
+    config_entry: MockConfigEntry,
+    device_registry: dr.DeviceRegistry,
+) -> None:
+    await setup_integration(hass, config_entry)
+
+    fake_backend.sites = {}
+    for _ in range(BOARD_REMOVAL_POLLS + 1):
+        await advance(hass, freezer, DISCOVERY)
+
+    assert board_device(device_registry, config_entry, SERIAL_A)
+    assert board_device(device_registry, config_entry, SERIAL_B)
+
+
+async def test_orphan_device_removed_after_missing_polls(
+    hass: HomeAssistant,
+    freezer: FrozenDateTimeFactory,
+    fake_backend: FakeBasisBackend,
+    config_entry: MockConfigEntry,
+    device_registry: dr.DeviceRegistry,
+) -> None:
+    config_entry.add_to_hass(hass)
+    device_registry.async_get_or_create(
+        config_entry_id=config_entry.entry_id, identifiers={(DOMAIN, "SB-REMOVED")}
     )
-    assert hass.states.get(power_a).state == "120.5"
+    await setup_integration(hass, config_entry)
+
+    for _ in range(BOARD_REMOVAL_POLLS):
+        await advance(hass, freezer, DISCOVERY)
+
+    assert board_device(device_registry, config_entry, "SB-REMOVED") is None
+    assert board_device(device_registry, config_entry, SERIAL_A)
 
 
 @pytest.mark.parametrize(

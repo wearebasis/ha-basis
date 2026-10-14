@@ -6,16 +6,23 @@ import base64
 import json
 import time
 from collections.abc import AsyncGenerator
+from datetime import timedelta
 from unittest.mock import patch
 
 import pytest
 from freezegun.api import FrozenDateTimeFactory
 from homeassistant.core import HomeAssistant
-from pytest_homeassistant_custom_component.common import MockConfigEntry
+from pytest_homeassistant_custom_component.common import (
+    MockConfigEntry,
+    async_fire_time_changed,
+)
 from pytest_homeassistant_custom_component.syrupy import HomeAssistantSnapshotExtension
 from syrupy.assertion import SnapshotAssertion
 
-from custom_components.basis_smart_panel.const import DOMAIN
+from custom_components.basis_smart_panel.const import (
+    DOMAIN,
+    SWITCHBOARD_UPDATE_INTERVAL,
+)
 
 from .fake_backend import FakeBasisBackend
 
@@ -23,6 +30,9 @@ USER_SUB = "auth0|user-1"
 USER_EMAIL = "user@example.com"
 ACCESS_TOKEN = "test-access-token"
 NOW = "2026-10-15T10:00:00+13:00"
+
+# The coordinator adds up to 1 s of jitter to each refresh.
+POLL = SWITCHBOARD_UPDATE_INTERVAL + timedelta(seconds=1)
 
 
 def make_id_token(sub: str, email: str) -> str:
@@ -95,3 +105,12 @@ async def setup_integration(hass: HomeAssistant, entry: MockConfigEntry) -> None
     entry.add_to_hass(hass)
     await hass.config_entries.async_setup(entry.entry_id)
     await hass.async_block_till_done()
+
+
+async def advance(
+    hass: HomeAssistant, freezer: FrozenDateTimeFactory, delta: timedelta
+) -> None:
+    """Move the clock and run the timers and refreshes that are due."""
+    freezer.tick(delta)
+    async_fire_time_changed(hass)
+    await hass.async_block_till_done(wait_background_tasks=True)

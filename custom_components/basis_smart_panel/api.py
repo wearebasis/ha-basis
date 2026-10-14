@@ -15,13 +15,16 @@
 from __future__ import annotations
 
 import asyncio
+from collections.abc import Mapping
+from datetime import timedelta
+from http import HTTPStatus
 from typing import cast
 
-from aiohttp import ClientError
+from aiohttp import ClientError, ClientResponseError
 from homeassistant.helpers import config_entry_oauth2_flow
 from gql import Client, gql
 from gql.transport.aiohttp import AIOHTTPTransport
-from gql.transport.exceptions import TransportError
+from gql.transport.exceptions import TransportError, TransportQueryError
 
 from .const import (
     LOGGER,
@@ -38,6 +41,30 @@ from .models import (
 
 MAX_RETRIES = 3
 RETRY_DELAY_SECONDS = 2
+ATTEMPT_TIMEOUT = timedelta(seconds=10)
+TOTAL_TIMEOUT = timedelta(seconds=15)
+
+
+class BasisApiError(Exception):
+    """A request to the Basis API failed."""
+
+
+class BasisConnectionError(BasisApiError):
+    """The request did not complete, or the API had a temporary fault."""
+
+
+class BasisAuthError(BasisApiError):
+    """The API or the token endpoint rejected the credentials."""
+
+
+class BasisRateLimitError(BasisApiError):
+    """The API limited the rate of requests."""
+
+    def __init__(self, message: str, retry_after: float | None) -> None:
+        """Initialize the error with the seconds to wait, if the API sent them."""
+        super().__init__(message)
+        self.retry_after = retry_after
+
 
 class AsyncConfigEntryAuth():
     """Provide Basis Smart Panel authentication tied to an OAuth2 based config entry."""
@@ -51,10 +78,14 @@ class AsyncConfigEntryAuth():
 
     async def async_get_access_token(self) -> str:
         """Return a valid access token."""
-        if not self._oauth_session.valid_token:
+        try:
             await self._oauth_session.async_ensure_token_valid()
-
-        LOGGER.debug(f"token scope {self._oauth_session.token['scope']}")
+        except ClientResponseError as err:
+            if _is_rejection(err.status):
+                raise BasisAuthError(f"Token refresh rejected ({err.status})") from err
+            raise BasisConnectionError(f"Token refresh failed ({err.status})") from err
+        except (ClientError, TimeoutError) as err:
+            raise BasisConnectionError(f"Token refresh failed: {err!r}") from err
 
         return cast(str, self._oauth_session.token["access_token"])
 
@@ -72,13 +103,8 @@ class BasisAPI:
         self._auth = auth
         self._integration_version = integration_version
 
-    async def _get_auth_token(self) -> str:
-        """Get the current authentication token."""
-        return await self._auth.async_get_access_token()
-
-    async def _create_client(self) -> Client:
-        """Create a new GraphQL client with current auth token."""
-        auth_token = await self._get_auth_token()
+    def _create_client(self, auth_token: str) -> Client:
+        """Create a new GraphQL client with the access token."""
         transport = AIOHTTPTransport(
             url=f'{API_BASE_URL}/query',
             headers={
@@ -86,22 +112,44 @@ class BasisAPI:
                 'Authorization': f'Bearer {auth_token}',
             },
             ssl=True,
+            # Without this, gql reads a GraphQL body of an error response and drops the status.
+            client_session_args={"raise_for_status": True},
         )
-        return Client(transport=transport, fetch_schema_from_transport=False)
+        # gql's own timeout cancels with anyio, which defeats the asyncio.timeout in _execute.
+        return Client(
+            transport=transport, fetch_schema_from_transport=False, execute_timeout=None
+        )
 
-    async def _execute_with_retry(self, document, variables=None) -> dict:
-        """Execute a GraphQL query with retry on transient failures."""
-        for attempt in range(1, MAX_RETRIES + 1):
+    async def _execute(self, document, variables=None, *, retry: bool = True) -> dict:
+        """Execute a GraphQL document and raise BasisApiError on failure.
+
+        Only a BasisConnectionError is retried, and only when retry is True.
+        The token refresh and all attempts together must finish within TOTAL_TIMEOUT.
+        """
+        try:
+            async with asyncio.timeout(TOTAL_TIMEOUT.total_seconds()):
+                auth_token = await self._auth.async_get_access_token()
+                return await self._execute_attempts(
+                    document, variables, auth_token, MAX_RETRIES if retry else 1
+                )
+        except TimeoutError as err:
+            raise BasisConnectionError(f"No answer within {TOTAL_TIMEOUT}") from err
+
+    async def _execute_attempts(
+        self, document, variables, auth_token: str, attempts: int
+    ) -> dict:
+        for attempt in range(1, attempts + 1):
             try:
-                client = await self._create_client()
-                return await client.execute_async(document, variable_values=variables)
-            except (asyncio.TimeoutError, ClientError, TransportError, OSError) as err:
-                if attempt == MAX_RETRIES:
-                    LOGGER.error("Query failed after %s attempts: %s", MAX_RETRIES, err)
-                    raise
-                LOGGER.warning(
-                    "Query attempt %s/%s failed (%s: %s), retrying in %ss",
-                    attempt, MAX_RETRIES, type(err).__name__, err, RETRY_DELAY_SECONDS,
+                client = self._create_client(auth_token)
+                async with asyncio.timeout(ATTEMPT_TIMEOUT.total_seconds()):
+                    return await client.execute_async(document, variable_values=variables)
+            except (TransportError, ClientError, TimeoutError, OSError) as err:
+                error = _api_error(err)
+                if not isinstance(error, BasisConnectionError) or attempt == attempts:
+                    raise error from err
+                LOGGER.debug(
+                    "Query attempt %s/%s failed, retrying in %ss: %r",
+                    attempt, attempts, RETRY_DELAY_SECONDS, err,
                 )
                 await asyncio.sleep(RETRY_DELAY_SECONDS)
 
@@ -123,7 +171,7 @@ class BasisAPI:
             }
         """)
 
-        result = await self._execute_with_retry(query)
+        result = await self._execute(query)
         serials = [
             board["serial"]
             for site in result["sites"]["sites"]
@@ -178,7 +226,7 @@ class BasisAPI:
             "serial": serial
         }
 
-        result = await self._execute_with_retry(query, variables)
+        result = await self._execute(query, variables)
         return _parse_switchboard(result["switchboard"])
 
     async def get_switchboard_energy_usage(
@@ -201,7 +249,7 @@ class BasisAPI:
             "startTime": start_time,
         }
 
-        result = await self._execute_with_retry(query, variables)
+        result = await self._execute(query, variables)
         usage = result["switchboard"]["totalSwitchboardEnergyUsage"]
         return EnergyTotals(import_kwh=usage["importKwh"], export_kwh=usage["exportKwh"])
 
@@ -245,7 +293,7 @@ class BasisAPI:
             "startTime": start_time,
         }
 
-        result = await self._execute_with_retry(query, variables)
+        result = await self._execute(query, variables)
         return {
             subcircuit["serial"]: _last_import_kwh(subcircuit["energyUsage"]["data"])
             for subcircuit in result["switchboard"]["subcircuits"]
@@ -255,8 +303,6 @@ class BasisAPI:
         self, switchboard_serial: str, subcircuit_serial: str, standby_state: bool
     ):
         """Set subcircuit standby state."""
-        client = await self._create_client()
-
         mutation = gql("""
             mutation UpdateSubcircuitStandby($input: UpdateSubcircuitStandbyStateInput!) {
                 updateSubcircuitStandbyState(input: $input) {
@@ -276,7 +322,7 @@ class BasisAPI:
             }
         }
 
-        return await client.execute_async(mutation, variable_values=variables)
+        return await self._execute(mutation, variables, retry=False)
 
 
 def _parse_switchboard(data: dict) -> Switchboard:
@@ -331,3 +377,40 @@ def _last_import_kwh(data_points: list[dict]) -> float | None:
         if value is not None:
             result = value
     return result
+
+
+def _is_rejection(status: int | None) -> bool:
+    """Return True for a 4xx status other than 429, which retries cannot fix."""
+    return (
+        status is not None
+        and 400 <= status < 500
+        and status != HTTPStatus.TOO_MANY_REQUESTS
+    )
+
+
+def _retry_after(headers: Mapping[str, str] | None) -> float | None:
+    """Return the Retry-After seconds, or None without the header or for the HTTP date form."""
+    value = (headers or {}).get("Retry-After", "")
+    return float(value) if value.isdigit() else None
+
+
+def _api_error(err: Exception) -> BasisApiError:
+    """Return the BasisApiError for an error of the GraphQL client."""
+    # gql 4 wraps the aiohttp error, gql 3 does not.
+    response_error = next(
+        (e for e in (err, err.__cause__) if isinstance(e, ClientResponseError)), None
+    )
+    if response_error is not None:
+        # The API answers a rejected access token with HTTP 401.
+        if response_error.status == HTTPStatus.UNAUTHORIZED:
+            return BasisAuthError("The API rejected the access token")
+        if response_error.status == HTTPStatus.TOO_MANY_REQUESTS:
+            return BasisRateLimitError(
+                str(response_error), _retry_after(response_error.headers)
+            )
+        if _is_rejection(response_error.status):
+            return BasisApiError(str(response_error))
+        return BasisConnectionError(str(response_error))
+    if isinstance(err, TransportQueryError):
+        return BasisApiError(str(err))
+    return BasisConnectionError(repr(err))

@@ -41,6 +41,8 @@ from .coordinator import (
 )
 from .api import BasisAPI, AsyncConfigEntryAuth
 
+BOARD_REMOVAL_POLLS = 3
+
 
 async def async_setup(hass: HomeAssistant, config) -> bool:
     """Set up the Basis Smart Panel component."""
@@ -101,11 +103,10 @@ async def async_setup_entry(hass: HomeAssistant, entry: BasisConfigEntry) -> boo
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 
     @callback
-    def _async_on_boards_update() -> None:
-        """Handle boards discovery updates."""
-        hass.async_create_task(_async_handle_boards_change(hass, entry))
+    def _async_on_discovery_update() -> None:
+        _async_check_boards(hass, entry)
 
-    entry.async_on_unload(discovery.async_add_listener(_async_on_boards_update))
+    entry.async_on_unload(discovery.async_add_listener(_async_on_discovery_update))
 
     return True
 
@@ -159,50 +160,45 @@ async def _async_register_switchboard_devices(
             LOGGER.debug(f"Registered device for switchboard {serial}")
 
 
-async def _async_handle_boards_change(
-    hass: HomeAssistant, entry: BasisConfigEntry
-) -> None:
-    """Handle added or removed switchboards."""
+@callback
+def _async_check_boards(hass: HomeAssistant, entry: BasisConfigEntry) -> None:
+    """Reload the entry when a switchboard appears or stays missing."""
     data = entry.runtime_data
-    current_serials = set(data.discovery.switchboard_serials)
-
-    # Also check device registry for any orphaned devices
-    device_registry = dr.async_get(hass)
-    registry_serials: set[str] = set()
-    for device in dr.async_entries_for_config_entry(device_registry, entry.entry_id):
-        for identifier in device.identifiers:
-            if identifier[0] == DOMAIN:
-                registry_serials.add(identifier[1])
-
-    removed_serials = registry_serials - current_serials
-    new_serials = current_serials - set(data.boards)
-
-    if not new_serials and not removed_serials:
+    if not data.discovery.last_update_success:
         return
 
-    await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
+    current = set(data.discovery.switchboard_serials)
+    if new := current - set(data.boards):
+        LOGGER.info("Found new switchboards %s, reloading", new)
+        hass.config_entries.async_schedule_reload(entry.entry_id)
+        return
 
-    if removed_serials:
-        LOGGER.info(f"Removing switchboards: {removed_serials}")
+    # An empty list is more likely an API fault than the loss of every board.
+    if not current:
+        return
 
-        for serial in removed_serials:
-            data.boards.pop(serial, None)
-            device = device_registry.async_get_device(identifiers={(DOMAIN, serial)})
-            if device:
-                device_registry.async_remove_device(device.id)
-                LOGGER.info(f"Removed device for switchboard {serial}")
-            else:
-                LOGGER.warning(f"Device not found for switchboard {serial}")
+    device_registry = dr.async_get(hass)
+    reload = False
+    for device in dr.async_entries_for_config_entry(device_registry, entry.entry_id):
+        serial = _device_serial(device)
+        if serial is None:
+            continue
+        if serial in current:
+            data.missing_polls.pop(serial, None)
+            continue
+        data.missing_polls[serial] = data.missing_polls.get(serial, 0) + 1
+        if data.missing_polls[serial] < BOARD_REMOVAL_POLLS:
+            continue
+        LOGGER.info("Switchboard %s is no longer in the account, removing it", serial)
+        device_registry.async_remove_device(device.id)
+        reload |= serial in data.boards
 
-    if new_serials:
-        LOGGER.info(f"Setting up new switchboards: {new_serials}")
+    if reload:
+        hass.config_entries.async_schedule_reload(entry.entry_id)
 
-        for serial in new_serials:
-            data.boards[serial] = await _async_setup_board(hass, entry, data.api, serial)
 
-        await _async_register_switchboard_devices(hass, entry)
-
-    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+def _device_serial(device: dr.DeviceEntry) -> str | None:
+    return next((value for domain, value in device.identifiers if domain == DOMAIN), None)
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: BasisConfigEntry) -> bool:

@@ -1,0 +1,28 @@
+{
+  "config": {
+    "step": {
+      "reauth_confirm": {
+        "title": "Reauthenticate with Basis",
+        "description": "Your session has expired. Please reauthenticate to continue using the Basis Smart Panel integration."
+      }
+    },
+    "abort": {
+      "reauth_successful": "Reauthentication successful",
+      "already_configured": "This Basis account is already configured",
+      "wrong_account": "You signed in with a different Basis account. Sign in with the account of this entry.",
+      "authorize_url_timeout": "Timeout while generating an authorization URL.",
+      "missing_configuration": "The component is not configured. Please follow the documentation.",
+      "missing_credentials": "The integration requires application credentials.",
+      "no_url_available": "No URL available. For information about this error, [check the help section]({docs_url})",
+      "oauth_error": "Received invalid token data.",
+      "oauth_failed": "Error while obtaining access token.",
+      "oauth_implementation_unavailable": "No OAuth2 implementations are currently available.",
+      "oauth_timeout": "Timeout while resolving the OAuth token.",
+      "oauth_unauthorized": "OAuth authorization error while obtaining access token.",
+      "user_rejected_authorize": "Account linking rejected: {error}"
+    },
+    "create_entry": {
+      "default": "Successfully authenticated with Basis"
+    }
+  }
+}

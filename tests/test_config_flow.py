@@ -63,7 +63,9 @@ async def run_oauth(
     with patch(
         "custom_components.basis_smart_panel.async_setup_entry", return_value=True
     ):
-        return await hass.config_entries.flow.async_configure(flow["flow_id"])
+        result = await hass.config_entries.flow.async_configure(flow["flow_id"])
+        await hass.async_block_till_done()
+    return result
 
 
 @pytest.mark.usefixtures("current_request_with_host")
@@ -149,10 +151,6 @@ async def test_reauth_updates_token(
     assert config_entry.data["token"]["access_token"] == "new-access-token"
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason="reauth does not compare the account with the unique_id of the entry",
-)
 @pytest.mark.usefixtures("current_request_with_host")
 async def test_reauth_with_other_account_aborts(
     hass: HomeAssistant,
@@ -173,3 +171,26 @@ async def test_reauth_with_other_account_aborts(
     assert result["type"] is FlowResultType.ABORT
     assert result["reason"] == "wrong_account"
     assert config_entry.data["token"]["access_token"] != "new-access-token"
+
+
+@pytest.mark.usefixtures("current_request_with_host")
+async def test_reauth_of_legacy_entry_accepts_account(
+    hass: HomeAssistant,
+    hass_client_no_auth: ClientSessionGenerator,
+    aioclient_mock: AiohttpClientMocker,
+) -> None:
+    entry = MockConfigEntry(
+        domain=DOMAIN,
+        unique_id=DOMAIN,
+        data={"auth_implementation": DOMAIN, "token": {"access_token": "old"}},
+    )
+    flow = await start_reauth(hass, entry)
+
+    result = await run_oauth(
+        hass, flow, hass_client_no_auth, aioclient_mock, token_response()
+    )
+
+    assert result["type"] is FlowResultType.ABORT
+    assert result["reason"] == "reauth_successful"
+    assert entry.unique_id == USER_SUB
+    assert entry.data["token"]["access_token"] == "new-access-token"

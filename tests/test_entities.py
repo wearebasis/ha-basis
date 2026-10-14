@@ -2,25 +2,17 @@
 
 from __future__ import annotations
 
-from datetime import timedelta
-
 from freezegun.api import FrozenDateTimeFactory
 from homeassistant.const import STATE_UNKNOWN
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers import entity_registry as er
-from pytest_homeassistant_custom_component.common import (
-    MockConfigEntry,
-    async_fire_time_changed,
-)
+from pytest_homeassistant_custom_component.common import MockConfigEntry
 from syrupy.assertion import SnapshotAssertion
 
-from custom_components.basis_smart_panel.const import (
-    DOMAIN,
-    SWITCHBOARD_UPDATE_INTERVAL,
-)
+from custom_components.basis_smart_panel.const import DOMAIN
 
-from .conftest import setup_integration
+from .conftest import POLL, advance, setup_integration
 from .fake_backend import SERIAL_A, FakeBasisBackend
 
 
@@ -70,9 +62,7 @@ async def test_circuit_missing_from_data(
 
     subcircuits = fake_backend.board(SERIAL_A)["subcircuits"]
     subcircuits[:] = [sub for sub in subcircuits if sub["serial"] != "SC-A01"]
-    freezer.tick(SWITCHBOARD_UPDATE_INTERVAL + timedelta(seconds=1))
-    async_fire_time_changed(hass)
-    await hass.async_block_till_done(wait_background_tasks=True)
+    await advance(hass, freezer, POLL)
 
     power_state = hass.states.get(power)
     assert power_state.state == STATE_UNKNOWN

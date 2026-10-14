@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import copy
 from pathlib import Path
 from typing import Any
@@ -136,6 +137,11 @@ class FakeBasisBackend:
         self.standby_calls: list[dict[str, Any]] = []
         self.requests: list[dict[str, Any]] = []
         self.fail_status: int | None = None
+        self.fail_body: dict[str, Any] | None = None
+        self.fail_headers: dict[str, str] = {}
+        self.graphql_error: str | None = None
+        self.hang = False
+        self._release = asyncio.Event()
         self._server = TestServer(self._app())
 
     @property
@@ -145,10 +151,12 @@ class FakeBasisBackend:
 
     async def start(self) -> None:
         """Start the HTTP server."""
-        await self._server.start_server()
+        # The access log cannot format the frozen time of the tests.
+        await self._server.start_server(access_log=None)
 
     async def close(self) -> None:
         """Stop the HTTP server."""
+        self._release.set()
         await self._server.close()
 
     def board(self, serial: str) -> dict[str, Any]:
@@ -169,8 +177,18 @@ class FakeBasisBackend:
     async def _handle(self, request: web.Request) -> web.Response:
         body = await request.json()
         self.requests.append({"headers": dict(request.headers), "body": body})
+        if self.hang:
+            await self._release.wait()
         if self.fail_status is not None:
-            return web.Response(status=self.fail_status, text="fake failure")
+            if self.fail_body is not None:
+                return web.json_response(
+                    self.fail_body, status=self.fail_status, headers=self.fail_headers
+                )
+            return web.Response(status=self.fail_status, headers=self.fail_headers)
+        if self.graphql_error is not None:
+            return web.json_response(
+                {"data": None, "errors": [{"message": self.graphql_error}]}
+            )
         result = await graphql(
             SCHEMA,
             body["query"],

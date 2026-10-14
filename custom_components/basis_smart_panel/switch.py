@@ -14,8 +14,10 @@
 
 from homeassistant.components.switch import SwitchEntity
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
+from .api import BasisApiError
 from .coordinator import BasisConfigEntry, SwitchboardDataCoordinator
 from .const import LABEL_ICON_MAP
 from .entity import BasisSubcircuitEntity
@@ -74,18 +76,21 @@ class BasisCircuitSwitch(BasisSubcircuitEntity, SwitchEntity):
 
     async def async_turn_on(self, **kwargs) -> None:
         """Turn on the circuit (deactivate standby)."""
-        await self.coordinator.api.set_subcircuit_standby(
-            self.coordinator.serial,
-            self._subcircuit_serial,
-            False,
-        )
-        await self.coordinator.async_request_refresh()
+        await self._async_set_standby(False)
 
     async def async_turn_off(self, **kwargs) -> None:
         """Turn off the circuit (activate standby)."""
-        await self.coordinator.api.set_subcircuit_standby(
-            self.coordinator.serial,
-            self._subcircuit_serial,
-            True,
-        )
+        await self._async_set_standby(True)
+
+    async def _async_set_standby(self, activate: bool) -> None:
+        try:
+            await self.coordinator.api.set_subcircuit_standby(
+                self.coordinator.serial,
+                self._subcircuit_serial,
+                activate,
+            )
+        except BasisApiError as err:
+            raise HomeAssistantError(
+                f"Could not change the standby state of {self.name}: {err}"
+            ) from err
         await self.coordinator.async_request_refresh()
