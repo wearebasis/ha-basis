@@ -16,12 +16,12 @@ from homeassistant.components.binary_sensor import (
     BinarySensorDeviceClass,
     BinarySensorEntity,
 )
-from homeassistant.const import EntityCategory
+from homeassistant.const import EntityCategory, Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .coordinator import BasisConfigEntry, SwitchboardDataCoordinator
-from .entity import BasisEntity, async_add_basis_entities
+from .entity import BasisEntity, async_add_basis_entities, panel_entity_id
 
 
 async def async_setup_entry(
@@ -50,6 +50,7 @@ class BasisConnectivitySensor(BasisEntity[SwitchboardDataCoordinator], BinarySen
     def __init__(self, coordinator: SwitchboardDataCoordinator) -> None:
         """Initialize the connectivity sensor."""
         super().__init__(coordinator, f"basis_connectivity_{coordinator.serial}")
+        self.entity_id = panel_entity_id(Platform.BINARY_SENSOR, coordinator.serial, "connectivity")
 
     @property
     def is_on(self) -> bool | None:

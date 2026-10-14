@@ -25,25 +25,26 @@ from homeassistant.helpers.entity_platform import (
     async_get_current_platform,
 )
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
+from homeassistant.util import slugify
 
-from .const import DOMAIN, LABEL_NAME_MAP
-from .coordinator import BasisConfigEntry, BasisDeviceCoordinator, SwitchboardDataCoordinator
+from .const import DOMAIN
+from .coordinator import (
+    BasisConfigEntry,
+    BasisDeviceCoordinator,
+    SwitchboardDataCoordinator,
+    circuit_identifier,
+)
 from .models import Subcircuit
-
-
-def circuit_name(number: int, subcircuit: Subcircuit | None, suffix: str = "") -> str:
-    """Return "[NN] <name> · <suffix>", or "[NN] <suffix>" without circuit data."""
-    prefix = f"[{number:02d}]"
-    if subcircuit is None:
-        return f"{prefix} {suffix or 'Circuit'}"
-    # The display label is a label key unless the user named the circuit in the app.
-    name = LABEL_NAME_MAP.get(subcircuit.display_label, subcircuit.display_label)
-    return f"{prefix} {name} · {suffix}" if suffix else f"{prefix} {name}"
 
 
 def circuit_unique_id(key: str, serial: str, number: int) -> str:
     """Return the unique ID of a circuit entity, which follows the circuit position."""
     return f"basis_{key}_{serial}_circuit_{number}"
+
+
+def panel_entity_id(domain: str, serial: str, *parts: str) -> str:
+    """Return an entity ID from the panel serial, so that a rename does not make it stale."""
+    return f"{domain}.{slugify(' '.join(('basis_panel', serial, *parts)))}"
 
 
 @callback
@@ -63,26 +64,45 @@ def async_add_basis_entities(
 class BasisEntity[_CoordinatorT: BasisDeviceCoordinator[Any]](
     CoordinatorEntity[_CoordinatorT]
 ):
-    """Entity on the device of one switchboard or one site."""
+    """Entity on the device of a switchboard, a site or a circuit."""
 
     _attr_has_entity_name = True
 
-    def __init__(self, coordinator: _CoordinatorT, unique_id: str) -> None:
+    def __init__(
+        self,
+        coordinator: _CoordinatorT,
+        unique_id: str,
+        device_identifier: str | None = None,
+    ) -> None:
         """Initialize the entity."""
         super().__init__(coordinator)
         self._attr_unique_id = unique_id
-        self._attr_device_info = DeviceInfo(identifiers={(DOMAIN, coordinator.identifier)})
+        self._attr_device_info = DeviceInfo(
+            identifiers={(DOMAIN, device_identifier or coordinator.identifier)}
+        )
 
 
-class BasisSubcircuitEntity(BasisEntity[SwitchboardDataCoordinator]):
-    """Entity of one subcircuit, read from the live switchboard data."""
+class BasisLiveEntity(BasisEntity[SwitchboardDataCoordinator]):
+    """Entity that reads the live data of a switchboard."""
+
+    @property
+    def available(self) -> bool:
+        """Return False while the switchboard is disconnected, because its live data is stale."""
+        data = self.coordinator.data
+        return super().available and data is not None and data.connectivity.connected
+
+
+class BasisSubcircuitEntity(BasisLiveEntity):
+    """Entity on the device of one subcircuit, read from the live switchboard data."""
 
     def __init__(
         self, coordinator: SwitchboardDataCoordinator, subcircuit: Subcircuit, key: str
     ) -> None:
         """Initialize the entity."""
         super().__init__(
-            coordinator, circuit_unique_id(key, coordinator.serial, subcircuit.number)
+            coordinator,
+            circuit_unique_id(key, coordinator.serial, subcircuit.number),
+            circuit_identifier(coordinator.serial, subcircuit.number),
         )
         self._subcircuit_number = subcircuit.number
 
@@ -98,7 +118,3 @@ class BasisSubcircuitEntity(BasisEntity[SwitchboardDataCoordinator]):
         """Return the label of the subcircuit."""
         subcircuit = self.subcircuit
         return subcircuit.label if subcircuit else None
-
-    def circuit_name(self, suffix: str = "") -> str:
-        """Return the name of the entity for its circuit."""
-        return circuit_name(self._subcircuit_number, self.subcircuit, suffix)

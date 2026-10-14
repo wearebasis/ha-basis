@@ -21,13 +21,181 @@
       'labels': set({
       }),
       'manufacturer': 'Basis NZ Ltd.',
-      'model': 'GEN1',
+      'model': 'Smart Panel',
       'model_id': None,
       'name': 'Basis Panel SB-0000000001',
       'name_by_user': None,
       'serial_number': 'SB-0000000001',
       'sw_version': '3.2.1',
       'via_device_id': None,
+    }),
+    DeviceRegistryEntrySnapshot({
+      'area_id': None,
+      'config_entry_id': <ANY>,
+      'config_subentry_id': <ANY>,
+      'configuration_url': None,
+      'connections': set({
+      }),
+      'disabled_by': None,
+      'entry_type': None,
+      'hw_version': None,
+      'id': <ANY>,
+      'identifiers': set({
+        tuple(
+          'basis_smart_panel',
+          'SB-0000000001_circuit_1',
+        ),
+      }),
+      'labels': set({
+      }),
+      'manufacturer': 'Basis NZ Ltd.',
+      'model': 'Circuit',
+      'model_id': None,
+      'name': '01 · Lights · Basis Panel SB-0000000001',
+      'name_by_user': None,
+      'serial_number': None,
+      'sw_version': None,
+      'via_device_id': <ANY>,
+    }),
+    DeviceRegistryEntrySnapshot({
+      'area_id': None,
+      'config_entry_id': <ANY>,
+      'config_subentry_id': <ANY>,
+      'configuration_url': None,
+      'connections': set({
+      }),
+      'disabled_by': None,
+      'entry_type': None,
+      'hw_version': None,
+      'id': <ANY>,
+      'identifiers': set({
+        tuple(
+          'basis_smart_panel',
+          'SB-0000000001_circuit_2',
+        ),
+      }),
+      'labels': set({
+      }),
+      'manufacturer': 'Basis NZ Ltd.',
+      'model': 'Circuit',
+      'model_id': None,
+      'name': '02 · Power · Basis Panel SB-0000000001',
+      'name_by_user': None,
+      'serial_number': None,
+      'sw_version': None,
+      'via_device_id': <ANY>,
+    }),
+    DeviceRegistryEntrySnapshot({
+      'area_id': None,
+      'config_entry_id': <ANY>,
+      'config_subentry_id': <ANY>,
+      'configuration_url': None,
+      'connections': set({
+      }),
+      'disabled_by': None,
+      'entry_type': None,
+      'hw_version': None,
+      'id': <ANY>,
+      'identifiers': set({
+        tuple(
+          'basis_smart_panel',
+          'SB-0000000001_circuit_3',
+        ),
+      }),
+      'labels': set({
+      }),
+      'manufacturer': 'Basis NZ Ltd.',
+      'model': 'Circuit',
+      'model_id': None,
+      'name': '03 · Hob · Basis Panel SB-0000000001',
+      'name_by_user': None,
+      'serial_number': None,
+      'sw_version': None,
+      'via_device_id': <ANY>,
+    }),
+    DeviceRegistryEntrySnapshot({
+      'area_id': None,
+      'config_entry_id': <ANY>,
+      'config_subentry_id': <ANY>,
+      'configuration_url': None,
+      'connections': set({
+      }),
+      'disabled_by': None,
+      'entry_type': None,
+      'hw_version': None,
+      'id': <ANY>,
+      'identifiers': set({
+        tuple(
+          'basis_smart_panel',
+          'SB-0000000001_circuit_5',
+        ),
+      }),
+      'labels': set({
+      }),
+      'manufacturer': 'Basis NZ Ltd.',
+      'model': 'Circuit',
+      'model_id': None,
+      'name': '05 · EV Charger · Basis Panel SB-0000000001',
+      'name_by_user': None,
+      'serial_number': None,
+      'sw_version': None,
+      'via_device_id': <ANY>,
+    }),
+    DeviceRegistryEntrySnapshot({
+      'area_id': None,
+      'config_entry_id': <ANY>,
+      'config_subentry_id': <ANY>,
+      'configuration_url': None,
+      'connections': set({
+      }),
+      'disabled_by': None,
+      'entry_type': None,
+      'hw_version': None,
+      'id': <ANY>,
+      'identifiers': set({
+        tuple(
+          'basis_smart_panel',
+          'SB-0000000001_circuit_6',
+        ),
+      }),
+      'labels': set({
+      }),
+      'manufacturer': 'Basis NZ Ltd.',
+      'model': 'Circuit',
+      'model_id': None,
+      'name': '06 · light · Basis Panel SB-0000000001',
+      'name_by_user': None,
+      'serial_number': None,
+      'sw_version': None,
+      'via_device_id': <ANY>,
+    }),
+    DeviceRegistryEntrySnapshot({
+      'area_id': None,
+      'config_entry_id': <ANY>,
+      'config_subentry_id': <ANY>,
+      'configuration_url': None,
+      'connections': set({
+      }),
+      'disabled_by': None,
+      'entry_type': None,
+      'hw_version': None,
+      'id': <ANY>,
+      'identifiers': set({
+        tuple(
+          'basis_smart_panel',
+          'SB-0000000001_circuit_7',
+        ),
+      }),
+      'labels': set({
+      }),
+      'manufacturer': 'Basis NZ Ltd.',
+      'model': 'Circuit',
+      'model_id': None,
+      'name': '07 · Solar · Basis Panel SB-0000000001',
+      'name_by_user': None,
+      'serial_number': None,
+      'sw_version': None,
+      'via_device_id': <ANY>,
     }),
     DeviceRegistryEntrySnapshot({
       'area_id': None,
@@ -49,13 +217,69 @@
       'labels': set({
       }),
       'manufacturer': 'Basis NZ Ltd.',
-      'model': None,
+      'model': 'Smart Panel',
       'model_id': None,
       'name': 'Basis Panel SB-0000000002',
       'name_by_user': None,
       'serial_number': 'SB-0000000002',
       'sw_version': None,
       'via_device_id': None,
+    }),
+    DeviceRegistryEntrySnapshot({
+      'area_id': None,
+      'config_entry_id': <ANY>,
+      'config_subentry_id': <ANY>,
+      'configuration_url': None,
+      'connections': set({
+      }),
+      'disabled_by': None,
+      'entry_type': None,
+      'hw_version': None,
+      'id': <ANY>,
+      'identifiers': set({
+        tuple(
+          'basis_smart_panel',
+          'SB-0000000002_circuit_1',
+        ),
+      }),
+      'labels': set({
+      }),
+      'manufacturer': 'Basis NZ Ltd.',
+      'model': 'Circuit',
+      'model_id': None,
+      'name': '01 · Lights · Basis Panel SB-0000000002',
+      'name_by_user': None,
+      'serial_number': None,
+      'sw_version': None,
+      'via_device_id': <ANY>,
+    }),
+    DeviceRegistryEntrySnapshot({
+      'area_id': None,
+      'config_entry_id': <ANY>,
+      'config_subentry_id': <ANY>,
+      'configuration_url': None,
+      'connections': set({
+      }),
+      'disabled_by': None,
+      'entry_type': None,
+      'hw_version': None,
+      'id': <ANY>,
+      'identifiers': set({
+        tuple(
+          'basis_smart_panel',
+          'SB-0000000002_circuit_2',
+        ),
+      }),
+      'labels': set({
+      }),
+      'manufacturer': 'Basis NZ Ltd.',
+      'model': 'Circuit',
+      'model_id': None,
+      'name': '02 · Hot Water Cylinder · Basis Panel SB-0000000002',
+      'name_by_user': None,
+      'serial_number': None,
+      'sw_version': None,
+      'via_device_id': <ANY>,
     }),
   ])
 # ---
@@ -81,7 +305,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Connectivity',
+    'object_id_base': None,
     'options': dict({
     }),
     'original_device_class': <BinarySensorDeviceClass.CONNECTIVITY: 'connectivity'>,
@@ -89,7 +313,7 @@
     'original_name': 'Connectivity',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_connectivity',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_connectivity_SB-0000000001',
@@ -132,7 +356,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Connectivity',
+    'object_id_base': None,
     'options': dict({
     }),
     'original_device_class': <BinarySensorDeviceClass.CONNECTIVITY: 'connectivity'>,
@@ -140,7 +364,7 @@
     'original_name': 'Connectivity',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000002_connectivity',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_connectivity_SB-0000000002',
@@ -163,7 +387,7 @@
     'state': 'off',
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_01_lights_current-entry]
+# name: test_entities[sensor.basis_panel_sb_0000000001_01_current-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -179,7 +403,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_01_lights_current',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_01_current',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -187,7 +411,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': '[01] Lights · Current',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 2,
@@ -195,34 +419,34 @@
     }),
     'original_device_class': <SensorDeviceClass.CURRENT: 'current'>,
     'original_icon': 'mdi:current-ac',
-    'original_name': '[01] Lights · Current',
+    'original_name': 'Current',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_01_current',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_current_SB-0000000001_circuit_1',
     'unit_of_measurement': <UnitOfElectricCurrent.AMPERE: 'A'>,
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_01_lights_current-state]
+# name: test_entities[sensor.basis_panel_sb_0000000001_01_current-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'current',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 [01] Lights · Current',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '01 · Lights · Basis Panel SB-0000000001 Current',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:current-ac',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfElectricCurrent.AMPERE: 'A'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_01_lights_current',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_01_current',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '0.52',
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_01_lights_import_energy_today-entry]
+# name: test_entities[sensor.basis_panel_sb_0000000001_01_import_energy_today-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -238,7 +462,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_01_lights_import_energy_today',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_01_import_energy_today',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -246,7 +470,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': '[01] Lights · Import Energy Today',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 2,
@@ -254,34 +478,34 @@
     }),
     'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
     'original_icon': 'mdi:lightbulb',
-    'original_name': '[01] Lights · Import Energy Today',
+    'original_name': 'Import Energy Today',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_01_import_energy_today',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_energy_import_SB-0000000001_circuit_1',
     'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_01_lights_import_energy_today-state]
+# name: test_entities[sensor.basis_panel_sb_0000000001_01_import_energy_today-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 [01] Lights · Import Energy Today',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '01 · Lights · Basis Panel SB-0000000001 Import Energy Today',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:lightbulb',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_01_lights_import_energy_today',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_01_import_energy_today',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '1.2',
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_01_lights_power-entry]
+# name: test_entities[sensor.basis_panel_sb_0000000001_01_power-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -297,7 +521,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_01_lights_power',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_01_power',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -305,7 +529,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': '[01] Lights · Power',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 0,
@@ -313,34 +537,34 @@
     }),
     'original_device_class': <SensorDeviceClass.POWER: 'power'>,
     'original_icon': 'mdi:lightbulb',
-    'original_name': '[01] Lights · Power',
+    'original_name': 'Power',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_01_power',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_power_SB-0000000001_circuit_1',
     'unit_of_measurement': <UnitOfPower.WATT: 'W'>,
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_01_lights_power-state]
+# name: test_entities[sensor.basis_panel_sb_0000000001_01_power-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'power',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 [01] Lights · Power',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '01 · Lights · Basis Panel SB-0000000001 Power',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:lightbulb',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfPower.WATT: 'W'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_01_lights_power',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_01_power',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '120.5',
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_01_lights_voltage-entry]
+# name: test_entities[sensor.basis_panel_sb_0000000001_01_voltage-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -356,7 +580,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_01_lights_voltage',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_01_voltage',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -364,7 +588,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': '[01] Lights · Voltage',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 0,
@@ -372,34 +596,34 @@
     }),
     'original_device_class': <SensorDeviceClass.VOLTAGE: 'voltage'>,
     'original_icon': 'mdi:sine-wave',
-    'original_name': '[01] Lights · Voltage',
+    'original_name': 'Voltage',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_01_voltage',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_voltage_SB-0000000001_circuit_1',
     'unit_of_measurement': <UnitOfElectricPotential.VOLT: 'V'>,
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_01_lights_voltage-state]
+# name: test_entities[sensor.basis_panel_sb_0000000001_01_voltage-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'voltage',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 [01] Lights · Voltage',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '01 · Lights · Basis Panel SB-0000000001 Voltage',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:sine-wave',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfElectricPotential.VOLT: 'V'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_01_lights_voltage',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_01_voltage',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '231.2',
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_02_power_current-entry]
+# name: test_entities[sensor.basis_panel_sb_0000000001_02_current-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -415,7 +639,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_02_power_current',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_02_current',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -423,7 +647,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': '[02] Power · Current',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 2,
@@ -431,34 +655,34 @@
     }),
     'original_device_class': <SensorDeviceClass.CURRENT: 'current'>,
     'original_icon': 'mdi:current-ac',
-    'original_name': '[02] Power · Current',
+    'original_name': 'Current',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_02_current',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_current_SB-0000000001_circuit_2',
     'unit_of_measurement': <UnitOfElectricCurrent.AMPERE: 'A'>,
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_02_power_current-state]
+# name: test_entities[sensor.basis_panel_sb_0000000001_02_current-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'current',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 [02] Power · Current',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '02 · Power · Basis Panel SB-0000000001 Current',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:current-ac',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfElectricCurrent.AMPERE: 'A'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_02_power_current',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_02_current',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '3.7',
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_02_power_import_energy_today-entry]
+# name: test_entities[sensor.basis_panel_sb_0000000001_02_import_energy_today-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -474,7 +698,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_02_power_import_energy_today',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_02_import_energy_today',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -482,7 +706,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': '[02] Power · Import Energy Today',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 2,
@@ -490,34 +714,34 @@
     }),
     'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
     'original_icon': 'mdi:flash',
-    'original_name': '[02] Power · Import Energy Today',
+    'original_name': 'Import Energy Today',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_02_import_energy_today',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_energy_import_SB-0000000001_circuit_2',
     'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_02_power_import_energy_today-state]
+# name: test_entities[sensor.basis_panel_sb_0000000001_02_import_energy_today-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 [02] Power · Import Energy Today',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '02 · Power · Basis Panel SB-0000000001 Import Energy Today',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:flash',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_02_power_import_energy_today',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_02_import_energy_today',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '5.4',
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_02_power_power-entry]
+# name: test_entities[sensor.basis_panel_sb_0000000001_02_power-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -533,7 +757,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_02_power_power',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_02_power',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -541,7 +765,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': '[02] Power · Power',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 0,
@@ -549,34 +773,34 @@
     }),
     'original_device_class': <SensorDeviceClass.POWER: 'power'>,
     'original_icon': 'mdi:flash',
-    'original_name': '[02] Power · Power',
+    'original_name': 'Power',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_02_power',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_power_SB-0000000001_circuit_2',
     'unit_of_measurement': <UnitOfPower.WATT: 'W'>,
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_02_power_power-state]
+# name: test_entities[sensor.basis_panel_sb_0000000001_02_power-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'power',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 [02] Power · Power',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '02 · Power · Basis Panel SB-0000000001 Power',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:flash',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfPower.WATT: 'W'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_02_power_power',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_02_power',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '850.0',
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_02_power_voltage-entry]
+# name: test_entities[sensor.basis_panel_sb_0000000001_02_voltage-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -592,7 +816,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_02_power_voltage',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_02_voltage',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -600,7 +824,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': '[02] Power · Voltage',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 0,
@@ -608,34 +832,34 @@
     }),
     'original_device_class': <SensorDeviceClass.VOLTAGE: 'voltage'>,
     'original_icon': 'mdi:sine-wave',
-    'original_name': '[02] Power · Voltage',
+    'original_name': 'Voltage',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_02_voltage',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_voltage_SB-0000000001_circuit_2',
     'unit_of_measurement': <UnitOfElectricPotential.VOLT: 'V'>,
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_02_power_voltage-state]
+# name: test_entities[sensor.basis_panel_sb_0000000001_02_voltage-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'voltage',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 [02] Power · Voltage',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '02 · Power · Basis Panel SB-0000000001 Voltage',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:sine-wave',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfElectricPotential.VOLT: 'V'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_02_power_voltage',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_02_voltage',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '231.0',
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_03_hob_current-entry]
+# name: test_entities[sensor.basis_panel_sb_0000000001_03_current-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -651,7 +875,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_03_hob_current',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_03_current',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -659,7 +883,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': '[03] Hob · Current',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 2,
@@ -667,34 +891,34 @@
     }),
     'original_device_class': <SensorDeviceClass.CURRENT: 'current'>,
     'original_icon': 'mdi:current-ac',
-    'original_name': '[03] Hob · Current',
+    'original_name': 'Current',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_03_current',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_current_SB-0000000001_circuit_3',
     'unit_of_measurement': <UnitOfElectricCurrent.AMPERE: 'A'>,
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_03_hob_current-state]
+# name: test_entities[sensor.basis_panel_sb_0000000001_03_current-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'current',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 [03] Hob · Current',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '03 · Hob · Basis Panel SB-0000000001 Current',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:current-ac',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfElectricCurrent.AMPERE: 'A'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_03_hob_current',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_03_current',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '0.0',
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_03_hob_import_energy_today-entry]
+# name: test_entities[sensor.basis_panel_sb_0000000001_03_import_energy_today-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -710,7 +934,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_03_hob_import_energy_today',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_03_import_energy_today',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -718,7 +942,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': '[03] Hob · Import Energy Today',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 2,
@@ -726,34 +950,34 @@
     }),
     'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
     'original_icon': 'mdi:pot-steam',
-    'original_name': '[03] Hob · Import Energy Today',
+    'original_name': 'Import Energy Today',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_03_import_energy_today',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_energy_import_SB-0000000001_circuit_3',
     'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_03_hob_import_energy_today-state]
+# name: test_entities[sensor.basis_panel_sb_0000000001_03_import_energy_today-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 [03] Hob · Import Energy Today',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '03 · Hob · Basis Panel SB-0000000001 Import Energy Today',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:pot-steam',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_03_hob_import_energy_today',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_03_import_energy_today',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '0.0',
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_03_hob_power-entry]
+# name: test_entities[sensor.basis_panel_sb_0000000001_03_power-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -769,7 +993,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_03_hob_power',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_03_power',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -777,7 +1001,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': '[03] Hob · Power',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 0,
@@ -785,34 +1009,34 @@
     }),
     'original_device_class': <SensorDeviceClass.POWER: 'power'>,
     'original_icon': 'mdi:pot-steam',
-    'original_name': '[03] Hob · Power',
+    'original_name': 'Power',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_03_power',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_power_SB-0000000001_circuit_3',
     'unit_of_measurement': <UnitOfPower.WATT: 'W'>,
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_03_hob_power-state]
+# name: test_entities[sensor.basis_panel_sb_0000000001_03_power-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'power',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 [03] Hob · Power',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '03 · Hob · Basis Panel SB-0000000001 Power',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:pot-steam',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfPower.WATT: 'W'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_03_hob_power',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_03_power',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '0.0',
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_03_hob_voltage-entry]
+# name: test_entities[sensor.basis_panel_sb_0000000001_03_voltage-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -828,7 +1052,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_03_hob_voltage',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_03_voltage',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -836,7 +1060,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': '[03] Hob · Voltage',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 0,
@@ -844,34 +1068,34 @@
     }),
     'original_device_class': <SensorDeviceClass.VOLTAGE: 'voltage'>,
     'original_icon': 'mdi:sine-wave',
-    'original_name': '[03] Hob · Voltage',
+    'original_name': 'Voltage',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_03_voltage',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_voltage_SB-0000000001_circuit_3',
     'unit_of_measurement': <UnitOfElectricPotential.VOLT: 'V'>,
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_03_hob_voltage-state]
+# name: test_entities[sensor.basis_panel_sb_0000000001_03_voltage-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'voltage',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 [03] Hob · Voltage',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '03 · Hob · Basis Panel SB-0000000001 Voltage',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:sine-wave',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfElectricPotential.VOLT: 'V'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_03_hob_voltage',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_03_voltage',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '230.8',
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_05_ev_charger_current-entry]
+# name: test_entities[sensor.basis_panel_sb_0000000001_05_current-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -887,7 +1111,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_05_ev_charger_current',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_05_current',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -895,7 +1119,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': '[05] EV Charger · Current',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 2,
@@ -903,34 +1127,34 @@
     }),
     'original_device_class': <SensorDeviceClass.CURRENT: 'current'>,
     'original_icon': 'mdi:current-ac',
-    'original_name': '[05] EV Charger · Current',
+    'original_name': 'Current',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_05_current',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_current_SB-0000000001_circuit_5',
     'unit_of_measurement': <UnitOfElectricCurrent.AMPERE: 'A'>,
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_05_ev_charger_current-state]
+# name: test_entities[sensor.basis_panel_sb_0000000001_05_current-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'current',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 [05] EV Charger · Current',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '05 · EV Charger · Basis Panel SB-0000000001 Current',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:current-ac',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfElectricCurrent.AMPERE: 'A'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_05_ev_charger_current',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_05_current',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '0.0',
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_05_ev_charger_import_energy_today-entry]
+# name: test_entities[sensor.basis_panel_sb_0000000001_05_import_energy_today-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -946,7 +1170,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_05_ev_charger_import_energy_today',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_05_import_energy_today',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -954,7 +1178,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': '[05] EV Charger · Import Energy Today',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 2,
@@ -962,34 +1186,34 @@
     }),
     'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
     'original_icon': 'mdi:ev-station',
-    'original_name': '[05] EV Charger · Import Energy Today',
+    'original_name': 'Import Energy Today',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_05_import_energy_today',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_energy_import_SB-0000000001_circuit_5',
     'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_05_ev_charger_import_energy_today-state]
+# name: test_entities[sensor.basis_panel_sb_0000000001_05_import_energy_today-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 [05] EV Charger · Import Energy Today',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '05 · EV Charger · Basis Panel SB-0000000001 Import Energy Today',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:ev-station',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_05_ev_charger_import_energy_today',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_05_import_energy_today',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '7.0',
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_05_ev_charger_power-entry]
+# name: test_entities[sensor.basis_panel_sb_0000000001_05_power-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -1005,7 +1229,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_05_ev_charger_power',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_05_power',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -1013,7 +1237,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': '[05] EV Charger · Power',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 0,
@@ -1021,34 +1245,34 @@
     }),
     'original_device_class': <SensorDeviceClass.POWER: 'power'>,
     'original_icon': 'mdi:ev-station',
-    'original_name': '[05] EV Charger · Power',
+    'original_name': 'Power',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_05_power',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_power_SB-0000000001_circuit_5',
     'unit_of_measurement': <UnitOfPower.WATT: 'W'>,
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_05_ev_charger_power-state]
+# name: test_entities[sensor.basis_panel_sb_0000000001_05_power-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'power',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 [05] EV Charger · Power',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '05 · EV Charger · Basis Panel SB-0000000001 Power',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:ev-station',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfPower.WATT: 'W'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_05_ev_charger_power',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_05_power',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '0.0',
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_05_ev_charger_voltage-entry]
+# name: test_entities[sensor.basis_panel_sb_0000000001_05_voltage-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -1064,7 +1288,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_05_ev_charger_voltage',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_05_voltage',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -1072,7 +1296,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': '[05] EV Charger · Voltage',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 0,
@@ -1080,34 +1304,34 @@
     }),
     'original_device_class': <SensorDeviceClass.VOLTAGE: 'voltage'>,
     'original_icon': 'mdi:sine-wave',
-    'original_name': '[05] EV Charger · Voltage',
+    'original_name': 'Voltage',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_05_voltage',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_voltage_SB-0000000001_circuit_5',
     'unit_of_measurement': <UnitOfElectricPotential.VOLT: 'V'>,
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_05_ev_charger_voltage-state]
+# name: test_entities[sensor.basis_panel_sb_0000000001_05_voltage-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'voltage',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 [05] EV Charger · Voltage',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '05 · EV Charger · Basis Panel SB-0000000001 Voltage',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:sine-wave',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfElectricPotential.VOLT: 'V'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_05_ev_charger_voltage',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_05_voltage',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '231.1',
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_06_light_current-entry]
+# name: test_entities[sensor.basis_panel_sb_0000000001_06_current-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -1123,7 +1347,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_06_light_current',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_06_current',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -1131,7 +1355,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': '[06] light · Current',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 2,
@@ -1139,34 +1363,34 @@
     }),
     'original_device_class': <SensorDeviceClass.CURRENT: 'current'>,
     'original_icon': 'mdi:current-ac',
-    'original_name': '[06] light · Current',
+    'original_name': 'Current',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_06_current',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_current_SB-0000000001_circuit_6',
     'unit_of_measurement': <UnitOfElectricCurrent.AMPERE: 'A'>,
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_06_light_current-state]
+# name: test_entities[sensor.basis_panel_sb_0000000001_06_current-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'current',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 [06] light · Current',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '06 · light · Basis Panel SB-0000000001 Current',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:current-ac',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfElectricCurrent.AMPERE: 'A'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_06_light_current',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_06_current',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '0.07',
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_06_light_import_energy_today-entry]
+# name: test_entities[sensor.basis_panel_sb_0000000001_06_import_energy_today-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -1182,7 +1406,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_06_light_import_energy_today',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_06_import_energy_today',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -1190,7 +1414,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': '[06] light · Import Energy Today',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 2,
@@ -1198,34 +1422,34 @@
     }),
     'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
     'original_icon': 'mdi:lightning-bolt',
-    'original_name': '[06] light · Import Energy Today',
+    'original_name': 'Import Energy Today',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_06_import_energy_today',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_energy_import_SB-0000000001_circuit_6',
     'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_06_light_import_energy_today-state]
+# name: test_entities[sensor.basis_panel_sb_0000000001_06_import_energy_today-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 [06] light · Import Energy Today',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '06 · light · Basis Panel SB-0000000001 Import Energy Today',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:lightning-bolt',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_06_light_import_energy_today',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_06_import_energy_today',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '0.3',
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_06_light_power-entry]
+# name: test_entities[sensor.basis_panel_sb_0000000001_06_power-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -1241,7 +1465,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_06_light_power',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_06_power',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -1249,7 +1473,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': '[06] light · Power',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 0,
@@ -1257,34 +1481,34 @@
     }),
     'original_device_class': <SensorDeviceClass.POWER: 'power'>,
     'original_icon': 'mdi:flash',
-    'original_name': '[06] light · Power',
+    'original_name': 'Power',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_06_power',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_power_SB-0000000001_circuit_6',
     'unit_of_measurement': <UnitOfPower.WATT: 'W'>,
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_06_light_power-state]
+# name: test_entities[sensor.basis_panel_sb_0000000001_06_power-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'power',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 [06] light · Power',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '06 · light · Basis Panel SB-0000000001 Power',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:flash',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfPower.WATT: 'W'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_06_light_power',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_06_power',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '15.0',
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_06_light_voltage-entry]
+# name: test_entities[sensor.basis_panel_sb_0000000001_06_voltage-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -1300,7 +1524,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_06_light_voltage',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_06_voltage',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -1308,7 +1532,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': '[06] light · Voltage',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 0,
@@ -1316,34 +1540,34 @@
     }),
     'original_device_class': <SensorDeviceClass.VOLTAGE: 'voltage'>,
     'original_icon': 'mdi:sine-wave',
-    'original_name': '[06] light · Voltage',
+    'original_name': 'Voltage',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_06_voltage',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_voltage_SB-0000000001_circuit_6',
     'unit_of_measurement': <UnitOfElectricPotential.VOLT: 'V'>,
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_06_light_voltage-state]
+# name: test_entities[sensor.basis_panel_sb_0000000001_06_voltage-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'voltage',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 [06] light · Voltage',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '06 · light · Basis Panel SB-0000000001 Voltage',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:sine-wave',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfElectricPotential.VOLT: 'V'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_06_light_voltage',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_06_voltage',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '231.0',
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_07_solar_current-entry]
+# name: test_entities[sensor.basis_panel_sb_0000000001_07_current-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -1359,7 +1583,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_07_solar_current',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_07_current',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -1367,7 +1591,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': '[07] Solar · Current',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 2,
@@ -1375,34 +1599,34 @@
     }),
     'original_device_class': <SensorDeviceClass.CURRENT: 'current'>,
     'original_icon': 'mdi:current-ac',
-    'original_name': '[07] Solar · Current',
+    'original_name': 'Current',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_07_current',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_current_SB-0000000001_circuit_7',
     'unit_of_measurement': <UnitOfElectricCurrent.AMPERE: 'A'>,
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_07_solar_current-state]
+# name: test_entities[sensor.basis_panel_sb_0000000001_07_current-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'current',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 [07] Solar · Current',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '07 · Solar · Basis Panel SB-0000000001 Current',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:current-ac',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfElectricCurrent.AMPERE: 'A'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_07_solar_current',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_07_current',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '10.4',
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_07_solar_import_energy_today-entry]
+# name: test_entities[sensor.basis_panel_sb_0000000001_07_import_energy_today-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -1418,7 +1642,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_07_solar_import_energy_today',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_07_import_energy_today',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -1426,7 +1650,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': '[07] Solar · Import Energy Today',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 2,
@@ -1434,34 +1658,34 @@
     }),
     'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
     'original_icon': 'mdi:solar-power',
-    'original_name': '[07] Solar · Import Energy Today',
+    'original_name': 'Import Energy Today',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_07_import_energy_today',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_energy_import_SB-0000000001_circuit_7',
     'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_07_solar_import_energy_today-state]
+# name: test_entities[sensor.basis_panel_sb_0000000001_07_import_energy_today-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 [07] Solar · Import Energy Today',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '07 · Solar · Basis Panel SB-0000000001 Import Energy Today',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:solar-power',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_07_solar_import_energy_today',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_07_import_energy_today',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '0.0',
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_07_solar_power-entry]
+# name: test_entities[sensor.basis_panel_sb_0000000001_07_power-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -1477,7 +1701,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_07_solar_power',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_07_power',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -1485,7 +1709,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': '[07] Solar · Power',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 0,
@@ -1493,34 +1717,34 @@
     }),
     'original_device_class': <SensorDeviceClass.POWER: 'power'>,
     'original_icon': 'mdi:solar-power',
-    'original_name': '[07] Solar · Power',
+    'original_name': 'Power',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_07_power',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_power_SB-0000000001_circuit_7',
     'unit_of_measurement': <UnitOfPower.WATT: 'W'>,
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_07_solar_power-state]
+# name: test_entities[sensor.basis_panel_sb_0000000001_07_power-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'power',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 [07] Solar · Power',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '07 · Solar · Basis Panel SB-0000000001 Power',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:solar-power',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfPower.WATT: 'W'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_07_solar_power',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_07_power',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '-2400.0',
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_07_solar_voltage-entry]
+# name: test_entities[sensor.basis_panel_sb_0000000001_07_voltage-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -1536,7 +1760,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_07_solar_voltage',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_07_voltage',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -1544,7 +1768,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': '[07] Solar · Voltage',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 0,
@@ -1552,27 +1776,27 @@
     }),
     'original_device_class': <SensorDeviceClass.VOLTAGE: 'voltage'>,
     'original_icon': 'mdi:sine-wave',
-    'original_name': '[07] Solar · Voltage',
+    'original_name': 'Voltage',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_07_voltage',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_voltage_SB-0000000001_circuit_7',
     'unit_of_measurement': <UnitOfElectricPotential.VOLT: 'V'>,
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000001_07_solar_voltage-state]
+# name: test_entities[sensor.basis_panel_sb_0000000001_07_voltage-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'voltage',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 [07] Solar · Voltage',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '07 · Solar · Basis Panel SB-0000000001 Voltage',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:sine-wave',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfElectricPotential.VOLT: 'V'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000001_07_solar_voltage',
+    'entity_id': 'sensor.basis_panel_sb_0000000001_07_voltage',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
@@ -1603,7 +1827,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Consumption Energy This Month',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 2,
@@ -1614,7 +1838,7 @@
     'original_name': 'Consumption Energy This Month',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_consumption_energy_this_month',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_energy_month_import_SB-0000000001',
@@ -1662,7 +1886,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Consumption Energy Today',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 2,
@@ -1673,7 +1897,7 @@
     'original_name': 'Consumption Energy Today',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_consumption_energy_today',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_energy_today_import_SB-0000000001',
@@ -1721,7 +1945,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Current Power',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 0,
@@ -1732,7 +1956,7 @@
     'original_name': 'Current Power',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_current_power',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_power_panel_SB-0000000001',
@@ -1780,7 +2004,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Generation Energy This Month',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 2,
@@ -1791,7 +2015,7 @@
     'original_name': 'Generation Energy This Month',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_generation_energy_this_month',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_energy_month_export_SB-0000000001',
@@ -1839,7 +2063,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Generation Energy Today',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 2,
@@ -1850,7 +2074,7 @@
     'original_name': 'Generation Energy Today',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_generation_energy_today',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_energy_today_export_SB-0000000001',
@@ -1898,7 +2122,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Generation Power',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 0,
@@ -1909,7 +2133,7 @@
     'original_name': 'Generation Power',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_generation_power',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_export_power_SB-0000000001',
@@ -1957,7 +2181,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'House Consumption Power',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 0,
@@ -1968,7 +2192,7 @@
     'original_name': 'House Consumption Power',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_house_consumption_power',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_import_power_SB-0000000001',
@@ -2016,7 +2240,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Primary Current',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 2,
@@ -2027,7 +2251,7 @@
     'original_name': 'Primary Current',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_primary_current',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_current_SB-0000000001',
@@ -2051,7 +2275,7 @@
     'state': '17.0',
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000002_01_lights_current-entry]
+# name: test_entities[sensor.basis_panel_sb_0000000002_01_current-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -2067,7 +2291,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000002_01_lights_current',
+    'entity_id': 'sensor.basis_panel_sb_0000000002_01_current',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -2075,7 +2299,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': '[01] Lights · Current',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 2,
@@ -2083,34 +2307,34 @@
     }),
     'original_device_class': <SensorDeviceClass.CURRENT: 'current'>,
     'original_icon': 'mdi:current-ac',
-    'original_name': '[01] Lights · Current',
+    'original_name': 'Current',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000002_01_current',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_current_SB-0000000002_circuit_1',
     'unit_of_measurement': <UnitOfElectricCurrent.AMPERE: 'A'>,
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000002_01_lights_current-state]
+# name: test_entities[sensor.basis_panel_sb_0000000002_01_current-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'current',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000002 [01] Lights · Current',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '01 · Lights · Basis Panel SB-0000000002 Current',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:current-ac',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfElectricCurrent.AMPERE: 'A'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000002_01_lights_current',
+    'entity_id': 'sensor.basis_panel_sb_0000000002_01_current',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
-    'state': '0.0',
+    'state': 'unavailable',
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000002_01_lights_import_energy_today-entry]
+# name: test_entities[sensor.basis_panel_sb_0000000002_01_import_energy_today-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -2126,7 +2350,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000002_01_lights_import_energy_today',
+    'entity_id': 'sensor.basis_panel_sb_0000000002_01_import_energy_today',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -2134,7 +2358,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': '[01] Lights · Import Energy Today',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 2,
@@ -2142,34 +2366,34 @@
     }),
     'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
     'original_icon': 'mdi:lightbulb',
-    'original_name': '[01] Lights · Import Energy Today',
+    'original_name': 'Import Energy Today',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000002_01_import_energy_today',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_energy_import_SB-0000000002_circuit_1',
     'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000002_01_lights_import_energy_today-state]
+# name: test_entities[sensor.basis_panel_sb_0000000002_01_import_energy_today-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000002 [01] Lights · Import Energy Today',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '01 · Lights · Basis Panel SB-0000000002 Import Energy Today',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:lightbulb',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000002_01_lights_import_energy_today',
+    'entity_id': 'sensor.basis_panel_sb_0000000002_01_import_energy_today',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '0.0',
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000002_01_lights_power-entry]
+# name: test_entities[sensor.basis_panel_sb_0000000002_01_power-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -2185,7 +2409,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000002_01_lights_power',
+    'entity_id': 'sensor.basis_panel_sb_0000000002_01_power',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -2193,7 +2417,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': '[01] Lights · Power',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 0,
@@ -2201,34 +2425,34 @@
     }),
     'original_device_class': <SensorDeviceClass.POWER: 'power'>,
     'original_icon': 'mdi:lightbulb',
-    'original_name': '[01] Lights · Power',
+    'original_name': 'Power',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000002_01_power',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_power_SB-0000000002_circuit_1',
     'unit_of_measurement': <UnitOfPower.WATT: 'W'>,
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000002_01_lights_power-state]
+# name: test_entities[sensor.basis_panel_sb_0000000002_01_power-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'power',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000002 [01] Lights · Power',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '01 · Lights · Basis Panel SB-0000000002 Power',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:lightbulb',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfPower.WATT: 'W'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000002_01_lights_power',
+    'entity_id': 'sensor.basis_panel_sb_0000000002_01_power',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
-    'state': '0.0',
+    'state': 'unavailable',
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000002_01_lights_voltage-entry]
+# name: test_entities[sensor.basis_panel_sb_0000000002_01_voltage-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -2244,7 +2468,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000002_01_lights_voltage',
+    'entity_id': 'sensor.basis_panel_sb_0000000002_01_voltage',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -2252,7 +2476,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': '[01] Lights · Voltage',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 0,
@@ -2260,34 +2484,34 @@
     }),
     'original_device_class': <SensorDeviceClass.VOLTAGE: 'voltage'>,
     'original_icon': 'mdi:sine-wave',
-    'original_name': '[01] Lights · Voltage',
+    'original_name': 'Voltage',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000002_01_voltage',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_voltage_SB-0000000002_circuit_1',
     'unit_of_measurement': <UnitOfElectricPotential.VOLT: 'V'>,
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000002_01_lights_voltage-state]
+# name: test_entities[sensor.basis_panel_sb_0000000002_01_voltage-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'voltage',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000002 [01] Lights · Voltage',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '01 · Lights · Basis Panel SB-0000000002 Voltage',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:sine-wave',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfElectricPotential.VOLT: 'V'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000002_01_lights_voltage',
+    'entity_id': 'sensor.basis_panel_sb_0000000002_01_voltage',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
-    'state': '230.0',
+    'state': 'unavailable',
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000002_02_hot_water_cylinder_current-entry]
+# name: test_entities[sensor.basis_panel_sb_0000000002_02_current-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -2303,7 +2527,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000002_02_hot_water_cylinder_current',
+    'entity_id': 'sensor.basis_panel_sb_0000000002_02_current',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -2311,7 +2535,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': '[02] Hot Water Cylinder · Current',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 2,
@@ -2319,34 +2543,34 @@
     }),
     'original_device_class': <SensorDeviceClass.CURRENT: 'current'>,
     'original_icon': 'mdi:current-ac',
-    'original_name': '[02] Hot Water Cylinder · Current',
+    'original_name': 'Current',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000002_02_current',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_current_SB-0000000002_circuit_2',
     'unit_of_measurement': <UnitOfElectricCurrent.AMPERE: 'A'>,
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000002_02_hot_water_cylinder_current-state]
+# name: test_entities[sensor.basis_panel_sb_0000000002_02_current-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'current',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000002 [02] Hot Water Cylinder · Current',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '02 · Hot Water Cylinder · Basis Panel SB-0000000002 Current',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:current-ac',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfElectricCurrent.AMPERE: 'A'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000002_02_hot_water_cylinder_current',
+    'entity_id': 'sensor.basis_panel_sb_0000000002_02_current',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
-    'state': '0.0',
+    'state': 'unavailable',
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000002_02_hot_water_cylinder_import_energy_today-entry]
+# name: test_entities[sensor.basis_panel_sb_0000000002_02_import_energy_today-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -2362,7 +2586,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000002_02_hot_water_cylinder_import_energy_today',
+    'entity_id': 'sensor.basis_panel_sb_0000000002_02_import_energy_today',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -2370,7 +2594,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': '[02] Hot Water Cylinder · Import Energy Today',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 2,
@@ -2378,34 +2602,34 @@
     }),
     'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
     'original_icon': 'mdi:water-boiler',
-    'original_name': '[02] Hot Water Cylinder · Import Energy Today',
+    'original_name': 'Import Energy Today',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000002_02_import_energy_today',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_energy_import_SB-0000000002_circuit_2',
     'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000002_02_hot_water_cylinder_import_energy_today-state]
+# name: test_entities[sensor.basis_panel_sb_0000000002_02_import_energy_today-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000002 [02] Hot Water Cylinder · Import Energy Today',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '02 · Hot Water Cylinder · Basis Panel SB-0000000002 Import Energy Today',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:water-boiler',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000002_02_hot_water_cylinder_import_energy_today',
+    'entity_id': 'sensor.basis_panel_sb_0000000002_02_import_energy_today',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '0.0',
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000002_02_hot_water_cylinder_power-entry]
+# name: test_entities[sensor.basis_panel_sb_0000000002_02_power-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -2421,7 +2645,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000002_02_hot_water_cylinder_power',
+    'entity_id': 'sensor.basis_panel_sb_0000000002_02_power',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -2429,7 +2653,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': '[02] Hot Water Cylinder · Power',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 0,
@@ -2437,34 +2661,34 @@
     }),
     'original_device_class': <SensorDeviceClass.POWER: 'power'>,
     'original_icon': 'mdi:water-boiler',
-    'original_name': '[02] Hot Water Cylinder · Power',
+    'original_name': 'Power',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000002_02_power',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_power_SB-0000000002_circuit_2',
     'unit_of_measurement': <UnitOfPower.WATT: 'W'>,
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000002_02_hot_water_cylinder_power-state]
+# name: test_entities[sensor.basis_panel_sb_0000000002_02_power-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'power',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000002 [02] Hot Water Cylinder · Power',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '02 · Hot Water Cylinder · Basis Panel SB-0000000002 Power',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:water-boiler',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfPower.WATT: 'W'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000002_02_hot_water_cylinder_power',
+    'entity_id': 'sensor.basis_panel_sb_0000000002_02_power',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
-    'state': '0.0',
+    'state': 'unavailable',
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000002_02_hot_water_cylinder_voltage-entry]
+# name: test_entities[sensor.basis_panel_sb_0000000002_02_voltage-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -2480,7 +2704,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.basis_panel_sb_0000000002_02_hot_water_cylinder_voltage',
+    'entity_id': 'sensor.basis_panel_sb_0000000002_02_voltage',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -2488,7 +2712,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': '[02] Hot Water Cylinder · Voltage',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 0,
@@ -2496,31 +2720,31 @@
     }),
     'original_device_class': <SensorDeviceClass.VOLTAGE: 'voltage'>,
     'original_icon': 'mdi:sine-wave',
-    'original_name': '[02] Hot Water Cylinder · Voltage',
+    'original_name': 'Voltage',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000002_02_voltage',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_voltage_SB-0000000002_circuit_2',
     'unit_of_measurement': <UnitOfElectricPotential.VOLT: 'V'>,
   })
 # ---
-# name: test_entities[sensor.basis_panel_sb_0000000002_02_hot_water_cylinder_voltage-state]
+# name: test_entities[sensor.basis_panel_sb_0000000002_02_voltage-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'voltage',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000002 [02] Hot Water Cylinder · Voltage',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '02 · Hot Water Cylinder · Basis Panel SB-0000000002 Voltage',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:sine-wave',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfElectricPotential.VOLT: 'V'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.basis_panel_sb_0000000002_02_hot_water_cylinder_voltage',
+    'entity_id': 'sensor.basis_panel_sb_0000000002_02_voltage',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
-    'state': '230.0',
+    'state': 'unavailable',
   })
 # ---
 # name: test_entities[sensor.basis_panel_sb_0000000002_consumption_energy_this_month-entry]
@@ -2547,7 +2771,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Consumption Energy This Month',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 2,
@@ -2558,7 +2782,7 @@
     'original_name': 'Consumption Energy This Month',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000002_consumption_energy_this_month',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_energy_month_import_SB-0000000002',
@@ -2606,7 +2830,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Consumption Energy Today',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 2,
@@ -2617,7 +2841,7 @@
     'original_name': 'Consumption Energy Today',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000002_consumption_energy_today',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_energy_today_import_SB-0000000002',
@@ -2665,7 +2889,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Current Power',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 0,
@@ -2676,7 +2900,7 @@
     'original_name': 'Current Power',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000002_current_power',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_power_panel_SB-0000000002',
@@ -2697,7 +2921,7 @@
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
-    'state': 'unknown',
+    'state': 'unavailable',
   })
 # ---
 # name: test_entities[sensor.basis_panel_sb_0000000002_generation_energy_this_month-entry]
@@ -2724,7 +2948,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Generation Energy This Month',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 2,
@@ -2735,7 +2959,7 @@
     'original_name': 'Generation Energy This Month',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000002_generation_energy_this_month',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_energy_month_export_SB-0000000002',
@@ -2783,7 +3007,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Generation Energy Today',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 2,
@@ -2794,7 +3018,7 @@
     'original_name': 'Generation Energy Today',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000002_generation_energy_today',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_energy_today_export_SB-0000000002',
@@ -2842,7 +3066,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Generation Power',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 0,
@@ -2853,7 +3077,7 @@
     'original_name': 'Generation Power',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000002_generation_power',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_export_power_SB-0000000002',
@@ -2874,7 +3098,7 @@
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
-    'state': 'unknown',
+    'state': 'unavailable',
   })
 # ---
 # name: test_entities[sensor.basis_panel_sb_0000000002_house_consumption_power-entry]
@@ -2901,7 +3125,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'House Consumption Power',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 0,
@@ -2912,7 +3136,7 @@
     'original_name': 'House Consumption Power',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000002_house_consumption_power',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_import_power_SB-0000000002',
@@ -2933,7 +3157,7 @@
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
-    'state': 'unknown',
+    'state': 'unavailable',
   })
 # ---
 # name: test_entities[sensor.basis_panel_sb_0000000002_primary_current-entry]
@@ -2960,7 +3184,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Primary Current',
+    'object_id_base': None,
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 2,
@@ -2971,7 +3195,7 @@
     'original_name': 'Primary Current',
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000002_primary_current',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_current_SB-0000000002',
@@ -2992,10 +3216,10 @@
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
-    'state': 'unknown',
+    'state': 'unavailable',
   })
 # ---
-# name: test_entities[switch.basis_panel_sb_0000000001_01_lights-entry]
+# name: test_entities[switch.basis_panel_sb_0000000001_01-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -3009,7 +3233,7 @@
     'disabled_by': None,
     'domain': 'switch',
     'entity_category': None,
-    'entity_id': 'switch.basis_panel_sb_0000000001_01_lights',
+    'entity_id': 'switch.basis_panel_sb_0000000001_01',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -3017,36 +3241,36 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': '[01] Lights',
+    'object_id_base': None,
     'options': dict({
     }),
     'original_device_class': None,
     'original_icon': 'mdi:lightbulb',
-    'original_name': '[01] Lights',
+    'original_name': None,
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_01',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_switch_SB-0000000001_circuit_1',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_entities[switch.basis_panel_sb_0000000001_01_lights-state]
+# name: test_entities[switch.basis_panel_sb_0000000001_01-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 [01] Lights',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '01 · Lights · Basis Panel SB-0000000001',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:lightbulb',
     }),
     'context': <ANY>,
-    'entity_id': 'switch.basis_panel_sb_0000000001_01_lights',
+    'entity_id': 'switch.basis_panel_sb_0000000001_01',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': 'on',
   })
 # ---
-# name: test_entities[switch.basis_panel_sb_0000000001_02_power-entry]
+# name: test_entities[switch.basis_panel_sb_0000000001_02-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -3060,7 +3284,7 @@
     'disabled_by': None,
     'domain': 'switch',
     'entity_category': None,
-    'entity_id': 'switch.basis_panel_sb_0000000001_02_power',
+    'entity_id': 'switch.basis_panel_sb_0000000001_02',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -3068,36 +3292,36 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': '[02] Power',
+    'object_id_base': None,
     'options': dict({
     }),
     'original_device_class': None,
     'original_icon': 'mdi:flash',
-    'original_name': '[02] Power',
+    'original_name': None,
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_02',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_switch_SB-0000000001_circuit_2',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_entities[switch.basis_panel_sb_0000000001_02_power-state]
+# name: test_entities[switch.basis_panel_sb_0000000001_02-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 [02] Power',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '02 · Power · Basis Panel SB-0000000001',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:flash',
     }),
     'context': <ANY>,
-    'entity_id': 'switch.basis_panel_sb_0000000001_02_power',
+    'entity_id': 'switch.basis_panel_sb_0000000001_02',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': 'on',
   })
 # ---
-# name: test_entities[switch.basis_panel_sb_0000000001_05_ev_charger-entry]
+# name: test_entities[switch.basis_panel_sb_0000000001_05-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -3111,7 +3335,7 @@
     'disabled_by': None,
     'domain': 'switch',
     'entity_category': None,
-    'entity_id': 'switch.basis_panel_sb_0000000001_05_ev_charger',
+    'entity_id': 'switch.basis_panel_sb_0000000001_05',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -3119,36 +3343,36 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': '[05] EV Charger',
+    'object_id_base': None,
     'options': dict({
     }),
     'original_device_class': None,
     'original_icon': 'mdi:ev-station',
-    'original_name': '[05] EV Charger',
+    'original_name': None,
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_05',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_switch_SB-0000000001_circuit_5',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_entities[switch.basis_panel_sb_0000000001_05_ev_charger-state]
+# name: test_entities[switch.basis_panel_sb_0000000001_05-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 [05] EV Charger',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '05 · EV Charger · Basis Panel SB-0000000001',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:ev-station',
     }),
     'context': <ANY>,
-    'entity_id': 'switch.basis_panel_sb_0000000001_05_ev_charger',
+    'entity_id': 'switch.basis_panel_sb_0000000001_05',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': 'off',
   })
 # ---
-# name: test_entities[switch.basis_panel_sb_0000000001_06_light-entry]
+# name: test_entities[switch.basis_panel_sb_0000000001_06-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -3162,7 +3386,7 @@
     'disabled_by': None,
     'domain': 'switch',
     'entity_category': None,
-    'entity_id': 'switch.basis_panel_sb_0000000001_06_light',
+    'entity_id': 'switch.basis_panel_sb_0000000001_06',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -3170,36 +3394,36 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': '[06] light',
+    'object_id_base': None,
     'options': dict({
     }),
     'original_device_class': None,
     'original_icon': 'mdi:power-socket',
-    'original_name': '[06] light',
+    'original_name': None,
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_06',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_switch_SB-0000000001_circuit_6',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_entities[switch.basis_panel_sb_0000000001_06_light-state]
+# name: test_entities[switch.basis_panel_sb_0000000001_06-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 [06] light',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '06 · light · Basis Panel SB-0000000001',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:power-socket',
     }),
     'context': <ANY>,
-    'entity_id': 'switch.basis_panel_sb_0000000001_06_light',
+    'entity_id': 'switch.basis_panel_sb_0000000001_06',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': 'on',
   })
 # ---
-# name: test_entities[switch.basis_panel_sb_0000000001_07_solar-entry]
+# name: test_entities[switch.basis_panel_sb_0000000001_07-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -3213,7 +3437,7 @@
     'disabled_by': None,
     'domain': 'switch',
     'entity_category': None,
-    'entity_id': 'switch.basis_panel_sb_0000000001_07_solar',
+    'entity_id': 'switch.basis_panel_sb_0000000001_07',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -3221,36 +3445,36 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': '[07] Solar',
+    'object_id_base': None,
     'options': dict({
     }),
     'original_device_class': None,
     'original_icon': 'mdi:solar-power',
-    'original_name': '[07] Solar',
+    'original_name': None,
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000001_07',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_switch_SB-0000000001_circuit_7',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_entities[switch.basis_panel_sb_0000000001_07_solar-state]
+# name: test_entities[switch.basis_panel_sb_0000000001_07-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000001 [07] Solar',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '07 · Solar · Basis Panel SB-0000000001',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:solar-power',
     }),
     'context': <ANY>,
-    'entity_id': 'switch.basis_panel_sb_0000000001_07_solar',
+    'entity_id': 'switch.basis_panel_sb_0000000001_07',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': 'on',
   })
 # ---
-# name: test_entities[switch.basis_panel_sb_0000000002_01_lights-entry]
+# name: test_entities[switch.basis_panel_sb_0000000002_01-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -3264,7 +3488,7 @@
     'disabled_by': None,
     'domain': 'switch',
     'entity_category': None,
-    'entity_id': 'switch.basis_panel_sb_0000000002_01_lights',
+    'entity_id': 'switch.basis_panel_sb_0000000002_01',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -3272,36 +3496,36 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': '[01] Lights',
+    'object_id_base': None,
     'options': dict({
     }),
     'original_device_class': None,
     'original_icon': 'mdi:lightbulb',
-    'original_name': '[01] Lights',
+    'original_name': None,
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000002_01',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_switch_SB-0000000002_circuit_1',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_entities[switch.basis_panel_sb_0000000002_01_lights-state]
+# name: test_entities[switch.basis_panel_sb_0000000002_01-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000002 [01] Lights',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '01 · Lights · Basis Panel SB-0000000002',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:lightbulb',
     }),
     'context': <ANY>,
-    'entity_id': 'switch.basis_panel_sb_0000000002_01_lights',
+    'entity_id': 'switch.basis_panel_sb_0000000002_01',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': 'unavailable',
   })
 # ---
-# name: test_entities[switch.basis_panel_sb_0000000002_02_hot_water_cylinder-entry]
+# name: test_entities[switch.basis_panel_sb_0000000002_02-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -3315,7 +3539,7 @@
     'disabled_by': None,
     'domain': 'switch',
     'entity_category': None,
-    'entity_id': 'switch.basis_panel_sb_0000000002_02_hot_water_cylinder',
+    'entity_id': 'switch.basis_panel_sb_0000000002_02',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -3323,29 +3547,29 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': '[02] Hot Water Cylinder',
+    'object_id_base': None,
     'options': dict({
     }),
     'original_device_class': None,
     'original_icon': 'mdi:water-boiler',
-    'original_name': '[02] Hot Water Cylinder',
+    'original_name': None,
     'platform': 'basis_smart_panel',
     'previous_unique_id': None,
-    'suggested_object_id': None,
+    'suggested_object_id': 'basis_panel_sb_0000000002_02',
     'supported_features': 0,
     'translation_key': None,
     'unique_id': 'basis_switch_SB-0000000002_circuit_2',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_entities[switch.basis_panel_sb_0000000002_02_hot_water_cylinder-state]
+# name: test_entities[switch.basis_panel_sb_0000000002_02-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Basis Panel SB-0000000002 [02] Hot Water Cylinder',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: '02 · Hot Water Cylinder · Basis Panel SB-0000000002',
       <EntityStateAttribute.ICON: 'icon'>: 'mdi:water-boiler',
     }),
     'context': <ANY>,
-    'entity_id': 'switch.basis_panel_sb_0000000002_02_hot_water_cylinder',
+    'entity_id': 'switch.basis_panel_sb_0000000002_02',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,

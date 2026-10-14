@@ -33,7 +33,6 @@ type Address {
 type Switchboard {
   name: String
   serial: String!
-  model: String
   version: String
   connectivity: SwitchboardConnectivity!
   liveState: SwitchboardLiveState

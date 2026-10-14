@@ -9,14 +9,26 @@ from homeassistant.components.switch import DOMAIN as SWITCH_DOMAIN
 from homeassistant.config_entries import ConfigEntryState
 from homeassistant.const import ATTR_ENTITY_ID, SERVICE_TURN_OFF, STATE_UNKNOWN
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers import area_registry as ar
 from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers import entity_registry as er
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
+from custom_components.basis_smart_panel import BOARD_REMOVAL_POLLS
 from custom_components.basis_smart_panel.const import DOMAIN
 
-from .conftest import POLL, advance, circuit_uid, setup_integration
-from .fake_backend import SERIAL_A, FakeBasisBackend, subcircuit
+from .conftest import (
+    DISCOVERY,
+    POLL,
+    advance,
+    board_device,
+    circuit_device,
+    circuit_uid,
+    setup_integration,
+)
+from .fake_backend import SERIAL_A, SERIAL_B, FakeBasisBackend, subcircuit
+
+CIRCUIT_KEYS = ("power", "current", "voltage", "energy_import", "switch")
 
 
 def entity_id_of(
@@ -25,6 +37,89 @@ def entity_id_of(
     return entity_registry.async_get_entity_id(
         domain, DOMAIN, circuit_uid(key, SERIAL_A, number)
     )
+
+
+async def test_circuit_entities_are_on_a_circuit_device_under_the_panel(
+    hass: HomeAssistant,
+    fake_backend: FakeBasisBackend,
+    config_entry: MockConfigEntry,
+    device_registry: dr.DeviceRegistry,
+    entity_registry: er.EntityRegistry,
+) -> None:
+    await setup_integration(hass, config_entry)
+
+    device = circuit_device(device_registry, config_entry, SERIAL_A, 1)
+    assert device.via_device_id == board_device(device_registry, config_entry, SERIAL_A).id
+    assert {
+        entry.unique_id for entry in er.async_entries_for_device(entity_registry, device.id)
+    } == {circuit_uid(key, SERIAL_A, 1) for key in CIRCUIT_KEYS}
+    assert circuit_device(device_registry, config_entry, SERIAL_A, 4) is None
+
+
+async def test_existing_circuit_entities_move_to_the_circuit_device(
+    hass: HomeAssistant,
+    fake_backend: FakeBasisBackend,
+    config_entry: MockConfigEntry,
+    device_registry: dr.DeviceRegistry,
+    entity_registry: er.EntityRegistry,
+) -> None:
+    config_entry.add_to_hass(hass)
+    panel = device_registry.async_get_or_create(
+        config_entry_id=config_entry.entry_id, identifiers={(DOMAIN, SERIAL_A)}
+    )
+    old_power = entity_registry.async_get_or_create(
+        "sensor",
+        DOMAIN,
+        circuit_uid("power", SERIAL_A, 1),
+        config_entry=config_entry,
+        device_id=panel.id,
+        suggested_object_id="my_lights_power",
+    )
+
+    await setup_integration(hass, config_entry)
+
+    device = circuit_device(device_registry, config_entry, SERIAL_A, 1)
+    assert entity_registry.async_get(old_power.entity_id).device_id == device.id
+    assert hass.states.get(old_power.entity_id).state == "120.5"
+
+
+async def test_new_circuit_device_gets_the_area_of_the_panel(
+    hass: HomeAssistant,
+    fake_backend: FakeBasisBackend,
+    config_entry: MockConfigEntry,
+    area_registry: ar.AreaRegistry,
+    device_registry: dr.DeviceRegistry,
+) -> None:
+    garage = area_registry.async_create("Garage")
+    config_entry.add_to_hass(hass)
+    panel = device_registry.async_get_or_create(
+        config_entry_id=config_entry.entry_id, identifiers={(DOMAIN, SERIAL_A)}
+    )
+    device_registry.async_update_device(panel.id, area_id=garage.id)
+
+    await setup_integration(hass, config_entry)
+
+    assert circuit_device(device_registry, config_entry, SERIAL_A, 1).area_id == garage.id
+
+
+async def test_existing_circuit_device_does_not_take_the_panel_area(
+    hass: HomeAssistant,
+    fake_backend: FakeBasisBackend,
+    config_entry: MockConfigEntry,
+    area_registry: ar.AreaRegistry,
+    device_registry: dr.DeviceRegistry,
+) -> None:
+    garage = area_registry.async_create("Garage")
+    await setup_integration(hass, config_entry)
+    panel = board_device(device_registry, config_entry, SERIAL_A)
+    device_registry.async_update_device(panel.id, area_id=garage.id)
+    device = circuit_device(device_registry, config_entry, SERIAL_A, 1)
+    assert device.area_id is None
+
+    await hass.config_entries.async_reload(config_entry.entry_id)
+    await hass.async_block_till_done()
+
+    assert circuit_device(device_registry, config_entry, SERIAL_A, 1).area_id is None
 
 
 async def test_unique_ids_move_from_module_serial_to_position(
@@ -201,6 +296,24 @@ async def test_spare_circuit_gets_entities_when_labelled(
     assert entity_id_of(entity_registry, SWITCH_DOMAIN, "switch", 4)
 
 
+async def test_circuit_that_becomes_spare_loses_its_device(
+    hass: HomeAssistant,
+    freezer: FrozenDateTimeFactory,
+    fake_backend: FakeBasisBackend,
+    config_entry: MockConfigEntry,
+    device_registry: dr.DeviceRegistry,
+    entity_registry: er.EntityRegistry,
+) -> None:
+    await setup_integration(hass, config_entry)
+
+    fake_backend.board(SERIAL_A)["subcircuits"][0]["config"]["label"] = "spare"
+    await advance(hass, freezer, POLL)
+
+    assert circuit_device(device_registry, config_entry, SERIAL_A, 1) is None
+    assert not entity_id_of(entity_registry, "sensor", "power", 1)
+    assert circuit_device(device_registry, config_entry, SERIAL_A, 2)
+
+
 async def test_new_circuit_gets_entities(
     hass: HomeAssistant,
     freezer: FrozenDateTimeFactory,
@@ -221,6 +334,7 @@ async def test_removed_circuit_loses_its_entities(
     freezer: FrozenDateTimeFactory,
     fake_backend: FakeBasisBackend,
     config_entry: MockConfigEntry,
+    device_registry: dr.DeviceRegistry,
     entity_registry: er.EntityRegistry,
 ) -> None:
     await setup_integration(hass, config_entry)
@@ -232,6 +346,44 @@ async def test_removed_circuit_loses_its_entities(
     assert not entity_id_of(entity_registry, "sensor", "power", 1)
     assert not entity_id_of(entity_registry, SWITCH_DOMAIN, "switch", 1)
     assert entity_id_of(entity_registry, "sensor", "power", 2)
+    assert circuit_device(device_registry, config_entry, SERIAL_A, 1) is None
+
+
+async def test_circuit_devices_stay_through_discovery_polls(
+    hass: HomeAssistant,
+    freezer: FrozenDateTimeFactory,
+    fake_backend: FakeBasisBackend,
+    config_entry: MockConfigEntry,
+    device_registry: dr.DeviceRegistry,
+) -> None:
+    await setup_integration(hass, config_entry)
+
+    for _ in range(BOARD_REMOVAL_POLLS):
+        await advance(hass, freezer, DISCOVERY)
+
+    assert circuit_device(device_registry, config_entry, SERIAL_A, 1)
+
+
+async def test_board_without_data_keeps_its_circuit_devices(
+    hass: HomeAssistant,
+    fake_backend: FakeBasisBackend,
+    config_entry: MockConfigEntry,
+    device_registry: dr.DeviceRegistry,
+) -> None:
+    config_entry.add_to_hass(hass)
+    panel = device_registry.async_get_or_create(
+        config_entry_id=config_entry.entry_id, identifiers={(DOMAIN, SERIAL_B)}
+    )
+    device_registry.async_get_or_create(
+        config_entry_id=config_entry.entry_id,
+        identifiers={(DOMAIN, f"{SERIAL_B}_circuit_1")},
+        via_device_id=panel.id,
+    )
+    fake_backend.broken_boards.add(SERIAL_B)
+
+    await setup_integration(hass, config_entry)
+
+    assert circuit_device(device_registry, config_entry, SERIAL_B, 1)
 
 
 async def test_empty_circuit_list_changes_nothing(

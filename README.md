@@ -54,6 +54,14 @@ A site with two or more panels is a device with the address of the site as its n
 
 Each panel is a device with the name that the panel has in the Basis app. When you rename the panel in the app, the device name follows. A panel without a name is named "Basis Panel" with its serial. The device page shows the panel serial as the serial number.
 
+Each circuit that is not marked as spare is a device under its panel. The device name has the position of the circuit, the circuit name and the panel name, for example "01 · Lights · Office Panel". The position comes first, so the device page of the panel lists its circuits in panel order. The circuit name is the name that you gave the circuit in the Basis app. If you did not give it a name, the integration uses the circuit label, for example "Lights". When you rename the panel or the circuit, the circuit device name follows. If you rename a circuit device in Home Assistant, your name stays.
+
+A new circuit device gets the area of its panel. After that, the integration does not change the area of the circuit device.
+
+The entities of a circuit show the name of the circuit device, for example "01 · Lights · Office Panel Power". To rename all entities of a circuit, rename its device.
+
+The entity IDs of panel and circuit entities use the panel serial and the circuit position, not the names, for example `sensor.basis_panel_<serial>_01_power` and `sensor.basis_panel_<serial>_current_power`. A rename of the panel or a circuit does not make them stale. The site sensors get their entity IDs from the site name.
+
 ### Site sensors
 
 A site with two or more panels gets these sensors. They show the total of all panels of the site.
@@ -78,24 +86,26 @@ A site with two or more panels gets these sensors. They show the total of all pa
 | Consumption Energy This Month | Energy imported since the first day of the month (kWh) | 5 minutes |
 | Generation Energy This Month | Energy exported since the first day of the month (kWh) | 5 minutes |
 
+While the panel is disconnected, the sensors with a 5-second update interval are unavailable. The energy sensors keep their values, because the Basis cloud keeps the energy history.
+
 ### Circuit sensors
 
-Each circuit that is not marked as spare gets these sensors:
+Each circuit device gets these sensors:
 
 | Entity | Description | Update interval |
 |--------|-------------|-----------------|
-| [NN] Name · Power | Power of the circuit (W) | 5 seconds |
-| [NN] Name · Current | Current of the circuit (A) | 5 seconds |
-| [NN] Name · Voltage | Voltage of the circuit (V) | 5 seconds |
-| [NN] Name · Import Energy Today | Energy that the circuit imported since midnight (kWh) | 5 minutes |
+| Power | Power of the circuit (W) | 5 seconds |
+| Current | Current of the circuit (A) | 5 seconds |
+| Voltage | Voltage of the circuit (V) | 5 seconds |
+| Import Energy Today | Energy that the circuit imported since midnight (kWh) | 5 minutes |
 
-NN is the position of the circuit in the panel. Name is the name that you gave the circuit in the Basis app. If you did not give it a name, the integration uses the circuit label, for example "Lights".
+While the panel is disconnected, the Power, Current and Voltage sensors are unavailable. Import Energy Today keeps its value.
 
-The integration identifies a circuit by its panel and position. If an electrician replaces the module in a position, the entities and their history stay. When the circuits of a panel change, the integration reloads and updates the entities:
+The integration identifies a circuit by its panel and position. If an electrician replaces the module in a position, the device, the entities and their history stay. When the circuits of a panel change, the integration reloads and updates the devices and entities:
 
-- A new circuit gets entities.
-- A circuit that is no longer spare gets entities.
-- The entities of a circuit that no longer exists are removed.
+- A new circuit gets a device and entities.
+- A circuit that is no longer spare gets a device and entities.
+- The device and entities of a circuit that no longer exists, or that becomes spare, are removed.
 
 ### Energy dashboard
 
@@ -111,7 +121,7 @@ Add the "Today" sensor or the "This Month" sensor of a value, not both. If you a
 
 ### Switches
 
-Each circuit that is not spare and not locked for standby gets a switch named "[NN] Name".
+Each circuit device gets a switch, unless the circuit is locked for standby. The switch has the name of the circuit device.
 
 - On: the circuit is live.
 - Off: the circuit is in standby.
@@ -126,7 +136,12 @@ A circuit that becomes locked for standby loses its switch. If the Basis cloud r
 
 - Earlier versions recorded the daily and monthly energy sensors incorrectly. At each reset, they wrote a large negative value into the long-term statistics. This version records the sensors correctly, but it does not repair the old statistics. To correct them, open **Developer tools** > **Statistics** and adjust the sum at each reset.
 - At the first start, the circuit entities move from the module serial to the circuit position. Their entity IDs and history stay.
-- The circuit sensors are now named "[NN] Name · Power", "[NN] Name · Current", "[NN] Name · Voltage" and "[NN] Name · Import Energy Today". Existing entities keep their entity ID.
+- Each circuit is now a device under its panel, and the circuit entities move from the panel device to the circuit device. Their entity IDs and history stay.
+- Existing entities keep their entity IDs. Only a new entity gets an entity ID from the panel serial and the circuit position, for example a circuit that you add later.
+- The circuit entities now show the name of the circuit device, for example "01 · Lights · Office Panel Power". If you renamed the panel in Home Assistant, the circuit devices use that name.
+- An automation or a script that targets the panel device no longer reaches the circuit switches and sensors. Target the circuit devices or the entities instead.
+- Each circuit device gets the area of its panel. Area actions and voice commands reach the circuit entities as before.
+- While a panel is disconnected, its power, current and voltage sensors are now unavailable. Earlier versions showed the values that the Basis cloud returned for a disconnected panel, for example 0 W.
 
 ## Support
 

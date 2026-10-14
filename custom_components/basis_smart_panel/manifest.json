@@ -8,5 +8,5 @@
     "iot_class": "cloud_polling",
     "issue_tracker": "https://github.com/wearebasis/ha-basis/issues",
     "requirements": ["gql>=3.0.0"],
-    "version": "1.0.0"
+    "version": "2.0.0"
 }

@@ -31,7 +31,7 @@ from .config_flow import BasisOAuth2Implementation, _decode_jwt_payload
 from .const import (
     DOMAIN,
     BRAND,
-    DEFAULT_MODEL,
+    LABEL_NAME_MAP,
     OAUTH2_CLIENT_ID,
     OAUTH2_AUTHORIZE,
     OAUTH2_TOKEN,
@@ -48,11 +48,13 @@ from .coordinator import (
     SiteEnergyCoordinator,
     SubcircuitEnergyCoordinator,
     SwitchboardDataCoordinator,
+    circuit_identifier,
+    panel_serial,
     site_identifier,
 )
 from .api import BasisAPI, AsyncConfigEntryAuth
 from .entity import circuit_unique_id
-from .models import Site
+from .models import Site, Subcircuit, Switchboard
 
 BOARD_REMOVAL_POLLS = 3
 MODULE_KEYS = ("power", "current", "voltage", "switch", "energy_import")
@@ -131,6 +133,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: BasisConfigEntry) -> boo
         entry.runtime_data.site_energy[site.id] = site_energy
 
     _async_register_devices(hass, entry)
+    _async_remove_stale_circuit_devices(hass, entry)
     _async_migrate_circuit_unique_ids(hass, entry)
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     _async_remove_stale_entities(hass, entry)
@@ -145,7 +148,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: BasisConfigEntry) -> boo
             board.live.async_add_listener(partial(_async_check_circuits, hass, entry, board))
         )
         entry.async_on_unload(
-            board.live.async_add_listener(partial(_async_sync_device_name, hass, entry, board))
+            board.live.async_add_listener(partial(_async_sync_device_names, hass, entry, board))
         )
 
     return True
@@ -193,7 +196,7 @@ async def _async_setup_board(
 
 @callback
 def _async_register_devices(hass: HomeAssistant, entry: BasisConfigEntry) -> None:
-    """Register each switchboard, and each site with more than one, as a device."""
+    """Register each switchboard and its circuits, and each site with more than one, as a device."""
     device_registry = dr.async_get(hass)
     data = entry.runtime_data
     grouped = {site.id for site in _grouped(_owned_sites(hass, entry))}
@@ -226,12 +229,8 @@ def _async_register_switchboard_device(
     # Without data, keep the name of an existing device; a new one gets the default.
     details: dict = {"default_name": _device_name(serial, None)}
     if (switchboard := board.live.data) is not None:
-        model = switchboard.model
-        if (model == "unknown"):
-            model = DEFAULT_MODEL
         details = {
             "name": _device_name(serial, switchboard.name),
-            "model": model,
             "sw_version": switchboard.version,
             "hw_version": (
                 switchboard.subcircuits[0].config_version
@@ -240,15 +239,33 @@ def _async_register_switchboard_device(
             ),
         }
 
-    device_registry.async_get_or_create(
+    device = device_registry.async_get_or_create(
         config_entry_id=entry.entry_id,
         identifiers={(DOMAIN, serial)},
         manufacturer=BRAND,
+        model="Smart Panel",
         serial_number=serial,
         via_device_id=site_device_id,
         **details,
     )
     LOGGER.debug(f"Registered device for switchboard {serial}")
+
+    if switchboard is None:
+        return
+    for subcircuit in _circuits_with_devices(switchboard):
+        identifier = (DOMAIN, circuit_identifier(serial, subcircuit.number))
+        is_new = device_registry.async_get_device_by_identifier(identifier, entry.entry_id) is None
+        circuit = device_registry.async_get_or_create(
+            config_entry_id=entry.entry_id,
+            identifiers={identifier},
+            manufacturer=BRAND,
+            model="Circuit",
+            name=_circuit_device_name(device, subcircuit),
+            via_device_id=device.id,
+        )
+        # Circuit entities were on the panel device before, so they had its area.
+        if is_new and device.area_id:
+            device_registry.async_update_device(circuit.id, area_id=device.area_id)
 
 
 @callback
@@ -288,7 +305,7 @@ def _async_check_boards(hass: HomeAssistant, entry: BasisConfigEntry) -> None:
         identifier = _device_identifier(device)
         if identifier is None:
             continue
-        if identifier in current:
+        if panel_serial(identifier) in current:
             data.missing_polls.pop(identifier, None)
             continue
         data.missing_polls[identifier] = data.missing_polls.get(identifier, 0) + 1
@@ -389,6 +406,30 @@ def _async_check_circuits(
 
 
 @callback
+def _async_remove_stale_circuit_devices(hass: HomeAssistant, entry: BasisConfigEntry) -> None:
+    """Remove the devices of circuits that became spare or no longer exist."""
+    data = entry.runtime_data
+    current = {
+        circuit_identifier(serial, subcircuit.number)
+        for serial, board in data.boards.items()
+        if board.live.data is not None
+        for subcircuit in _circuits_with_devices(board.live.data)
+    }
+    device_registry = dr.async_get(hass)
+    for device in dr.async_entries_for_config_entry(device_registry, entry.entry_id):
+        identifier = _device_identifier(device)
+        if identifier is None or identifier in current:
+            continue
+        serial = panel_serial(identifier)
+        board = data.boards.get(serial)
+        # Without circuit data, the setup could not decide the circuits of a board.
+        if serial == identifier or board is None or not board.layout:
+            continue
+        LOGGER.info("Removing the device of circuit %s, which no longer has entities", identifier)
+        device_registry.async_remove_device(device.id)
+
+
+@callback
 def _async_migrate_circuit_unique_ids(hass: HomeAssistant, entry: BasisConfigEntry) -> None:
     """Move circuit entities from the module serial to the circuit position."""
     renames: dict[str, tuple[str, str]] = {}
@@ -461,7 +502,7 @@ def _async_remove_stale_entities(hass: HomeAssistant, entry: BasisConfigEntry) -
         device = device_registry.async_get(registry_entry.device_id or "")
         identifier = _device_identifier(device) if device else None
         if identifier not in sites:
-            board = data.boards.get(identifier)
+            board = data.boards.get(panel_serial(identifier)) if identifier else None
             # Without circuit data, the platforms could not decide the entities of a board.
             if board is None or not board.layout:
                 continue
@@ -485,17 +526,40 @@ def _device_name(serial: str, name: str | None) -> str:
     return name or f"Basis Panel {serial}"
 
 
+def _circuits_with_devices(switchboard: Switchboard) -> list[Subcircuit]:
+    return [sub for sub in switchboard.subcircuits if not sub.is_spare]
+
+
+def _circuit_device_name(panel: dr.DeviceEntry, subcircuit: Subcircuit) -> str:
+    """Return "NN · <circuit> · <panel>", with the panel name that HA shows."""
+    # The display label is a label key unless the user named the circuit in the app.
+    name = LABEL_NAME_MAP.get(subcircuit.display_label, subcircuit.display_label) or "Circuit"
+    # HA lists the devices of a panel by name, so the position comes first.
+    return f"{subcircuit.number:02d} · {name} · {panel.name_by_user or panel.name}"
+
+
 @callback
-def _async_sync_device_name(
+def _async_sync_device_names(
     hass: HomeAssistant, entry: BasisConfigEntry, board: BoardCoordinators
 ) -> None:
-    """Rename the device when the panel is renamed in the Basis app."""
-    if board.live.data is None:
+    """Rename the devices when the panel or a circuit is renamed in the Basis app or in HA."""
+    switchboard = board.live.data
+    if switchboard is None:
         return
-    name = _device_name(board.live.serial, board.live.data.name)
+    serial = board.live.serial
     device_registry = dr.async_get(hass)
-    for device in dr.async_entries_for_config_entry(device_registry, entry.entry_id):
-        if _device_identifier(device) == board.live.serial and device.name != name:
+    panel = device_registry.async_get_device_by_identifier((DOMAIN, serial), entry.entry_id)
+    if panel is None:
+        return
+    name = _device_name(serial, switchboard.name)
+    if panel.name != name:
+        panel = device_registry.async_update_device(panel.id, name=name) or panel
+    for subcircuit in _circuits_with_devices(switchboard):
+        device = device_registry.async_get_device_by_identifier(
+            (DOMAIN, circuit_identifier(serial, subcircuit.number)), entry.entry_id
+        )
+        name = _circuit_device_name(panel, subcircuit)
+        if device is not None and device.name != name:
             device_registry.async_update_device(device.id, name=name)
 
 

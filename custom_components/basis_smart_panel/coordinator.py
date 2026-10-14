@@ -44,6 +44,16 @@ def site_identifier(site_id: str) -> str:
     return f"site_{site_id}"
 
 
+def circuit_identifier(serial: str, number: int) -> str:
+    """Return the device identifier of a circuit, which follows the circuit position."""
+    return f"{serial}_circuit_{number}"
+
+
+def panel_serial(identifier: str) -> str:
+    """Return the panel serial of a panel or circuit device identifier."""
+    return identifier.partition("_circuit_")[0]
+
+
 @dataclass
 class BoardCoordinators:
     """The coordinators of one switchboard."""

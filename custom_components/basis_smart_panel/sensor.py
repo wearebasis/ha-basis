@@ -27,6 +27,7 @@ from homeassistant.components.sensor import (
     SensorStateClass,
 )
 from homeassistant.const import (
+    Platform,
     UnitOfPower,
     UnitOfElectricCurrent,
     UnitOfElectricPotential,
@@ -34,18 +35,21 @@ from homeassistant.const import (
 )
 
 from .coordinator import (
+    BasisBoardCoordinator,
     BasisConfigEntry,
     BasisDeviceCoordinator,
     SubcircuitEnergyCoordinator,
     SwitchboardDataCoordinator,
+    circuit_identifier,
 )
 from .const import LABEL_ICON_MAP
 from .entity import (
     BasisEntity,
+    BasisLiveEntity,
     BasisSubcircuitEntity,
     async_add_basis_entities,
-    circuit_name,
     circuit_unique_id,
+    panel_entity_id,
 )
 from .models import EnergyStats, Subcircuit, Switchboard
 
@@ -61,7 +65,6 @@ class BasisDeviceSensorDescription[_DataT](SensorEntityDescription):
 class BasisSubcircuitSensorDescription(SensorEntityDescription):
     """Sensor that reads one value from the live data of a subcircuit."""
 
-    name_suffix: str
     value_fn: Callable[[Subcircuit], float | None]
     label_icon_fallback: str | None = None
 
@@ -147,7 +150,7 @@ ENERGY_SENSORS: tuple[BasisDeviceSensorDescription[EnergyStats], ...] = (
 SUBCIRCUIT_SENSORS: tuple[BasisSubcircuitSensorDescription, ...] = (
     BasisSubcircuitSensorDescription(
         key="power",
-        name_suffix="Power",
+        name="Power",
         device_class=SensorDeviceClass.POWER,
         state_class=SensorStateClass.MEASUREMENT,
         native_unit_of_measurement=UnitOfPower.WATT,
@@ -156,7 +159,7 @@ SUBCIRCUIT_SENSORS: tuple[BasisSubcircuitSensorDescription, ...] = (
     ),
     BasisSubcircuitSensorDescription(
         key="current",
-        name_suffix="Current",
+        name="Current",
         device_class=SensorDeviceClass.CURRENT,
         state_class=SensorStateClass.MEASUREMENT,
         native_unit_of_measurement=UnitOfElectricCurrent.AMPERE,
@@ -165,7 +168,7 @@ SUBCIRCUIT_SENSORS: tuple[BasisSubcircuitSensorDescription, ...] = (
     ),
     BasisSubcircuitSensorDescription(
         key="voltage",
-        name_suffix="Voltage",
+        name="Voltage",
         device_class=SensorDeviceClass.VOLTAGE,
         state_class=SensorStateClass.MEASUREMENT,
         native_unit_of_measurement=UnitOfElectricPotential.VOLT,
@@ -184,7 +187,7 @@ async def async_setup_entry(
     entities: list[SensorEntity] = []
 
     for board in config_entry.runtime_data.boards.values():
-        entities.extend(BasisDeviceSensor(board.live, d) for d in PANEL_SENSORS)
+        entities.extend(BasisPanelSensor(board.live, d) for d in PANEL_SENSORS)
         entities.extend(BasisDeviceSensor(board.energy, d) for d in ENERGY_SENSORS)
 
         if board.live.data is None:
@@ -221,12 +224,19 @@ class BasisDeviceSensor(BasisEntity[BasisDeviceCoordinator[Any]], SensorEntity):
         """Initialize the sensor."""
         super().__init__(coordinator, f"basis_{description.key}_{coordinator.identifier}")
         self.entity_description = description
+        # A site has no serial, so its sensors keep the ID that HA derives from the name.
+        if isinstance(coordinator, BasisBoardCoordinator):
+            self.entity_id = panel_entity_id(Platform.SENSOR, coordinator.serial, description.name)
 
     @property
     def native_value(self) -> float | None:
         if self.coordinator.data is None:
             return None
         return self.entity_description.value_fn(self.coordinator.data)
+
+
+class BasisPanelSensor(BasisLiveEntity, BasisDeviceSensor):
+    """Sensor of the live data of one switchboard."""
 
 
 class BasisSubcircuitSensor(BasisSubcircuitEntity, SensorEntity):
@@ -243,10 +253,9 @@ class BasisSubcircuitSensor(BasisSubcircuitEntity, SensorEntity):
         """Initialize the sensor."""
         super().__init__(coordinator, subcircuit, description.key)
         self.entity_description = description
-
-    @property
-    def name(self) -> str:
-        return self.circuit_name(self.entity_description.name_suffix)
+        self.entity_id = panel_entity_id(
+            Platform.SENSOR, coordinator.serial, f"{subcircuit.number:02d}", description.name
+        )
 
     @property
     def icon(self) -> str | None:
@@ -268,6 +277,7 @@ class BasisSubcircuitImportEnergySensor(
 ):
     """Sensor for subcircuit import energy (consumption)."""
 
+    _attr_name = "Import Energy Today"
     _attr_device_class = SensorDeviceClass.ENERGY
     _attr_state_class = SensorStateClass.TOTAL_INCREASING
     _attr_native_unit_of_measurement = UnitOfEnergy.KILO_WATT_HOUR
@@ -281,6 +291,10 @@ class BasisSubcircuitImportEnergySensor(
         super().__init__(
             coordinator,
             circuit_unique_id("energy_import", coordinator.serial, subcircuit.number),
+            circuit_identifier(coordinator.serial, subcircuit.number),
+        )
+        self.entity_id = panel_entity_id(
+            Platform.SENSOR, coordinator.serial, f"{subcircuit.number:02d}", self._attr_name
         )
         self._live = live
         self._subcircuit_number = subcircuit.number
@@ -307,10 +321,6 @@ class BasisSubcircuitImportEnergySensor(
         if self._live.data is None:
             return None
         return self._live.data.subcircuit(self._subcircuit_number)
-
-    @property
-    def name(self) -> str:
-        return circuit_name(self._subcircuit_number, self._subcircuit, "Import Energy Today")
 
     @property
     def icon(self) -> str:

@@ -145,6 +145,7 @@ async def test_site_energy_on_site_with_two_panels(
     await setup_integration(hass, config_entry)
 
     entity_id = entity_registry.async_get_entity_id("sensor", DOMAIN, SITE_ENERGY_TODAY)
+    assert entity_id == "sensor.1_example_street_consumption_energy_today"
     assert hass.states.get(entity_id).state == "20.0"
     month_id = entity_registry.async_get_entity_id(
         "sensor", DOMAIN, "basis_energy_month_import_site_site-1"

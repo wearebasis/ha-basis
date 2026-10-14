@@ -58,7 +58,6 @@ def default_boards() -> dict[str, dict[str, Any]]:
         SERIAL_A: {
             "name": None,
             "serial": SERIAL_A,
-            "model": "GEN1",
             "version": "3.2.1",
             "connectivity": {
                 "connected": True,
@@ -84,7 +83,6 @@ def default_boards() -> dict[str, dict[str, Any]]:
         SERIAL_B: {
             "name": None,
             "serial": SERIAL_B,
-            "model": None,
             "version": None,
             "connectivity": {
                 "connected": False,

@@ -67,6 +67,12 @@ def board_device(
     )
 
 
+def circuit_device(
+    device_registry: dr.DeviceRegistry, entry: MockConfigEntry, serial: str, number: int
+) -> dr.DeviceEntry | None:
+    return board_device(device_registry, entry, f"{serial}_circuit_{number}")
+
+
 def make_id_token(sub: str, email: str) -> str:
     """Return an unsigned JWT with the claims that the integration reads."""
 

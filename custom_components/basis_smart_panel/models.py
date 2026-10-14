@@ -80,7 +80,6 @@ class Switchboard:
 
     name: str | None
     serial: str
-    model: str | None
     version: str | None
     connectivity: Connectivity
     live: SwitchboardLiveState | None

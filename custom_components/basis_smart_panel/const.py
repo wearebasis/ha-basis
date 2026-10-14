@@ -19,7 +19,6 @@ from homeassistant.const import Platform
 
 DOMAIN = "basis_smart_panel"
 BRAND = "Basis NZ Ltd."
-DEFAULT_MODEL = "GEN1"
 
 API_BASE_URL = "https://api.wearebasis.io"
 
@@ -88,4 +87,22 @@ LABEL_NAME_MAP = {
     "septicPump": "Septic Pump",
     "alarm": "Alarm",
     "solar": "Solar",
+    "bedroom": "Bedroom",
+    "office": "Office",
+    "study": "Study",
+    "lounge": "Lounge",
+    "fireAlarm": "Fire Alarm",
+    "heater": "Heater",
+    "subBoard": "Sub Board",
+    "wallOven": "Wall Oven",
+    "sauna": "Sauna",
+    "towelRail": "Towel Rail",
+    "workshop": "Workshop",
+    "kitchen": "Kitchen",
+    "fridge": "Fridge",
+    "garage": "Garage",
+    "extLights": "Outside Lights",
+    "dishwasher": "Dishwasher",
+    "laundry": "Laundry",
+    "network": "Network",
 }

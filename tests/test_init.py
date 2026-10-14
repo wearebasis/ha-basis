@@ -21,6 +21,7 @@ from .conftest import (
     USER_SUB,
     advance,
     board_device,
+    circuit_device,
     circuit_uid,
     make_token,
     power_entity,
@@ -38,6 +39,19 @@ async def test_setup_and_unload(
     assert await hass.config_entries.async_unload(config_entry.entry_id)
     await hass.async_block_till_done()
     assert config_entry.state is ConfigEntryState.NOT_LOADED
+
+
+async def test_setup_and_polls_cause_no_ha_usage_report(
+    hass: HomeAssistant,
+    freezer: FrozenDateTimeFactory,
+    fake_backend: FakeBasisBackend,
+    config_entry: MockConfigEntry,
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    await setup_integration(hass, config_entry)
+    await advance(hass, freezer, POLL)
+
+    assert "Detected that custom integration" not in caplog.text
 
 
 async def test_requests_carry_token_and_user_agent(
@@ -147,6 +161,7 @@ async def test_board_removed_after_missing_polls(
 
     await advance(hass, freezer, DISCOVERY)
     assert board_device(device_registry, config_entry, SERIAL_B) is None
+    assert circuit_device(device_registry, config_entry, SERIAL_B, 1) is None
     assert not entity_registry.async_get_entity_id(
         "sensor", DOMAIN, circuit_uid("power", SERIAL_B, 1)
     )

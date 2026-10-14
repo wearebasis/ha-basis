@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from homeassistant.components.switch import SwitchEntity
+from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -20,7 +21,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from .api import BasisApiError
 from .coordinator import BasisConfigEntry, SwitchboardDataCoordinator
 from .const import LABEL_ICON_MAP
-from .entity import BasisSubcircuitEntity, async_add_basis_entities
+from .entity import BasisSubcircuitEntity, async_add_basis_entities, panel_entity_id
 from .models import Subcircuit
 
 
@@ -46,16 +47,16 @@ async def async_setup_entry(
 class BasisCircuitSwitch(BasisSubcircuitEntity, SwitchEntity):
     """Switch for controlling subcircuit standby state."""
 
+    _attr_name = None
+
     def __init__(
         self, coordinator: SwitchboardDataCoordinator, subcircuit: Subcircuit
     ) -> None:
         """Initialize the circuit switch."""
         super().__init__(coordinator, subcircuit, "switch")
-
-    @property
-    def name(self) -> str:
-        """Return the name of the switch."""
-        return self.circuit_name()
+        self.entity_id = panel_entity_id(
+            Platform.SWITCH, coordinator.serial, f"{subcircuit.number:02d}"
+        )
 
     @property
     def icon(self) -> str:
@@ -70,15 +71,6 @@ class BasisCircuitSwitch(BasisSubcircuitEntity, SwitchEntity):
             return None
         return {"LIVE": True, "STANDBY": False}.get(subcircuit.live.state)
 
-    @property
-    def available(self) -> bool:
-        """Return True if the switch is available (board is connected)."""
-        if not self.coordinator.last_update_success:
-            return False
-        if self.coordinator.data is None:
-            return False
-        return self.coordinator.data.connectivity.connected
-
     async def async_turn_on(self, **kwargs) -> None:
         """Turn on the circuit (deactivate standby)."""
         await self._async_set_standby(False)
@@ -87,10 +79,17 @@ class BasisCircuitSwitch(BasisSubcircuitEntity, SwitchEntity):
         """Turn off the circuit (activate standby)."""
         await self._async_set_standby(True)
 
+    @property
+    def _circuit_name(self) -> str:
+        device = self.device_entry
+        if device is None:
+            return self.entity_id
+        return device.name_by_user or device.name or self.entity_id
+
     async def _async_set_standby(self, activate: bool) -> None:
         subcircuit = self.subcircuit
         if subcircuit is None:
-            raise HomeAssistantError(f"{self.name} is not in the switchboard data")
+            raise HomeAssistantError(f"{self._circuit_name} is not in the switchboard data")
         try:
             await self.coordinator.api.set_subcircuit_standby(
                 self.coordinator.serial,
@@ -99,6 +98,6 @@ class BasisCircuitSwitch(BasisSubcircuitEntity, SwitchEntity):
             )
         except BasisApiError as err:
             raise HomeAssistantError(
-                f"Could not change the standby state of {self.name}: {err}"
+                f"Could not change the standby state of {self._circuit_name}: {err}"
             ) from err
         await self.coordinator.async_request_refresh()

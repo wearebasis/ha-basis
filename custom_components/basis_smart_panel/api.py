@@ -196,7 +196,6 @@ class BasisAPI:
                 switchboard(serial: $serial) {
                     name
                     serial
-                    model
                     version
                     connectivity {
                         connected
@@ -365,7 +364,6 @@ def _parse_switchboard(data: dict) -> Switchboard:
     return Switchboard(
         name=data["name"],
         serial=data["serial"],
-        model=data["model"],
         version=data["version"],
         connectivity=Connectivity(
             connected=connectivity["connected"],
