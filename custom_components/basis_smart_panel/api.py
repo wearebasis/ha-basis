@@ -185,6 +185,7 @@ class BasisAPI:
         query = gql("""
             query GetSwitchboardData($serial: String!) {
                 switchboard(serial: $serial) {
+                    name
                     serial
                     model
                     version
@@ -207,6 +208,7 @@ class BasisAPI:
                         number
                         config {
                             label
+                            displayLabel
                             standbyLocked
                             version
                         }
@@ -255,10 +257,10 @@ class BasisAPI:
 
     async def get_subcircuit_energy_usage(
         self, serial: str, start_time: str
-    ) -> dict[str, float | None]:
-        """Get the import energy of each subcircuit in the last daily bucket.
+    ) -> dict[int, float | None]:
+        """Get the import energy of each subcircuit since start_time.
 
-        Keys are subcircuit serials. start_time is ISO 8601 (midnight today).
+        Keys are subcircuit numbers. start_time is ISO 8601 (midnight today).
         """
         query = gql("""
             query GetSubcircuitEnergyUsage($serial: String!, $startTime: Time!) {
@@ -295,7 +297,7 @@ class BasisAPI:
 
         result = await self._execute(query, variables)
         return {
-            subcircuit["serial"]: _last_import_kwh(subcircuit["energyUsage"]["data"])
+            subcircuit["number"]: _import_kwh_total(subcircuit["energyUsage"]["data"])
             for subcircuit in result["switchboard"]["subcircuits"]
         }
 
@@ -329,6 +331,7 @@ def _parse_switchboard(data: dict) -> Switchboard:
     connectivity = data["connectivity"]
     live = data["liveState"]
     return Switchboard(
+        name=data["name"],
         serial=data["serial"],
         model=data["model"],
         version=data["version"],
@@ -356,6 +359,7 @@ def _parse_subcircuit(data: dict) -> Subcircuit:
         serial=data["serial"],
         number=data["number"],
         label=config["label"],
+        display_label=config["displayLabel"],
         config_version=config["version"],
         standby_locked=config["standbyLocked"],
         live=SubcircuitLiveState(
@@ -369,14 +373,12 @@ def _parse_subcircuit(data: dict) -> Subcircuit:
     )
 
 
-def _last_import_kwh(data_points: list[dict]) -> float | None:
-    """Return the last non-null importKwh of the data points."""
-    result = None
-    for point in data_points:
-        value = point["usage"]["importKwh"]
-        if value is not None:
-            result = value
-    return result
+def _import_kwh_total(data_points: list[dict]) -> float | None:
+    """Return the sum of the non-null importKwh values, or None if all are null."""
+    # The DAY buckets need not start at start_time, so the range can span two buckets.
+    values = [point["usage"]["importKwh"] for point in data_points]
+    values = [value for value in values if value is not None]
+    return sum(values) if values else None
 
 
 def _is_rejection(status: int | None) -> bool:

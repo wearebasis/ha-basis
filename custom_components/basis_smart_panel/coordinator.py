@@ -46,6 +46,7 @@ class BoardCoordinators:
     live: SwitchboardDataCoordinator
     energy: EnergyStatsCoordinator
     subcircuit_energy: SubcircuitEnergyCoordinator
+    layout: frozenset[tuple[int, bool, bool]] = frozenset()
 
 
 @dataclass
@@ -56,6 +57,8 @@ class BasisData:
     discovery: BoardsDiscoveryCoordinator
     boards: dict[str, BoardCoordinators] = field(default_factory=dict)
     missing_polls: dict[str, int] = field(default_factory=dict)
+    unique_ids: set[str] = field(default_factory=set)
+    set_up_platforms: set[str] = field(default_factory=set)
 
 
 class BasisCoordinator[_DataT](DataUpdateCoordinator[_DataT]):
@@ -173,13 +176,13 @@ class EnergyStatsCoordinator(BasisBoardCoordinator[BoardEnergy]):
         return BoardEnergy(today=today, month=month)
 
 
-class SubcircuitEnergyCoordinator(BasisBoardCoordinator[dict[str, float | None]]):
+class SubcircuitEnergyCoordinator(BasisBoardCoordinator[dict[int, float | None]]):
     """Coordinator for per-subcircuit energy statistics."""
 
     NAME_SUFFIX = "_subcircuit_energy"
     UPDATE_INTERVAL = ENERGY_STATS_UPDATE_INTERVAL
 
-    async def _async_fetch(self) -> dict[str, float | None]:
+    async def _async_fetch(self) -> dict[int, float | None]:
         """Fetch today's import energy of each subcircuit."""
         now = dt_util.now()
         start_of_today = now.replace(hour=0, minute=0, second=0, microsecond=0)

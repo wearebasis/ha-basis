@@ -18,7 +18,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 
-from homeassistant.core import HomeAssistant
+from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.components.sensor import (
     SensorEntity,
@@ -39,11 +39,14 @@ from .coordinator import (
     SubcircuitEnergyCoordinator,
     SwitchboardDataCoordinator,
 )
-from .const import (
-    LABEL_ICON_MAP,
-    LABEL_NAME_MAP,
+from .const import LABEL_ICON_MAP
+from .entity import (
+    BasisEntity,
+    BasisSubcircuitEntity,
+    async_add_basis_entities,
+    circuit_name,
+    circuit_unique_id,
 )
-from .entity import BasisEntity, BasisSubcircuitEntity
 from .models import BoardEnergy, Subcircuit, Switchboard
 
 
@@ -184,6 +187,8 @@ async def async_setup_entry(
         entities.extend(BasisBoardSensor(board.live, d) for d in PANEL_SENSORS)
         entities.extend(BasisBoardSensor(board.energy, d) for d in ENERGY_SENSORS)
 
+        if board.live.data is None:
+            continue
         for subcircuit in board.live.data.subcircuits:
             if subcircuit.is_spare:
                 continue
@@ -192,10 +197,12 @@ async def async_setup_entry(
                 for d in SUBCIRCUIT_SENSORS
             )
             entities.append(
-                BasisSubcircuitImportEnergySensor(board.subcircuit_energy, subcircuit)
+                BasisSubcircuitImportEnergySensor(
+                    board.subcircuit_energy, board.live, subcircuit
+                )
             )
 
-    async_add_entities(entities)
+    async_add_basis_entities(config_entry, async_add_entities, entities)
 
 
 class BasisBoardSensor(BasisEntity[BasisBoardCoordinator[Any]], SensorEntity):
@@ -263,21 +270,52 @@ class BasisSubcircuitImportEnergySensor(
     _attr_native_unit_of_measurement = UnitOfEnergy.KILO_WATT_HOUR
 
     def __init__(
-        self, coordinator: SubcircuitEnergyCoordinator, subcircuit: Subcircuit
+        self,
+        coordinator: SubcircuitEnergyCoordinator,
+        live: SwitchboardDataCoordinator,
+        subcircuit: Subcircuit,
     ) -> None:
         super().__init__(
             coordinator,
-            f"basis_energy_import_{coordinator.serial}_{subcircuit.serial}",
+            circuit_unique_id("energy_import", coordinator.serial, subcircuit.number),
         )
-        self._subcircuit_serial = subcircuit.serial
-        label = subcircuit.label
-        self._attr_name = (
-            f"[{subcircuit.number:02d}] {LABEL_NAME_MAP.get(label, label)} Import Energy"
-        )
-        self._attr_icon = LABEL_ICON_MAP.get(label, "mdi:lightning-bolt")
+        self._live = live
+        self._subcircuit_number = subcircuit.number
+        self._written: tuple[str, str] | None = None
+
+    async def async_added_to_hass(self) -> None:
+        """Also follow the live data, which gives the name and the icon."""
+        await super().async_added_to_hass()
+        self.async_on_remove(self._live.async_add_listener(self._handle_live_update))
+
+    @callback
+    def _handle_live_update(self) -> None:
+        if (self.name, self.icon) != self._written:
+            self.async_write_ha_state()
+
+    @callback
+    def async_write_ha_state(self) -> None:
+        """Write the state and remember the name and the icon that it has."""
+        self._written = (self.name, self.icon)
+        super().async_write_ha_state()
+
+    @property
+    def _subcircuit(self) -> Subcircuit | None:
+        if self._live.data is None:
+            return None
+        return self._live.data.subcircuit(self._subcircuit_number)
+
+    @property
+    def name(self) -> str:
+        return circuit_name(self._subcircuit_number, self._subcircuit, "Import Energy Today")
+
+    @property
+    def icon(self) -> str:
+        subcircuit = self._subcircuit
+        return LABEL_ICON_MAP.get(subcircuit.label if subcircuit else "", "mdi:lightning-bolt")
 
     @property
     def native_value(self) -> float | None:
         if not self.coordinator.data:
             return None
-        return self.coordinator.data.get(self._subcircuit_serial)
+        return self.coordinator.data.get(self._subcircuit_number)

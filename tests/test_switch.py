@@ -11,7 +11,7 @@ from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.basis_smart_panel.const import DOMAIN
 
-from .conftest import setup_integration
+from .conftest import circuit_uid, setup_integration
 from .fake_backend import SERIAL_A, FakeBasisBackend
 
 
@@ -29,7 +29,7 @@ async def test_switch_sends_standby_command(
 ) -> None:
     await setup_integration(hass, config_entry)
     entity_id = entity_registry.async_get_entity_id(
-        SWITCH_DOMAIN, DOMAIN, f"basis_switch_{SERIAL_A}_SC-A01"
+        SWITCH_DOMAIN, DOMAIN, circuit_uid("switch", SERIAL_A, 1)
     )
 
     await hass.services.async_call(
@@ -45,18 +45,18 @@ async def test_switch_sends_standby_command(
     ]
 
 
-@pytest.mark.parametrize("serial", ["SC-A03", "SC-A04"])
+@pytest.mark.parametrize("number", [3, 4])
 async def test_no_switch_for_locked_or_spare_circuit(
     hass: HomeAssistant,
     fake_backend: FakeBasisBackend,
     config_entry: MockConfigEntry,
     entity_registry: er.EntityRegistry,
-    serial: str,
+    number: int,
 ) -> None:
     await setup_integration(hass, config_entry)
     assert entity_registry.async_get_entity_id(
-        SWITCH_DOMAIN, DOMAIN, f"basis_switch_{SERIAL_A}_SC-A01"
+        SWITCH_DOMAIN, DOMAIN, circuit_uid("switch", SERIAL_A, 1)
     )
     assert not entity_registry.async_get_entity_id(
-        SWITCH_DOMAIN, DOMAIN, f"basis_switch_{SERIAL_A}_{serial}"
+        SWITCH_DOMAIN, DOMAIN, circuit_uid("switch", SERIAL_A, number)
     )

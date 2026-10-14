@@ -34,6 +34,7 @@ class Subcircuit:
     serial: str
     number: int
     label: str
+    display_label: str
     config_version: str
     standby_locked: bool
     live: SubcircuitLiveState | None
@@ -67,6 +68,7 @@ class Connectivity:
 class Switchboard:
     """Live data of one switchboard."""
 
+    name: str | None
     serial: str
     model: str | None
     version: str | None
@@ -74,9 +76,16 @@ class Switchboard:
     live: SwitchboardLiveState | None
     subcircuits: tuple[Subcircuit, ...]
 
-    def subcircuit(self, serial: str) -> Subcircuit | None:
-        """Return the subcircuit with the serial, if the switchboard has it."""
-        return next((sub for sub in self.subcircuits if sub.serial == serial), None)
+    def subcircuit(self, number: int) -> Subcircuit | None:
+        """Return the subcircuit at the position number, if the switchboard has it."""
+        return next((sub for sub in self.subcircuits if sub.number == number), None)
+
+    @property
+    def circuit_layout(self) -> frozenset[tuple[int, bool, bool]]:
+        """Return the facts that decide which circuit entities exist."""
+        return frozenset(
+            (sub.number, sub.is_spare, sub.standby_locked) for sub in self.subcircuits
+        )
 
 
 @dataclass(frozen=True, slots=True)

@@ -16,11 +16,12 @@ from homeassistant.components.binary_sensor import (
     BinarySensorDeviceClass,
     BinarySensorEntity,
 )
+from homeassistant.const import EntityCategory
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .coordinator import BasisConfigEntry, SwitchboardDataCoordinator
-from .entity import BasisEntity
+from .entity import BasisEntity, async_add_basis_entities
 
 
 async def async_setup_entry(
@@ -29,9 +30,13 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up the Basis binary sensors."""
-    async_add_entities(
-        BasisConnectivitySensor(board.live)
-        for board in config_entry.runtime_data.boards.values()
+    async_add_basis_entities(
+        config_entry,
+        async_add_entities,
+        [
+            BasisConnectivitySensor(board.live)
+            for board in config_entry.runtime_data.boards.values()
+        ],
     )
 
 
@@ -39,6 +44,7 @@ class BasisConnectivitySensor(BasisEntity[SwitchboardDataCoordinator], BinarySen
     """Binary sensor for switchboard connectivity status."""
 
     _attr_device_class = BinarySensorDeviceClass.CONNECTIVITY
+    _attr_entity_category = EntityCategory.DIAGNOSTIC
     _attr_name = "Connectivity"
 
     def __init__(self, coordinator: SwitchboardDataCoordinator) -> None:
@@ -54,10 +60,13 @@ class BasisConnectivitySensor(BasisEntity[SwitchboardDataCoordinator], BinarySen
 
     @property
     def extra_state_attributes(self) -> dict:
-        """Return additional state attributes."""
+        """Return the last contact and the reason while the panel is disconnected."""
         if self.coordinator.data is None:
             return {}
         connectivity = self.coordinator.data.connectivity
+        # While connected, last_seen changes on every poll and would write a new state.
+        if connectivity.connected:
+            return {}
         attrs = {}
         if connectivity.last_seen:
             attrs["last_seen"] = connectivity.last_seen

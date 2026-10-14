@@ -30,12 +30,18 @@ def subcircuit(
     current: float = 0.0,
     voltage: float = 230.0,
     locked: bool = False,
+    name_from_app: str | None = None,
 ) -> dict[str, Any]:
     """Return a subcircuit as the backend stores it."""
     return {
         "number": number,
         "serial": serial,
-        "config": {"version": "3.13.0", "label": label, "standbyLocked": locked},
+        "config": {
+            "version": "3.13.0",
+            "label": label,
+            "standbyLocked": locked,
+            "name_from_app": name_from_app,
+        },
         "liveState": {
             "state": state,
             "power": power,
@@ -50,6 +56,7 @@ def default_boards() -> dict[str, dict[str, Any]]:
     """Return a connected panel A and a disconnected panel B."""
     return {
         SERIAL_A: {
+            "name": None,
             "serial": SERIAL_A,
             "model": "GEN1",
             "version": "3.2.1",
@@ -75,6 +82,7 @@ def default_boards() -> dict[str, dict[str, Any]]:
             ],
         },
         SERIAL_B: {
+            "name": None,
             "serial": SERIAL_B,
             "model": None,
             "version": None,
@@ -141,6 +149,8 @@ class FakeBasisBackend:
         self.fail_headers: dict[str, str] = {}
         self.graphql_error: str | None = None
         self.hang = False
+        self.broken_boards: set[str] = set()
+        self.broken_energy: set[str] = set()
         self._release = asyncio.Event()
         self._server = TestServer(self._app())
 
@@ -221,6 +231,8 @@ class FakeBasisBackend:
     def _resolve_switchboard(self, info: Any, serial: str) -> dict[str, Any]:
         if not any(serial in serials for serials in self.sites.values()):
             raise GraphQLError(f"switchboard {serial} not found")
+        if serial in self.broken_boards:
+            raise GraphQLError(f"switchboard {serial} failed")
         return self._board_view(serial)
 
     def _resolve_standby(self, info: Any, input: dict[str, Any]) -> dict[str, Any]:
@@ -236,12 +248,16 @@ class FakeBasisBackend:
         energy = self.board_energy.get(serial, {})
 
         def total(info: Any, input: dict[str, Any]) -> dict[str, Any]:
+            if serial in self.broken_energy:
+                raise GraphQLError(f"energy of {serial} failed")
             if input["startTime"] not in energy:
                 raise GraphQLError(f"unexpected startTime {input['startTime']}")
             return energy[input["startTime"]]
 
         board["totalSwitchboardEnergyUsage"] = total
         for sub in board["subcircuits"]:
+            config = sub["config"]
+            config["displayLabel"] = config["name_from_app"] or config["label"]
             sub["energyUsage"] = self._subcircuit_energy_resolver(serial, sub["serial"])
         return board
 

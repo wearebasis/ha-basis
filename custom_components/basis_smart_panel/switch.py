@@ -20,7 +20,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from .api import BasisApiError
 from .coordinator import BasisConfigEntry, SwitchboardDataCoordinator
 from .const import LABEL_ICON_MAP
-from .entity import BasisSubcircuitEntity
+from .entity import BasisSubcircuitEntity, async_add_basis_entities
 from .models import Subcircuit
 
 
@@ -30,11 +30,16 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up the Basis switches."""
-    async_add_entities(
-        BasisCircuitSwitch(board.live, subcircuit)
-        for board in config_entry.runtime_data.boards.values()
-        for subcircuit in board.live.data.subcircuits
-        if not subcircuit.is_spare and not subcircuit.standby_locked
+    async_add_basis_entities(
+        config_entry,
+        async_add_entities,
+        [
+            BasisCircuitSwitch(board.live, subcircuit)
+            for board in config_entry.runtime_data.boards.values()
+            if board.live.data is not None
+            for subcircuit in board.live.data.subcircuits
+            if not subcircuit.is_spare and not subcircuit.standby_locked
+        ],
     )
 
 
@@ -59,11 +64,11 @@ class BasisCircuitSwitch(BasisSubcircuitEntity, SwitchEntity):
 
     @property
     def is_on(self) -> bool | None:
-        """Return True if the circuit is live."""
+        """Return True if the circuit is live, False if it is in standby."""
         subcircuit = self.subcircuit
-        if subcircuit and subcircuit.live:
-            return subcircuit.live.state == "LIVE"
-        return None
+        if subcircuit is None or subcircuit.live is None:
+            return None
+        return {"LIVE": True, "STANDBY": False}.get(subcircuit.live.state)
 
     @property
     def available(self) -> bool:
@@ -83,10 +88,13 @@ class BasisCircuitSwitch(BasisSubcircuitEntity, SwitchEntity):
         await self._async_set_standby(True)
 
     async def _async_set_standby(self, activate: bool) -> None:
+        subcircuit = self.subcircuit
+        if subcircuit is None:
+            raise HomeAssistantError(f"{self.name} is not in the switchboard data")
         try:
             await self.coordinator.api.set_subcircuit_standby(
                 self.coordinator.serial,
-                self._subcircuit_serial,
+                subcircuit.serial,
                 activate,
             )
         except BasisApiError as err:

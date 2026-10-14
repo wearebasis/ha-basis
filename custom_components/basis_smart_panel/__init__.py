@@ -15,9 +15,14 @@
 from __future__ import annotations
 
 import json
+from functools import partial
 
 from homeassistant.core import HomeAssistant, callback
-from homeassistant.helpers import config_entry_oauth2_flow, device_registry as dr
+from homeassistant.helpers import (
+    config_entry_oauth2_flow,
+    device_registry as dr,
+    entity_registry as er,
+)
 from .config_flow import BasisOAuth2Implementation, _decode_jwt_payload
 from .const import (
     DOMAIN,
@@ -40,8 +45,10 @@ from .coordinator import (
     SwitchboardDataCoordinator,
 )
 from .api import BasisAPI, AsyncConfigEntryAuth
+from .entity import circuit_unique_id
 
 BOARD_REMOVAL_POLLS = 3
+MODULE_KEYS = ("power", "current", "voltage", "switch", "energy_import")
 
 
 async def async_setup(hass: HomeAssistant, config) -> bool:
@@ -100,13 +107,22 @@ async def async_setup_entry(hass: HomeAssistant, entry: BasisConfigEntry) -> boo
             )
 
     await _async_register_switchboard_devices(hass, entry)
+    _async_migrate_circuit_unique_ids(hass, entry)
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+    _async_remove_stale_entities(hass, entry)
 
     @callback
     def _async_on_discovery_update() -> None:
         _async_check_boards(hass, entry)
 
     entry.async_on_unload(discovery.async_add_listener(_async_on_discovery_update))
+    for board in entry.runtime_data.boards.values():
+        entry.async_on_unload(
+            board.live.async_add_listener(partial(_async_check_circuits, hass, entry, board))
+        )
+        entry.async_on_unload(
+            board.live.async_add_listener(partial(_async_sync_device_name, hass, entry, board))
+        )
 
     return True
 
@@ -114,14 +130,20 @@ async def async_setup_entry(hass: HomeAssistant, entry: BasisConfigEntry) -> boo
 async def _async_setup_board(
     hass: HomeAssistant, entry: BasisConfigEntry, api: BasisAPI, serial: str
 ) -> BoardCoordinators:
-    """Create the coordinators of one switchboard and fetch their first data."""
+    """Create the coordinators of one switchboard and fetch their first data.
+
+    A failed fetch does not stop the setup. The entities of that switchboard
+    stay unavailable until the coordinator gets data.
+    """
     board = BoardCoordinators(
         live=SwitchboardDataCoordinator(hass, entry, api, serial),
         energy=EnergyStatsCoordinator(hass, entry, api, serial),
         subcircuit_energy=SubcircuitEnergyCoordinator(hass, entry, api, serial),
     )
     for coordinator in (board.live, board.energy, board.subcircuit_energy):
-        await coordinator.async_config_entry_first_refresh()
+        await coordinator.async_refresh()
+    if board.live.data is not None:
+        board.layout = board.live.data.circuit_layout
     LOGGER.debug("Created coordinators for switchboard %s", serial)
     return board
 
@@ -135,29 +157,34 @@ async def _async_register_switchboard_devices(
 
     for serial in data.discovery.switchboard_serials:
         board = data.boards.get(serial)
+        if board is None:
+            continue
 
-        if board and board.live.data:
-            switchboard = board.live.data
+        # Without data, keep the name of an existing device; a new one gets the default.
+        details: dict = {"default_name": _device_name(serial, None)}
+        if (switchboard := board.live.data) is not None:
             model = switchboard.model
-            subcircuits_version = (
-                switchboard.subcircuits[0].config_version
-                if switchboard.subcircuits
-                else "Unknown"
-            )
-
             if (model == "unknown"):
                 model = DEFAULT_MODEL
+            details = {
+                "name": _device_name(serial, switchboard.name),
+                "model": model,
+                "sw_version": switchboard.version,
+                "hw_version": (
+                    switchboard.subcircuits[0].config_version
+                    if switchboard.subcircuits
+                    else "Unknown"
+                ),
+            }
 
-            device_registry.async_get_or_create(
-                config_entry_id=entry.entry_id,
-                identifiers={(DOMAIN, serial)},
-                manufacturer=BRAND,
-                name=f"Basis Panel {serial}",
-                model=model,
-                sw_version=switchboard.version,
-                hw_version=subcircuits_version,
-            )
-            LOGGER.debug(f"Registered device for switchboard {serial}")
+        device_registry.async_get_or_create(
+            config_entry_id=entry.entry_id,
+            identifiers={(DOMAIN, serial)},
+            manufacturer=BRAND,
+            serial_number=serial,
+            **details,
+        )
+        LOGGER.debug(f"Registered device for switchboard {serial}")
 
 
 @callback
@@ -195,6 +222,128 @@ def _async_check_boards(hass: HomeAssistant, entry: BasisConfigEntry) -> None:
 
     if reload:
         hass.config_entries.async_schedule_reload(entry.entry_id)
+
+
+@callback
+def _async_check_circuits(
+    hass: HomeAssistant, entry: BasisConfigEntry, board: BoardCoordinators
+) -> None:
+    """Reload the entry when the circuits that have entities change."""
+    if not board.live.last_update_success or board.live.data is None:
+        return
+    layout = board.live.data.circuit_layout
+    # An empty list is more likely an API fault than the loss of every circuit.
+    if layout and layout != board.layout:
+        LOGGER.info("The circuits of switchboard %s changed, reloading", board.live.serial)
+        hass.config_entries.async_schedule_reload(entry.entry_id)
+
+
+@callback
+def _async_migrate_circuit_unique_ids(hass: HomeAssistant, entry: BasisConfigEntry) -> None:
+    """Move circuit entities from the module serial to the circuit position."""
+    renames: dict[str, tuple[str, str]] = {}
+    for serial, board in entry.runtime_data.boards.items():
+        if board.live.data is None:
+            continue
+        for sub in board.live.data.subcircuits:
+            for key in MODULE_KEYS:
+                prefix = f"basis_{key}_{serial}_"
+                renames[f"{prefix}{sub.serial}"] = (
+                    prefix,
+                    circuit_unique_id(key, serial, sub.number),
+                )
+
+    entity_registry = er.async_get(hass)
+    for registry_entry in er.async_entries_for_config_entry(entity_registry, entry.entry_id):
+        if (rename := renames.get(registry_entry.unique_id)) is None:
+            continue
+        prefix, new_unique_id = rename
+        if entity_registry.async_get_entity_id(registry_entry.domain, DOMAIN, new_unique_id):
+            continue
+        if (original := _replaced_original(entity_registry, registry_entry, prefix, renames)):
+            LOGGER.info(
+                "Removing %s and keeping %s, the entity from before the module was replaced",
+                registry_entry.entity_id,
+                original.entity_id,
+            )
+            entity_registry.async_remove(registry_entry.entity_id)
+            registry_entry = original
+        entity_registry.async_update_entity(registry_entry.entity_id, new_unique_id=new_unique_id)
+
+
+def _replaced_original(
+    entity_registry: er.EntityRegistry,
+    registry_entry: er.RegistryEntry,
+    prefix: str,
+    renames: dict[str, tuple[str, str]],
+) -> er.RegistryEntry | None:
+    """Return the entity of an earlier module at the same position, if the user replaced it.
+
+    HA gave the entity of the new module the entity ID of the earlier one with a "_2" suffix.
+    """
+    base, _, suffix = registry_entry.entity_id.rpartition("_")
+    if not suffix.isdigit() or (original := entity_registry.async_get(base)) is None:
+        return None
+    unique_id = original.unique_id
+    if (
+        original.config_entry_id != registry_entry.config_entry_id
+        or not unique_id.startswith(prefix)
+        or unique_id.startswith(f"{prefix}circuit_")
+        or unique_id in renames
+    ):
+        return None
+    return original
+
+
+@callback
+def _async_remove_stale_entities(hass: HomeAssistant, entry: BasisConfigEntry) -> None:
+    """Remove the registry entries of entities that the platforms no longer create."""
+    data = entry.runtime_data
+    # HA logs an error in a platform setup and goes on, so a failed platform adds no unique IDs.
+    if not data.set_up_platforms.issuperset(PLATFORMS):
+        return
+    entity_registry = er.async_get(hass)
+    device_registry = dr.async_get(hass)
+    for registry_entry in er.async_entries_for_config_entry(entity_registry, entry.entry_id):
+        if registry_entry.unique_id in data.unique_ids:
+            continue
+        device = device_registry.async_get(registry_entry.device_id or "")
+        board = data.boards.get(_device_serial(device)) if device else None
+        # Without circuit data, the platforms could not decide the entities of a board.
+        if board is None or not board.layout:
+            continue
+        # The migration renames this entry when its module is in the live data again.
+        if _is_module_unique_id(registry_entry.unique_id, board.live.serial):
+            continue
+        LOGGER.info("Removing %s, which no circuit provides", registry_entry.entity_id)
+        entity_registry.async_remove(registry_entry.entity_id)
+
+
+def _is_module_unique_id(unique_id: str, serial: str) -> bool:
+    """Return True for a circuit unique ID from before it followed the circuit position."""
+    return any(
+        unique_id.startswith(f"basis_{key}_{serial}_")
+        and not unique_id.startswith(f"basis_{key}_{serial}_circuit_")
+        for key in MODULE_KEYS
+    )
+
+
+def _device_name(serial: str, name: str | None) -> str:
+    return name or f"Basis Panel {serial}"
+
+
+@callback
+def _async_sync_device_name(
+    hass: HomeAssistant, entry: BasisConfigEntry, board: BoardCoordinators
+) -> None:
+    """Rename the device when the panel is renamed in the Basis app."""
+    if board.live.data is None:
+        return
+    name = _device_name(board.live.serial, board.live.data.name)
+    device_registry = dr.async_get(hass)
+    for device in dr.async_entries_for_config_entry(device_registry, entry.entry_id):
+        if _device_serial(device) == board.live.serial and device.name != name:
+            device_registry.async_update_device(device.id, name=name)
 
 
 def _device_serial(device: dr.DeviceEntry) -> str | None:

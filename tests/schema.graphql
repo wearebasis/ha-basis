@@ -23,6 +23,7 @@ type Site {
 }
 
 type Switchboard {
+  name: String
   serial: String!
   model: String
   version: String
@@ -65,6 +66,7 @@ type Subcircuit {
 type SubcircuitConfig {
   version: String!
   label: String!
+  displayLabel: String!
   standbyLocked: Boolean!
 }
 

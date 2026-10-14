@@ -24,6 +24,7 @@ from .conftest import (
     POLL,
     USER_SUB,
     advance,
+    circuit_uid,
     make_token,
     setup_integration,
 )
@@ -32,9 +33,9 @@ from .fake_backend import SERIAL_A, SERIAL_B, FakeBasisBackend, subcircuit
 DISCOVERY = BOARDS_DISCOVERY_INTERVAL + timedelta(seconds=1)
 
 
-def power_entity(entity_registry: er.EntityRegistry, serial: str, sub: str) -> str:
+def power_entity(entity_registry: er.EntityRegistry, serial: str, number: int) -> str:
     entity_id = entity_registry.async_get_entity_id(
-        "sensor", DOMAIN, f"basis_power_{serial}_{sub}"
+        "sensor", DOMAIN, circuit_uid("power", serial, number)
     )
     assert entity_id
     return entity_id
@@ -106,7 +107,7 @@ async def test_entities_unavailable_when_poll_fails(
 ) -> None:
     await setup_integration(hass, config_entry)
     entity_id = entity_registry.async_get_entity_id(
-        "sensor", DOMAIN, f"basis_power_{SERIAL_A}_SC-A01"
+        "sensor", DOMAIN, circuit_uid("power", SERIAL_A, 1)
     )
     assert hass.states.get(entity_id).state == "120.5"
 
@@ -128,7 +129,7 @@ async def test_live_values_update_on_poll(
 ) -> None:
     await setup_integration(hass, config_entry)
     entity_id = entity_registry.async_get_entity_id(
-        "sensor", DOMAIN, f"basis_power_{SERIAL_A}_SC-A02"
+        "sensor", DOMAIN, circuit_uid("power", SERIAL_A, 2)
     )
 
     fake_backend.board(SERIAL_A)["subcircuits"][1]["liveState"]["power"] = 1200.0
@@ -150,8 +151,8 @@ async def test_board_added_after_setup(
     await advance(hass, freezer, DISCOVERY)
 
     assert config_entry.state is ConfigEntryState.LOADED
-    assert hass.states.get(power_entity(entity_registry, SERIAL_A, "SC-A01")).state == "120.5"
-    assert hass.states.get(power_entity(entity_registry, SERIAL_B, "SC-B01"))
+    assert hass.states.get(power_entity(entity_registry, SERIAL_A, 1)).state == "120.5"
+    assert hass.states.get(power_entity(entity_registry, SERIAL_B, 1))
 
 
 async def test_board_removed_after_missing_polls(
@@ -172,10 +173,10 @@ async def test_board_removed_after_missing_polls(
     await advance(hass, freezer, DISCOVERY)
     assert board_device(device_registry, config_entry, SERIAL_B) is None
     assert not entity_registry.async_get_entity_id(
-        "sensor", DOMAIN, f"basis_power_{SERIAL_B}_SC-B01"
+        "sensor", DOMAIN, circuit_uid("power", SERIAL_B, 1)
     )
     assert config_entry.state is ConfigEntryState.LOADED
-    assert hass.states.get(power_entity(entity_registry, SERIAL_A, "SC-A01")).state == "120.5"
+    assert hass.states.get(power_entity(entity_registry, SERIAL_A, 1)).state == "120.5"
 
 
 async def test_board_missing_once_is_kept(
@@ -236,10 +237,10 @@ async def test_orphan_device_removed_after_missing_polls(
 @pytest.mark.parametrize(
     ("domain", "unique_id"),
     [
-        ("sensor", f"basis_power_{SERIAL_A}_SC-A08"),
-        ("sensor", f"basis_current_{SERIAL_A}_SC-A08"),
-        ("sensor", f"basis_voltage_{SERIAL_A}_SC-A08"),
-        ("switch", f"basis_switch_{SERIAL_A}_SC-A08"),
+        ("sensor", circuit_uid("power", SERIAL_A, 8)),
+        ("sensor", circuit_uid("current", SERIAL_A, 8)),
+        ("sensor", circuit_uid("voltage", SERIAL_A, 8)),
+        ("switch", circuit_uid("switch", SERIAL_A, 8)),
     ],
 )
 async def test_subcircuit_without_live_state(
@@ -271,3 +272,48 @@ async def test_board_without_subcircuits(
 
     assert config_entry.state is ConfigEntryState.LOADED
     assert board_device(device_registry, config_entry, SERIAL_A).hw_version == "Unknown"
+
+
+async def test_failing_board_does_not_block_other_boards(
+    hass: HomeAssistant,
+    freezer: FrozenDateTimeFactory,
+    fake_backend: FakeBasisBackend,
+    config_entry: MockConfigEntry,
+    entity_registry: er.EntityRegistry,
+) -> None:
+    fake_backend.broken_boards.add(SERIAL_B)
+    await setup_integration(hass, config_entry)
+
+    assert config_entry.state is ConfigEntryState.LOADED
+    assert hass.states.get(power_entity(entity_registry, SERIAL_A, 1)).state == "120.5"
+    connectivity_b = entity_registry.async_get_entity_id(
+        "binary_sensor", DOMAIN, f"basis_connectivity_{SERIAL_B}"
+    )
+    assert hass.states.get(connectivity_b).state == STATE_UNAVAILABLE
+    assert not entity_registry.async_get_entity_id(
+        "sensor", DOMAIN, circuit_uid("power", SERIAL_B, 1)
+    )
+
+    fake_backend.broken_boards.clear()
+    await advance(hass, freezer, POLL)
+
+    assert config_entry.state is ConfigEntryState.LOADED
+    assert hass.states.get(power_entity(entity_registry, SERIAL_B, 1))
+    assert hass.states.get(connectivity_b).state == "off"
+
+
+async def test_failing_energy_does_not_block_live_data(
+    hass: HomeAssistant,
+    fake_backend: FakeBasisBackend,
+    config_entry: MockConfigEntry,
+    entity_registry: er.EntityRegistry,
+) -> None:
+    fake_backend.broken_energy.add(SERIAL_A)
+    await setup_integration(hass, config_entry)
+
+    assert config_entry.state is ConfigEntryState.LOADED
+    assert hass.states.get(power_entity(entity_registry, SERIAL_A, 1)).state == "120.5"
+    energy_today = entity_registry.async_get_entity_id(
+        "sensor", DOMAIN, f"basis_energy_today_import_{SERIAL_A}"
+    )
+    assert hass.states.get(energy_today).state == STATE_UNAVAILABLE

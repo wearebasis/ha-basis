@@ -35,6 +35,11 @@ NOW = "2026-10-15T10:00:00+13:00"
 POLL = SWITCHBOARD_UPDATE_INTERVAL + timedelta(seconds=1)
 
 
+def circuit_uid(key: str, serial: str, number: int) -> str:
+    """Return the unique ID of a circuit entity, which follows the circuit position."""
+    return f"basis_{key}_{serial}_circuit_{number}"
+
+
 def make_id_token(sub: str, email: str) -> str:
     """Return an unsigned JWT with the claims that the integration reads."""
 

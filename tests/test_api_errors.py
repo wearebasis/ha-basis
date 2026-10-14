@@ -25,7 +25,7 @@ from pytest_homeassistant_custom_component.test_util.aiohttp import AiohttpClien
 from custom_components.basis_smart_panel.api import MAX_RETRIES, TOTAL_TIMEOUT
 from custom_components.basis_smart_panel.const import DOMAIN, OAUTH2_TOKEN
 
-from .conftest import POLL, advance, make_token, setup_integration
+from .conftest import POLL, advance, circuit_uid, make_token, setup_integration
 from .fake_backend import SERIAL_A, SERIAL_B, FakeBasisBackend
 
 
@@ -45,7 +45,7 @@ def live_requests(backend: FakeBasisBackend) -> int:
 
 def power_entity(entity_registry: er.EntityRegistry) -> str:
     entity_id = entity_registry.async_get_entity_id(
-        "sensor", DOMAIN, f"basis_power_{SERIAL_A}_SC-A01"
+        "sensor", DOMAIN, circuit_uid("power", SERIAL_A, 1)
     )
     assert entity_id
     return entity_id
@@ -197,7 +197,7 @@ async def test_failed_switch_command_raises_home_assistant_error(
 ) -> None:
     await setup_integration(hass, config_entry)
     entity_id = entity_registry.async_get_entity_id(
-        SWITCH_DOMAIN, DOMAIN, f"basis_switch_{SERIAL_A}_SC-A01"
+        SWITCH_DOMAIN, DOMAIN, circuit_uid("switch", SERIAL_A, 1)
     )
 
     fake_backend.graphql_error = "standby command blocked"
